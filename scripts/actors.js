@@ -1,4 +1,5 @@
-import {myActorHolder,actorPlace, sharesLocation} from "./index.js"
+import {myActorHolder, sharesLocation} from "./index.js"
+import {actorPlace} from "./worldMap.js"
 
 //constructor parameters: x value, y value, display priority, name, symbol
 export class Actor {

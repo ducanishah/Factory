@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
 import { Actor, ActorHolder, Player, Goblin, Tree } from "./actors.js"
-import {updateWorldTable, initializeWorldMap, createWorldTable, generateRandomLocation} from "./worldMap.js"
+import {updateWorldTable, initializeWorldMap, createWorldTable, generateRandomLocation, actorPlace} from "./worldMap.js"
 //TODOS IN COMMENTS
 
 export class worldLocation {
@@ -34,24 +34,8 @@ function spawnInitialActors() {
 }
 
 
-
-
-
-
-//call this to move an actor from its present spot (or non-spot) to another spot
-export function actorPlace(actor, x, y) {
-    if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
-        console.log("Out of bounds error");
-        return false;
-    }
-    if (actor.location) {
-        actor.location.presentActors.splice(actor.location.presentActors.indexOf(actor), 1);
-    }
-    worldMap[x][y].presentActors.push(actor);
-    actor.location = worldMap[x][y];
-}
 //THERE ARE UPDATE CALLS IN HERE
-function keydownHandler(e) {
+export function keydownHandler(e) {
     if(logKeyDowns){console.log(e.code);}
     switch (e.code) {
         case "ArrowUp":
