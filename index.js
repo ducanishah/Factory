@@ -107,19 +107,6 @@ function updateWorldTable() {
     }
     document.getElementById("outerWrapper").append(createWorldTable());
 }
-//call this to move an actor from its present spot (or non-spot) to another spot
-function actorPlace(actor, x, y) {
-    let actorPresentLocation = worldMap[actor.location.x][actor.location.y]
-    if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
-        console.log("Out of bounds error");
-        return false;
-    }
-    if (actorPresentLocation.presentActors.indexOf(actor) != -1) {
-        actorPresentLocation.presentActors.splice(actorPresentLocation.presentActors.indexOf(actor), 1);
-    }
-    worldMap[x][y].presentActors.push(actor);
-    actor.location = { x, y }
-}
 
 function initializeWorldMap() {
     worldMap = [];
@@ -161,8 +148,19 @@ function createWorldTable() {
     myTable.append(...myRows);
     return myTable;
 }
-
-
+//call this to move an actor from its present spot (or non-spot) to another spot
+function actorPlace(actor, x, y) {
+    let actorPresentLocation = worldMap[actor.location.x][actor.location.y]
+    if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
+        console.log("Out of bounds error");
+        return false;
+    }
+    if (actorPresentLocation.presentActors.indexOf(actor) != -1) {
+        actorPresentLocation.presentActors.splice(actorPresentLocation.presentActors.indexOf(actor), 1);
+    }
+    worldMap[x][y].presentActors.push(actor);
+    actor.location = { x, y }
+}
 //THERE ARE UPDATE CALLS IN HERE
 function inputHandler(e) {
     // console.log(e.code);
