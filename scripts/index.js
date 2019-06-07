@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
-// import {Actor} from "./actors.js"
+import {Actor, Player} from "./actors.js"
 //TODOS IN COMMENTS
  
 class worldLocation {
@@ -10,41 +10,8 @@ class worldLocation {
         this.y = setY;
     }
 } 
-//constructor parameters: x value, y value, display priority, name, symbol
-class Actor {
-    constructor(xSet, ySet, dispPrior = 0, myName, mySymbol) {
-        this.name = myName;
-        this.mapSymbol = mySymbol;
-        this.displayPriority = dispPrior;
-        this.location;
-        myActorHolder.aliveActors.push(this);
-        actorPlace(this, xSet, ySet);
-    }
-}
-class Player extends Actor {
-    constructor(setX, setY, dispPrior = 2) {
-        super(setX, setY, dispPrior, "player", "P")
-    }
-    move(direction) {
-        switch (direction) {
-            case "up":
-                actorPlace(this, this.location.x, this.location.y - 1);
-                break;
-            case "down":
-                actorPlace(this, this.location.x, this.location.y + 1)
-                break;
-            case "left":
-                actorPlace(this, this.location.x - 1, this.location.y)
-                break;
-            case "right":
-                actorPlace(this, this.location.x + 1, this.location.y)
-                break;
-            default:
-                console.log("Why the fuck isn't there a direction for this move")
-                break;
-        }
-    }
-}
+
+
 class Goblin extends Actor {
     constructor(setX, setY, dispPrior = 1) {
         super(setX, setY, dispPrior, "goblin", "g");
@@ -118,10 +85,10 @@ function main() {
 }
 
 function spawnInitialActors() {
-    let place = generateRandomLocation();
+    // let place = generateRandomLocation();
     playerChar = new Player(8, 8);
-    new Goblin(...place);
-    new Tree(...place);
+    new Goblin(...generateRandomLocation());
+    new Tree(...generateRandomLocation());
 }
 
 function updateWorldTable() {
