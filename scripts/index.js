@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
 import { Actor, ActorHolder, Player, Goblin, Tree } from "./actors.js"
+import {updateWorldTable, initializeWorldMap} from "./worldMap.js"
 //TODOS IN COMMENTS
 
-class worldLocation {
+export class worldLocation {
     constructor(setX, setY) {
         this.presentActors = []
         this.x = setX;
@@ -13,8 +14,8 @@ class worldLocation {
 
 export var myActorHolder = new ActorHolder();
 var playerChar;
-var worldMap;
-var worldMapLength = 16;
+export var worldMap=[];
+export var worldMapLength = 16;
 
 function main() {
     // console.log(new Person().alive);
@@ -31,27 +32,11 @@ function spawnInitialActors() {
     new Tree(...generateRandomLocation());
 }
 
-function updateWorldTable() {
-    if (document.getElementById("outerWrapper").children[0]) {
-        document.getElementById("outerWrapper").children[0].remove();
-    }
 
-    document.getElementById("outerWrapper").append(createWorldTable());
-    document.getElementById("outerWrapper").children[0].addEventListener("click", clickHandler);
-}
 
-function initializeWorldMap() {
-    worldMap = [];
-    for (let i = 0; i < worldMapLength; i++) {
-        worldMap[i] = new Array(worldMapLength);
-        for (let ind = 0; ind < worldMap[i].length; ind++) {
-            worldMap[i][ind] = new worldLocation(i, ind);
-        }
-    }
 
-}
 
-function createWorldTable() {
+export function createWorldTable() {
     let myTable = document.createElement("table");
     let myRows = new Array(worldMap.length);
     for (let i = 0; i < myRows.length; i++) {
@@ -91,7 +76,7 @@ export function actorPlace(actor, x, y) {
 }
 //THERE ARE UPDATE CALLS IN HERE
 function keydownHandler(e) {
-    // console.log(e.code);
+    console.log(e.code);
     switch (e.code) {
         case "ArrowUp":
             playerChar.move("up")
@@ -105,6 +90,7 @@ function keydownHandler(e) {
         case "ArrowRight":
             playerChar.move("right")
             break;
+        case "MetaLeft":
         case "ControlLeft":
             return;
             break;
@@ -115,7 +101,7 @@ function keydownHandler(e) {
     updateWorldTable();
 }
 
-function clickHandler(e) {
+export function clickHandler(e) {
     console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
 }
 
