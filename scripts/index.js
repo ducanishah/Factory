@@ -1,73 +1,13 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
-import {Actor, Player} from "./actors.js"
+import { Actor, ActorHolder, Player, Goblin, Tree } from "./actors.js"
 //TODOS IN COMMENTS
- 
+
 class worldLocation {
     constructor(setX, setY) {
         this.presentActors = []
         this.x = setX;
         this.y = setY;
-    }
-} 
-
-
-class Goblin extends Actor {
-    constructor(setX, setY, dispPrior = 1) {
-        super(setX, setY, dispPrior, "goblin", "g");
-    }
-    update() {
-        this.wander()
-    }
-    postUpdate() {
-        if (sharesLocation(this, Player)) {
-            console.log("Eek! A player!")
-        }
-    }
-    wander() {
-        let myDirection;
-        switch (Math.ceil(Math.random() * 4)) {
-            case (1):
-                //up
-                myDirection = [0, -1]
-                break;
-            case (2):
-                //down
-                myDirection = [0, 1]
-                break;
-            case (3):
-                //left
-                myDirection = [1, 0]
-                break;
-            case (4):
-                //right
-                myDirection = [-1, 0]
-                break;
-        }
-        this.move(myDirection)
-    }
-    move(direction) {
-        actorPlace(this, this.location.x + direction[0], this.location.y + direction[1]);
-    }
-}
-class Tree extends Actor {
-    constructor(setX, setY, dispPrior = 0) {
-        super(setX, setY, dispPrior, "tree", "T")
-    }
-}
-//Call update on this to have it call update AND postUpdate on all the actors
-//put movement and stuff in update, checking for shared squares in postUpdate
-class ActorHolder {
-    constructor() {
-        this.aliveActors = [];
-    }
-    update() {
-        for (let i = 0; i < this.aliveActors.length; i++) {
-            if (this.aliveActors[i].update) { this.aliveActors[i].update(); }
-        }
-        for (let i = 0; i < this.aliveActors.length; i++) {
-            if (this.aliveActors[i].postUpdate) { this.aliveActors[i].postUpdate(); }
-        }
     }
 }
 
@@ -200,7 +140,7 @@ function generateRandomLocation(arr) {
     return [x, y];
 }
 //checks if given actor shares its location with any actor of a given class, excluding itself
-function sharesLocation(actor, typeToLookFor) {
+export function sharesLocation(actor, typeToLookFor) {
     for (let i = 0; i < actor.location.presentActors.length; i++) {
         if (actor.location.presentActors[i] instanceof typeToLookFor && actor.location.presentActors[i] != actor) {
             return true;
