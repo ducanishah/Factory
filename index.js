@@ -1,15 +1,17 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", inputHandler)
 //TODOS IN COMMENTS
+//inputs: x value, y value, display priority
 class Actor {
-    constructor(xSet, ySet) {
+    constructor(xSet, ySet,dispPrior=0) {
         this.location = { x: xSet, y: ySet };
+        this.displayPriority=dispPrior;
         actorPlace(this, xSet, ySet);
     }
 }
 class Player extends Actor {
-    constructor(xSet, ySet) {
-        super(xSet, ySet)
+    constructor(xSet, ySet,dispPrior=1) {
+        super(xSet, ySet,dispPrior)
         this.mapSymbol = "P";
     }
     move(direction) {
@@ -32,6 +34,16 @@ class Player extends Actor {
         }
     }
 }
+class Goblin extends Actor {
+    constructor(setX,setY,dispPrior=1){
+        super(setX,setY,dispPrior);
+        this.mapSymbol="g";
+        actorPlace(this,setX,setY);
+    }
+}
+
+
+
 class worldLocation {
     constructor() {
         this.presentActors = []
@@ -45,6 +57,7 @@ function main() {
     // console.log(new Person().alive);
     initializeWorldMap();
     playerChar = new Player(8, 8);
+    new Goblin (8,8);
     update();
 }
 
@@ -56,15 +69,19 @@ function update(){
 }
 
 function actorPlace(actor, x, y) {
-    if(x<0 || x>worldMap.length || y<0 || y>worldMap.length){
+    let actorPresentLocation=worldMap[actor.location.x][actor.location.y]
+    if(x<0 || x>worldMap.length-1 || y<0 || y>worldMap.length-1){
         console.log("Out of bounds error");
         return false;
     }
-    worldMap[actor.location.x][actor.location.y].presentActors.pop();
+    if(actorPresentLocation.presentActors.indexOf(actor)!=-1){
+        actorPresentLocation.presentActors.splice(actorPresentLocation.presentActors.indexOf(actor),1);
+    }
     worldMap[x][y].presentActors.push(actor);
     actor.location = { x, y }
 }
 
+//THERE IS AN UPDATE CALL IN HERE
 function inputHandler(e) {
     // console.log(e.code);
     switch (e.code) {
@@ -106,8 +123,17 @@ function createWorldTable() {
     worldMap.forEach((subArray, subArrayIndex) => {
         subArray.forEach((item, itemIndex) => {
             let tempData = document.createElement("td");
-            // tempData.innerHTML = `(${subArrayIndex},${itemIndex})`;
+
             if (item.presentActors.length) {
+                //Sort by display priority, with highest number being first
+                // item.presentActors.sort(function(a,b){
+                //     if (a.displayPriority>b.displayPriority){
+                //         return true;
+                //     } else {
+                //         return false;
+                //     }
+                // });
+                //display symbol of whichever is first
                 tempData.innerHTML = item.presentActors[0].mapSymbol;
             }
             myRows[itemIndex].append(tempData);
