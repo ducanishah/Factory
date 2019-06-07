@@ -1,17 +1,21 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", inputHandler)
 //TODOS IN COMMENTS
-//inputs: x value, y value, display priority
+
+//constructor parameters: x value, y value, display priority, name, symbol
 class Actor {
-    constructor(xSet, ySet,dispPrior=0) {
+    constructor(xSet, ySet,dispPrior=0,myName,mySymbol) {
+        this.name=myName;
+        this.mapSymbol=mySymbol;
         this.location = { x: xSet, y: ySet };
         this.displayPriority=dispPrior;
+        myActorHolder.aliveActors.push(this);
         actorPlace(this, xSet, ySet);
     }
 }
 class Player extends Actor {
     constructor(xSet, ySet,dispPrior=2) {
-        super(xSet, ySet,dispPrior)
+        super(xSet, ySet,dispPrior,"player","P")
         this.mapSymbol = "P";
     }
     move(direction) {
@@ -36,12 +40,23 @@ class Player extends Actor {
 }
 class Goblin extends Actor {
     constructor(setX,setY,dispPrior=1){
-        super(setX,setY,dispPrior);
+        super(setX,setY,dispPrior,"goblin","g");
         this.mapSymbol="g";
         actorPlace(this,setX,setY);
     }
+    update() {}
 }
 
+class ActorHolder {
+    constructor() {
+        this.aliveActors=[];
+    }
+    update(){
+        for(let i=0; i<this.aliveActors.length;i++){
+            if(this.aliveActors[i].update){this.aliveActors[i].update();}
+        }
+    }
+}
 
 
 class worldLocation {
@@ -50,6 +65,7 @@ class worldLocation {
     }
 }
 
+var myActorHolder=new ActorHolder();
 var playerChar;
 var worldMap;
 
@@ -58,10 +74,10 @@ function main() {
     initializeWorldMap();
     playerChar = new Player(8, 8);
     new Goblin (8,8);
-    update();
+    updateWorldMap();
 }
 
-function update(){
+function updateWorldMap(){
     if(document.getElementById("outerWrapper").children[0]) {
         document.getElementById("outerWrapper").children[0].remove();
     }
@@ -81,7 +97,7 @@ function actorPlace(actor, x, y) {
     actor.location = { x, y }
 }
 
-//THERE IS AN UPDATE CALL IN HERE
+//THERE ARE UPDATE CALLS IN HERE
 function inputHandler(e) {
     // console.log(e.code);
     switch (e.code) {
@@ -100,7 +116,8 @@ function inputHandler(e) {
         default:
             break;
     }
-    update();
+    myActorHolder.update();
+    updateWorldMap();
 }
 
 function initializeWorldMap() {
@@ -120,6 +137,7 @@ function createWorldTable() {
     for (let i = 0; i < myRows.length; i++) {
         myRows[i] = document.createElement("tr")
     }
+    //create the tds
     worldMap.forEach((subArray, subArrayIndex) => {
         subArray.forEach((item, itemIndex) => {
             let tempData = document.createElement("td");
