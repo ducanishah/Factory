@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
+// import {Actor} from "./actors.js"
 //TODOS IN COMMENTS
-
+ 
 class worldLocation {
     constructor(setX, setY) {
         this.presentActors = []
@@ -103,7 +104,7 @@ class ActorHolder {
     }
 }
 
-var myActorHolder = new ActorHolder();
+export var myActorHolder = new ActorHolder();
 var playerChar;
 var worldMap;
 var worldMapLength = 16;
@@ -170,7 +171,7 @@ function createWorldTable() {
     return myTable;
 }
 //call this to move an actor from its present spot (or non-spot) to another spot
-function actorPlace(actor, x, y) {
+export function actorPlace(actor, x, y) {
     if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
         console.log("Out of bounds error");
         return false;
@@ -233,7 +234,7 @@ function generateRandomLocation(arr) {
 }
 //checks if given actor shares its location with any actor of a given class, excluding itself
 function sharesLocation(actor, typeToLookFor) {
-    for (i = 0; i < actor.location.presentActors.length; i++) {
+    for (let i = 0; i < actor.location.presentActors.length; i++) {
         if (actor.location.presentActors[i] instanceof typeToLookFor && actor.location.presentActors[i] != actor) {
             return true;
         }
