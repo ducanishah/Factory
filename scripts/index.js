@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
 import { Actor, ActorHolder, Player, Goblin, Tree } from "./actors.js"
-import {updateWorldTable, initializeWorldMap} from "./worldMap.js"
+import {updateWorldTable, initializeWorldMap, createWorldTable, generateRandomLocation} from "./worldMap.js"
 //TODOS IN COMMENTS
 
 export class worldLocation {
@@ -16,6 +16,7 @@ export var myActorHolder = new ActorHolder();
 var playerChar;
 export var worldMap=[];
 export var worldMapLength = 16;
+var logKeyDowns=false;
 
 function main() {
     // console.log(new Person().alive);
@@ -36,32 +37,7 @@ function spawnInitialActors() {
 
 
 
-export function createWorldTable() {
-    let myTable = document.createElement("table");
-    let myRows = new Array(worldMap.length);
-    for (let i = 0; i < myRows.length; i++) {
-        myRows[i] = document.createElement("tr")
-    }
-    //create the tds
-    worldMap.forEach((subArray, subArrayIndex) => {
-        subArray.forEach((item, itemIndex) => {
-            let tempData = document.createElement("td");
-            if (item.presentActors.length) {
-                let topItem = item.presentActors[0];
-                for (let i = 1; i < item.presentActors.length; i++) {
-                    if (item.presentActors[i].displayPriority > topItem.displayPriority) {
-                        topItem = item.presentActors[i];
-                    }//TODO CONTINUE
-                }
-                //display symbol of whichever is first
-                tempData.innerHTML = topItem.mapSymbol;
-            }
-            myRows[itemIndex].append(tempData);
-        });
-    });
-    myTable.append(...myRows);
-    return myTable;
-}
+
 //call this to move an actor from its present spot (or non-spot) to another spot
 export function actorPlace(actor, x, y) {
     if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
@@ -76,7 +52,7 @@ export function actorPlace(actor, x, y) {
 }
 //THERE ARE UPDATE CALLS IN HERE
 function keydownHandler(e) {
-    console.log(e.code);
+    if(logKeyDowns){console.log(e.code);}
     switch (e.code) {
         case "ArrowUp":
             playerChar.move("up")
@@ -105,26 +81,7 @@ export function clickHandler(e) {
     console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
 }
 
-//accepts an array input with minx, maxx, miny, maxy
-//returns in form [x,y]
-function generateRandomLocation(arr) {
-    let x;
-    let y;
-    if (arr) {
-        if (arr[0] < 0 || arr[2] < 0 || arr[1] > worldMap.length - 1 || arr[3] > worldMap.length - 1) {
-            console.log("These bounds are out of this world!");
-        }
-        if (arr[0] > arr[1] || arr[2] > arr[3]) {
-            console.log("min needs to be smaller than max")
-        }
-        x = Math.floor(Math.random() * (arr[1] - arr[0])) + arr[0];
-        y = Math.floor(Math.random() * (arr[3] - arr[2])) + arr[2];
-    } else {
-        x = Math.floor(Math.random() * worldMap.length);
-        y = Math.floor(Math.random() * worldMap.length);
-    }
-    return [x, y];
-}
+
 //checks if given actor shares its location with any actor of a given class, excluding itself
 export function sharesLocation(actor, typeToLookFor) {
     for (let i = 0; i < actor.location.presentActors.length; i++) {
