@@ -8,7 +8,7 @@ class worldLocation {
         this.x = setX;
         this.y = setY;
     }
-}
+} 
 //constructor parameters: x value, y value, display priority, name, symbol
 class Actor {
     constructor(xSet, ySet, dispPrior = 0, myName, mySymbol) {
