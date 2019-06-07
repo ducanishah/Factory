@@ -10,7 +10,7 @@ class Actor {
     }
 }
 class Player extends Actor {
-    constructor(xSet, ySet,dispPrior=1) {
+    constructor(xSet, ySet,dispPrior=2) {
         super(xSet, ySet,dispPrior)
         this.mapSymbol = "P";
     }
@@ -126,13 +126,13 @@ function createWorldTable() {
 
             if (item.presentActors.length) {
                 //Sort by display priority, with highest number being first
-                // item.presentActors.sort(function(a,b){
-                //     if (a.displayPriority>b.displayPriority){
-                //         return true;
-                //     } else {
-                //         return false;
-                //     }
-                // });
+                item.presentActors.sort(function(a,b){
+                    if (a.displayPriority<b.displayPriority){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
                 //display symbol of whichever is first
                 tempData.innerHTML = item.presentActors[0].mapSymbol;
             }
