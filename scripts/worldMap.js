@@ -1,0 +1,83 @@
+import { clickHandler } from "./index.js"
+import { worldMap, worldMapLength } from "./index.js"
+import {worldLocation} from "./index.js"
+
+export function updateWorldTable() {
+    if (document.getElementById("outerWrapper").children[0]) {
+        document.getElementById("outerWrapper").children[0].remove();
+    }
+
+    document.getElementById("outerWrapper").append(createWorldTable());
+    document.getElementById("outerWrapper").children[0].addEventListener("click", clickHandler);
+}
+
+export function initializeWorldMap() {
+    for (let i = 0; i < worldMapLength; i++) {
+        worldMap[i] = new Array(worldMapLength);
+        for (let ind = 0; ind < worldMap[i].length; ind++) {
+            worldMap[i][ind] = new worldLocation(i, ind);
+        }
+    }
+
+}
+
+export function createWorldTable() {
+    let myTable = document.createElement("table");
+    let myRows = new Array(worldMap.length);
+    for (let i = 0; i < myRows.length; i++) {
+        myRows[i] = document.createElement("tr")
+    }
+    //create the tds
+    worldMap.forEach((subArray, subArrayIndex) => {
+        subArray.forEach((item, itemIndex) => {
+            let tempData = document.createElement("td");
+            if (item.presentActors.length) {
+                let topItem = item.presentActors[0];
+                for (let i = 1; i < item.presentActors.length; i++) {
+                    if (item.presentActors[i].displayPriority > topItem.displayPriority) {
+                        topItem = item.presentActors[i];
+                    }//TODO CONTINUE
+                }
+                //display symbol of whichever is first
+                tempData.innerHTML = topItem.mapSymbol;
+            }
+            myRows[itemIndex].append(tempData);
+        });
+    });
+    myTable.append(...myRows);
+    return myTable;
+}
+
+//accepts an array input with minx, maxx, miny, maxy
+//returns in form [x,y]
+export function generateRandomLocation(arr) {
+    let x;
+    let y;
+    if (arr) {
+        if (arr[0] < 0 || arr[2] < 0 || arr[1] > worldMap.length - 1 || arr[3] > worldMap.length - 1) {
+            console.log("These bounds are out of this world!");
+        }
+        if (arr[0] > arr[1] || arr[2] > arr[3]) {
+            console.log("min needs to be smaller than max")
+        }
+        x = Math.floor(Math.random() * (arr[1] - arr[0])) + arr[0];
+        y = Math.floor(Math.random() * (arr[3] - arr[2])) + arr[2];
+    } else {
+        x = Math.floor(Math.random() * worldMap.length);
+        y = Math.floor(Math.random() * worldMap.length);
+    }
+    return [x, y];
+}
+
+//call this to move an actor from its present spot (or non-spot) to another spot
+export function actorPlace(actor, x, y) {
+    if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
+        console.log("Out of bounds error");
+        return false;
+    }
+    if (actor.location) {
+        actor.location.presentActors.splice(actor.location.presentActors.indexOf(actor), 1);
+    }
+    worldMap[x][y].presentActors.push(actor);
+    actor.location = worldMap[x][y];
+}
