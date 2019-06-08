@@ -1,4 +1,4 @@
-import { clickHandler } from "./index.js"
+import { clickHandler, testIsPassable } from "./index.js"
 import { worldMap, worldMapLength } from "./index.js"
 
 export class worldLocation {
@@ -57,7 +57,7 @@ export function createWorldTable() {
 
 //accepts an array input with minx, maxx, miny, maxy
 //returns in form [x,y]
-export function generateRandomLocation(arr) {
+export function generateRandomCoordinates(arr) {
     let x;
     let y;
     if (arr) {
@@ -76,10 +76,25 @@ export function generateRandomLocation(arr) {
     return [x, y];
 }
 
+export function generateRandomPassableCoordinates(arr) {
+    let coords;
+    while (!coords) {
+        coords = generateRandomCoordinates(arr);
+        if (!testIsPassable(...coords)) {
+            coords = "";
+        }
+    }
+    return coords;
+}
+
 //call this to move an actor from its present spot (or non-spot) to another spot
 export function actorPlace(actor, x, y) {
     if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
         console.log("Out of bounds error");
+        return false;
+    }
+    if(!testIsPassable(x,y)){
+        console.log("Move to impassable error!")
         return false;
     }
     if (actor.location) {
@@ -89,20 +104,20 @@ export function actorPlace(actor, x, y) {
     actor.location = worldMap[x][y];
 }
 //take given cell and display info in the box
-export function displayCellContents(cellX,cellY){
+export function displayCellContents(cellX, cellY) {
     //list the cell contents
-    let contentList=document.getElementById("cellContents");
-    let liList=[];
+    let contentList = document.getElementById("cellContents");
+    let liList = [];
     //clear all child nodes
-    while(contentList.firstChild){contentList.removeChild(contentList.firstChild);}
+    while (contentList.firstChild) { contentList.removeChild(contentList.firstChild); }
     //make new nodes
-    for(let i=0;i<worldMap[cellX][cellY].presentActors.length;i++){
-        let li= document.createElement("p");
-        li.innerText=worldMap[cellX][cellY].presentActors[i].name+` (${worldMap[cellX][cellY].presentActors[i].mapSymbol})`;
+    for (let i = 0; i < worldMap[cellX][cellY].presentActors.length; i++) {
+        let li = document.createElement("p");
+        li.innerText = worldMap[cellX][cellY].presentActors[i].name + ` (${worldMap[cellX][cellY].presentActors[i].mapSymbol})`;
         liList.push(li);
     }
     //add new nodes
     contentList.append(...liList);
     //change the x,y thing
-    document.getElementById("cellCoordinates").innerHTML=`(${cellX},${cellY})`;
+    document.getElementById("cellCoordinates").innerHTML = `(${cellX},${cellY})`;
 }

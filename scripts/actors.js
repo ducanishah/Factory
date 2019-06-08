@@ -95,6 +95,18 @@ export class Goblin extends Actor {
 
 export class Tree extends Actor {
     constructor(setX, setY, dispPrior = 0) {
-        super(setX, setY, dispPrior, "tree", "T")
+        super(setX, setY, dispPrior, "tree", "T");
+    }
+}
+
+export class Wall extends Actor {
+    constructor (setX,setY, dispPrior=-1){
+        super(setX,setY,dispPrior,"wall","W");
+        this.isPassable=false;
+    }
+    postUpdate(){
+        if(sharesLocation(this,Actor)){
+            console.log("Someone's on the wall!");
+        }
     }
 }

@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
-import { Actor, ActorHolder, Player, Goblin, Tree } from "./actors.js"
-import { updateWorldTable, initializeWorldMap, createWorldTable, generateRandomLocation, actorPlace, worldLocation, displayCellContents } from "./worldMap.js"
+import { Actor, ActorHolder, Player, Goblin, Tree, Wall } from "./actors.js"
+import { updateWorldTable, initializeWorldMap, createWorldTable, worldLocation, displayCellContents } from "./worldMap.js"
+import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace} from "./worldMap.js"
 //TODOS IN COMMENTS
 
 
@@ -21,10 +22,11 @@ function main() {
 }
 
 function spawnInitialActors() {
-    // let place = generateRandomLocation();
+    //let place = generateRandomCoordinates();
+    new Wall(...generateRandomCoordinates());
     playerChar = new Player(8, 8);
-    new Goblin(...generateRandomLocation());
-    new Tree(...generateRandomLocation());
+    new Goblin(...generateRandomPassableCoordinates());
+    new Tree(...generateRandomPassableCoordinates());
 }
 
 
@@ -54,14 +56,13 @@ export function keydownHandler(e) {
     myActorHolder.update();
     updateWorldTable();
 }
-
+//for clicking on table cells
 export function clickHandler(e) {
     // console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
     if (e.target.cellIndex && e.target.parentElement.rowIndex) {
         displayCellContents(e.target.cellIndex, e.target.parentElement.rowIndex);
     }
 }
-
 
 //checks if given actor shares its location with any actor of a given class, excluding itself
 export function sharesLocation(actor, typeToLookFor) {
@@ -72,5 +73,18 @@ export function sharesLocation(actor, typeToLookFor) {
     }
     return false;
 }
-
-
+//checks if a target coordinate location is passable
+export function testIsPassable(targetX,targetY){
+    if((!targetX&&targetX!=0) || (!targetY&&targetY!=0)){
+        console.log(targetX+" "+targetY)
+        console.log("isPassable takes target coordinates!")
+        return;
+    }
+    let targetLocationActors=worldMap[targetX][targetY].presentActors;
+    for (let i=0; i<targetLocationActors.length;i++){
+        if (targetLocationActors[i].isPassable===false){
+            return false;
+        }
+    }
+    return true;
+}
