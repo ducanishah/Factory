@@ -1,14 +1,21 @@
 import { clickHandler } from "./index.js"
 import { worldMap, worldMapLength } from "./index.js"
-import {worldLocation} from "./index.js"
+
+export class worldLocation {
+    constructor(setX, setY) {
+        this.presentActors = []
+        this.x = setX;
+        this.y = setY;
+    }
+}
 
 export function updateWorldTable() {
-    if (document.getElementById("outerWrapper").children[0]) {
-        document.getElementById("outerWrapper").children[0].remove();
+    if (document.getElementById("tableWrapper").children[0]) {
+        document.getElementById("tableWrapper").children[0].remove();
     }
 
-    document.getElementById("outerWrapper").append(createWorldTable());
-    document.getElementById("outerWrapper").children[0].addEventListener("click", clickHandler);
+    document.getElementById("tableWrapper").append(createWorldTable());
+    document.getElementById("tableWrapper").children[0].addEventListener("click", clickHandler);
 }
 
 export function initializeWorldMap() {
@@ -80,4 +87,22 @@ export function actorPlace(actor, x, y) {
     }
     worldMap[x][y].presentActors.push(actor);
     actor.location = worldMap[x][y];
+}
+//take given cell and display info in the box
+export function displayCellContents(cellX,cellY){
+    //list the cell contents
+    let contentList=document.getElementById("cellContents");
+    let liList=[];
+    //clear all child nodes
+    while(contentList.firstChild){contentList.removeChild(contentList.firstChild);}
+    //make new nodes
+    for(let i=0;i<worldMap[cellX][cellY].presentActors.length;i++){
+        let li= document.createElement("p");
+        li.innerText=worldMap[cellX][cellY].presentActors[i].name+` (${worldMap[cellX][cellY].presentActors[i].mapSymbol})`;
+        liList.push(li);
+    }
+    //add new nodes
+    contentList.append(...liList);
+    //change the x,y thing
+    document.getElementById("cellCoordinates").innerHTML=`(${cellX},${cellY})`;
 }

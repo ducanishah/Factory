@@ -1,22 +1,16 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
 import { Actor, ActorHolder, Player, Goblin, Tree } from "./actors.js"
-import {updateWorldTable, initializeWorldMap, createWorldTable, generateRandomLocation, actorPlace} from "./worldMap.js"
+import { updateWorldTable, initializeWorldMap, createWorldTable, generateRandomLocation, actorPlace, worldLocation, displayCellContents } from "./worldMap.js"
 //TODOS IN COMMENTS
 
-export class worldLocation {
-    constructor(setX, setY) {
-        this.presentActors = []
-        this.x = setX;
-        this.y = setY;
-    }
-}
+
 
 export var myActorHolder = new ActorHolder();
 var playerChar;
-export var worldMap=[];
+export var worldMap = [];
 export var worldMapLength = 16;
-var logKeyDowns=false;
+var logKeyDowns = false;
 
 function main() {
     // console.log(new Person().alive);
@@ -36,7 +30,7 @@ function spawnInitialActors() {
 
 //THERE ARE UPDATE CALLS IN HERE
 export function keydownHandler(e) {
-    if(logKeyDowns){console.log(e.code);}
+    if (logKeyDowns) { console.log(e.code); }
     switch (e.code) {
         case "ArrowUp":
             playerChar.move("up")
@@ -62,7 +56,10 @@ export function keydownHandler(e) {
 }
 
 export function clickHandler(e) {
-    console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
+    // console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
+    if (e.target.cellIndex && e.target.parentElement.rowIndex) {
+        displayCellContents(e.target.cellIndex, e.target.parentElement.rowIndex);
+    }
 }
 
 
