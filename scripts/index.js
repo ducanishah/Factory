@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
-import { Actor, ActorHolder, Player, Goblin, Tree, Wall } from "./actors.js"
+import { Actor, ActorHolder, Player, Goblin, Tree, Wall, Cave } from "./actors.js"
 import { updateWorldTable, initializeWorldMap, createWorldTable, worldLocation, displayCellContents } from "./worldMap.js"
 import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace} from "./worldMap.js"
 //TODOS IN COMMENTS
@@ -23,6 +23,7 @@ function main() {
 
 function spawnInitialActors() {
     //let place = generateRandomCoordinates();
+    new Cave(...generateRandomPassableCoordinates());
     new Wall(...generateRandomCoordinates());
     playerChar = new Player(8, 8);
     new Goblin(...generateRandomPassableCoordinates());

@@ -110,3 +110,9 @@ export class Wall extends Actor {
         }
     }
 }
+
+export class Cave extends Actor {
+    constructor(setX,setY,dispPrior=-1){
+        super(setX,setY,dispPrior,"cave","C")
+    }
+}
