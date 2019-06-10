@@ -60,7 +60,7 @@ export function keydownHandler(e) {
 //for clicking on table cells
 export function clickHandler(e) {
     // console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
-    if (e.target.cellIndex && e.target.parentElement.rowIndex) {
+    if ((e.target.cellIndex||e.target.cellIndex===0) && (e.target.parentElement.rowIndex||e.target.parentElement.rowIndex===0)) {
         displayCellContents(e.target.cellIndex, e.target.parentElement.rowIndex);
     }
 }
