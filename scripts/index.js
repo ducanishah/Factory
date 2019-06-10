@@ -40,6 +40,7 @@ function spawnInitialActors() {
     new Goblin(...generateRandomPassableCoordinates());
     new Tree(...generateRandomPassableCoordinates());
 }
+//populates the selector with all actors in the list
 function populateAddActorList(){
     let addActorOptions=[];
     for(let i=0;i<actorList.length;i++){
@@ -80,11 +81,18 @@ export function keydownHandler(e) {
 export function clickHandler(e) {
     // console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
     if ((e.target.cellIndex||e.target.cellIndex===0) && (e.target.parentElement.rowIndex||e.target.parentElement.rowIndex===0)) {
+        //clear tint from last selected cell
+        if(selectedCell.length){
+            let td=document.getElementById("tableWrapper").children[0].children[selectedCell[1]].children[selectedCell[0]];
+            td.classList.remove("selectedCell");
+        }
         selectedCell= [e.target.cellIndex, e.target.parentElement.rowIndex];
+        //Tint the selected cell
+        e.target.classList.add("selectedCell");
         displayCellContents(...selectedCell);
     }
 }
-//for adding actors to the world map
+//for adding actors to the world map with the button
 function addActorHandler(e){
     let chosenActor=actorList[document.getElementById("addActorSelector").selectedIndex];
     new chosenActor(...selectedCell);

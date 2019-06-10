@@ -26,3 +26,8 @@ div#infoBox {
 h3#cellCoordinates {
     text-align: center;
 }
+
+.selectedCell {
+    border-right:2px solid red;
+    border-bottom:2px solid red;
+}
