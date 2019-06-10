@@ -86,9 +86,10 @@ export function clickHandler(e) {
 }
 //for adding actors to the world map
 function addActorHandler(e){
-    //TODO
+    let chosenActor=actorList[document.getElementById("addActorSelector").selectedIndex];
+    new chosenActor(...selectedCell);
+    updateWorldTable();
 }
-
 //checks if given actor shares its location with any actor of a given class, excluding itself
 export function sharesLocation(actor, typeToLookFor) {
     for (let i = 0; i < actor.location.presentActors.length; i++) {
