@@ -1,6 +1,15 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
+document.getElementById("addActorButton").addEventListener("click",addActorHandler);
 import { Actor, ActorHolder, Player, Goblin, Tree, Wall, Cave } from "./actors.js"
+//REMEMBER TO UPDATE THE ACTORLIST
+var actorList=[
+    Player,
+    Goblin,
+    Tree,
+    Wall,
+    Cave
+];
 import { updateWorldTable, initializeWorldMap, createWorldTable, worldLocation, displayCellContents } from "./worldMap.js"
 import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace} from "./worldMap.js"
 //TODOS IN COMMENTS
@@ -12,9 +21,11 @@ var playerChar;
 export var worldMap = [];
 export var worldMapLength = 16;
 var logKeyDowns = false;
+var selectedCell=[];
 
 function main() {
     // console.log(new Person().alive);
+    populateAddActorList();
     initializeWorldMap();
     spawnInitialActors();
     updateWorldTable();
@@ -29,7 +40,15 @@ function spawnInitialActors() {
     new Goblin(...generateRandomPassableCoordinates());
     new Tree(...generateRandomPassableCoordinates());
 }
-
+function populateAddActorList(){
+    let addActorOptions=[];
+    for(let i=0;i<actorList.length;i++){
+        let newActorOption=document.createElement("option");
+        newActorOption.innerHTML=actorList[i].name;
+        addActorOptions.push(newActorOption);
+    }
+    document.getElementById("addActorSelector").append(...addActorOptions);
+}
 
 //THERE ARE UPDATE CALLS IN HERE
 export function keydownHandler(e) {
@@ -61,8 +80,13 @@ export function keydownHandler(e) {
 export function clickHandler(e) {
     // console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
     if ((e.target.cellIndex||e.target.cellIndex===0) && (e.target.parentElement.rowIndex||e.target.parentElement.rowIndex===0)) {
-        displayCellContents(e.target.cellIndex, e.target.parentElement.rowIndex);
+        selectedCell= [e.target.cellIndex, e.target.parentElement.rowIndex];
+        displayCellContents(...selectedCell);
     }
+}
+//for adding actors to the world map
+function addActorHandler(e){
+    //TODO
 }
 
 //checks if given actor shares its location with any actor of a given class, excluding itself
@@ -89,3 +113,4 @@ export function testIsPassable(targetX,targetY){
     }
     return true;
 }
+
