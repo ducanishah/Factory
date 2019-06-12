@@ -1,4 +1,4 @@
-import {myActorHolder, sharesLocation} from "./index.js"
+import {myActorHolder, sharesLocation, worldMap} from "./index.js"
 import {actorPlace} from "./worldMap.js"
 
 //constructor parameters: x value, y value, display priority, name, symbol
@@ -9,7 +9,18 @@ export class Actor {
         this.displayPriority = dispPrior;
         this.location;
         myActorHolder.aliveActors.push(this);
-        actorPlace(this, xSet, ySet);
+        if(actorPlace(this, xSet, ySet)===false){
+            this.destroy();
+        }
+    }
+    destroy (){
+        myActorHolder.aliveActors.splice(myActorHolder.aliveActors.indexOf(this),1);
+        if(this.location){
+            worldMap[this.location.x][this.location.y].presentActors.splice(
+                worldMap[this.location.x][this.location.y].presentActors.indexOf(this),
+                1
+            )
+        }
     }
 }
 
