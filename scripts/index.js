@@ -20,9 +20,10 @@ var playerChar;
 export var worldMap = [];
 export var worldMapLength = 16;
 var logKeyDowns = false;
-var selectedCell=[];
+export var selectedCell=[];
 
 function main() {
+    console.log("Hit main")
     // console.log(new Person().alive);
     populateAddActorList();
     initializeWorldMap();
@@ -91,11 +92,12 @@ export function clickHandler(e) {
         displayCellContents(...selectedCell);
     }
 }
-//for adding actors to the world map with the button
+//for adding actors to the world map with the button 
 function addActorHandler(e){
     let chosenActor=actorList[document.getElementById("addActorSelector").selectedIndex];
     new chosenActor(...selectedCell);
     updateWorldTable();
+    displayCellContents(...selectedCell);
 }
 //checks if given actor shares its location with any actor of a given class, excluding itself
 export function sharesLocation(actor, typeToLookFor) {

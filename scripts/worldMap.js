@@ -1,5 +1,5 @@
 import { clickHandler, testIsPassable } from "./index.js"
-import { worldMap, worldMapLength } from "./index.js"
+import { worldMap, worldMapLength, selectedCell } from "./index.js"
 
 export class worldLocation {
     constructor(setX, setY) {

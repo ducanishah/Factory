@@ -1,6 +1,6 @@
 import {myActorHolder, sharesLocation, worldMap} from "./index.js"
 import {actorPlace} from "./worldMap.js"
-
+//has a destroy function!
 //constructor parameters: x value, y value, display priority, name, symbol
 export class Actor {
     constructor(xSet, ySet, dispPrior = 0, myName, mySymbol) {
