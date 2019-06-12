@@ -4,7 +4,6 @@ document.getElementById("addActorButton").addEventListener("click",addActorHandl
 import { Actor, ActorHolder, Player, Goblin, Tree, Wall, Cave } from "./actors.js"
 //REMEMBER TO UPDATE THE ACTORLIST
 var actorList=[
-    Player,
     Goblin,
     Tree,
     Wall,
