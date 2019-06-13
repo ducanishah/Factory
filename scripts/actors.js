@@ -72,12 +72,15 @@ export class Goblin extends Actor {
     }
     update() {
         // this.wander()
-        this.path=breadthFirstPathfinding(this.location, playerChar.location);
-        actorPlace(this,this.path[0].x,this.path[0].y);
+        if(!sharesLocation(this,Player)){
+            this.path=breadthFirstPathfinding(this.location, playerChar.location);
+            actorPlace(this,this.path[0].x,this.path[0].y);
+        }
+        
     }
     postUpdate() {
         if (sharesLocation(this, Player)) {
-            console.log("Eek! A player!")
+            // console.log("Eek! A player!")
         }
     }
     // outdated wander and move function, uses array of direction not direct location

@@ -1,4 +1,4 @@
-import { worldMap } from "./index.js" 
+import { worldMap, testIsPassable } from "./index.js" 
 
 //takes location and returns route to other location in form of list of locations to move to
 export function breadthFirstPathfinding(startLocation, goalLocation) {
@@ -7,7 +7,11 @@ export function breadthFirstPathfinding(startLocation, goalLocation) {
     while (frontier.length) {
         let currentNeighbors = getNeighborLocations(frontier[0]);
         for (let i = 0; i < currentNeighbors.length; i++) {
-            if (visited.indexOf(currentNeighbors[i]) === -1 && frontier.indexOf(currentNeighbors[i]) === -1) {
+            if (
+                visited.indexOf(currentNeighbors[i]) === -1 
+                && frontier.indexOf(currentNeighbors[i]) === -1 
+                && testIsPassable(currentNeighbors[i].x,currentNeighbors[i].y)
+                ) {
                 frontier.push(currentNeighbors[i]);
                 currentNeighbors[i].cameFrom = frontier[0];
             }
