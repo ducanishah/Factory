@@ -1,5 +1,6 @@
 import {myActorHolder, sharesLocation, worldMap} from "./index.js"
 import {actorPlace} from "./worldMap.js"
+import {breadthFirstPathfinding} from "./pathfinding.js"
 //has a destroy function!
 //constructor parameters: x value, y value, display priority, name, symbol
 export class Actor {
@@ -131,5 +132,7 @@ export class Cave extends Actor {
 export class TestObject extends Actor{
     constructor(setX,setY,dispPrior=3){
         super(setX,setY,dispPrior,"testObject","T");
+        // console.log(getNeighborLocations(this.location))
+        breadthFirstPathfinding(this.location,worldMap[0][0])
     }
 }

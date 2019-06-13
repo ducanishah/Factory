@@ -23,6 +23,7 @@ export var worldMapLength = 16;
 var logKeyDowns = false;
 export var selectedCell=[];
 
+//the calls made when the page is loaded
 function main() {
     console.log("Hit main")
     // console.log(new Person().alive);
@@ -32,7 +33,7 @@ function main() {
     updateWorldTable();
     // console.log(playerChar instanceof Player)
 }
-
+//what it says on the tin
 function spawnInitialActors() {
     //let place = generateRandomCoordinates();
     new Cave(...generateRandomPassableCoordinates());

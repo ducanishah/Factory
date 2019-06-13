@@ -6,6 +6,7 @@ export class worldLocation {
         this.presentActors = []
         this.x = setX;
         this.y = setY;
+        this.cameFrom;
     }
 }
 
