@@ -1,13 +1,14 @@
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
 document.getElementById("addActorButton").addEventListener("click",addActorHandler);
-import { Actor, ActorHolder, Player, Goblin, Tree, Wall, Cave } from "./actors.js"
+import { Actor, ActorHolder, Player, Goblin, Tree, Wall, Cave, TestObject } from "./actors.js"
 //REMEMBER TO UPDATE THE ACTORLIST
 var actorList=[
     Goblin,
     Tree,
     Wall,
-    Cave
+    Cave,
+    TestObject
 ];
 import { updateWorldTable, initializeWorldMap, createWorldTable, worldLocation, displayCellContents } from "./worldMap.js"
 import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace} from "./worldMap.js"
@@ -50,7 +51,6 @@ function populateAddActorList(){
     }
     document.getElementById("addActorSelector").append(...addActorOptions);
 }
-
 //THERE ARE UPDATE CALLS IN HERE
 export function keydownHandler(e) {
     if (logKeyDowns) { console.log(e.code); }

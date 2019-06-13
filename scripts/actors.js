@@ -127,3 +127,9 @@ export class Cave extends Actor {
         super(setX,setY,dispPrior,"cave","C")
     }
 }
+
+export class TestObject extends Actor{
+    constructor(setX,setY,dispPrior=3){
+        super(setX,setY,dispPrior,"testObject","T");
+    }
+}

@@ -75,7 +75,7 @@ export function generateRandomCoordinates(arr) {
     }
     return [x, y];
 }
-
+//same as above, but tests for passable
 export function generateRandomPassableCoordinates(arr) {
     let coords;
     while (!coords) {
