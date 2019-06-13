@@ -1,4 +1,4 @@
-import { worldMap } from "./index.js"
+import { worldMap } from "./index.js" 
 
 //TODO ALL OF IT
 
@@ -18,7 +18,7 @@ export function breadthFirstPathfinding(startLocation, goalLocation) {
     }
     let path=[goalLocation];
     startLocation.cameFrom=[];
-    
+
     //BEWARE INFINITE LOOP\
     let loopCount=0;
 
