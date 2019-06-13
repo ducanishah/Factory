@@ -1,7 +1,5 @@
 import { worldMap } from "./index.js" 
 
-//TODO ALL OF IT
-
 //takes location and returns route to other location in form of list of locations to move to
 export function breadthFirstPathfinding(startLocation, goalLocation) {
     let frontier = [startLocation];
@@ -33,7 +31,7 @@ export function breadthFirstPathfinding(startLocation, goalLocation) {
         } else { 
             path.reverse()
             path.shift()
-            console.log(path)
+            path.shift()
             return path;
         }
     }

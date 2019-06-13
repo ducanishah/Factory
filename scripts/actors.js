@@ -1,4 +1,4 @@
-import {myActorHolder, sharesLocation, worldMap} from "./index.js"
+import {myActorHolder, sharesLocation, worldMap, playerChar} from "./index.js"
 import {actorPlace} from "./worldMap.js"
 import {breadthFirstPathfinding} from "./pathfinding.js"
 //has a destroy function!
@@ -71,38 +71,41 @@ export class Goblin extends Actor {
         super(setX, setY, dispPrior, "goblin", "g");
     }
     update() {
-        this.wander()
+        // this.wander()
+        this.path=breadthFirstPathfinding(this.location, playerChar.location);
+        actorPlace(this,this.path[0].x,this.path[0].y);
     }
     postUpdate() {
         if (sharesLocation(this, Player)) {
             console.log("Eek! A player!")
         }
     }
-    wander() {
-        let myDirection;
-        switch (Math.ceil(Math.random() * 4)) {
-            case (1):
-                //up
-                myDirection = [0, -1]
-                break;
-            case (2):
-                //down
-                myDirection = [0, 1]
-                break;
-            case (3):
-                //left
-                myDirection = [1, 0]
-                break;
-            case (4):
-                //right
-                myDirection = [-1, 0]
-                break;
-        }
-        this.move(myDirection)
-    }
-    move(direction) {
-        actorPlace(this, this.location.x + direction[0], this.location.y + direction[1]);
-    }
+    // outdated wander and move function, uses array of direction not direct location
+    // wander() {
+    //     let myDirection;
+    //     switch (Math.ceil(Math.random() * 4)) {
+    //         case (1):
+    //             //up
+    //             myDirection = [0, -1]
+    //             break;
+    //         case (2):
+    //             //down
+    //             myDirection = [0, 1]
+    //             break;
+    //         case (3):
+    //             //left
+    //             myDirection = [1, 0]
+    //             break;
+    //         case (4):
+    //             //right
+    //             myDirection = [-1, 0]
+    //             break;
+    //     }
+    //     this.move(myDirection)
+    // }
+    // move(direction) {
+    //     actorPlace(this, this.location.x + direction[0], this.location.y + direction[1]);
+    // }
 }
 
 export class Tree extends Actor {
@@ -133,6 +136,5 @@ export class TestObject extends Actor{
     constructor(setX,setY,dispPrior=3){
         super(setX,setY,dispPrior,"testObject","T");
         // console.log(getNeighborLocations(this.location))
-        breadthFirstPathfinding(this.location,worldMap[0][0])
     }
 }

@@ -17,7 +17,7 @@ import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace
 
 
 export var myActorHolder = new ActorHolder();
-var playerChar;
+export var playerChar;
 export var worldMap = [];
 export var worldMapLength = 16;
 var logKeyDowns = false;
