@@ -4,6 +4,7 @@ import { worldMap, testIsPassable } from "./index.js"
 export function breadthFirstPathfinding(startLocation, goalLocation) {
     let frontier = [startLocation];
     let visited = [];
+    let breakOutOfLoop=false;
     while (frontier.length) {
         let currentNeighbors = getNeighborLocations(frontier[0]);
         for (let i = 0; i < currentNeighbors.length; i++) {
@@ -14,7 +15,15 @@ export function breadthFirstPathfinding(startLocation, goalLocation) {
                 ) {
                 frontier.push(currentNeighbors[i]);
                 currentNeighbors[i].cameFrom = frontier[0];
+                if(currentNeighbors[i]===goalLocation){
+                    breakOutOfLoop=true;
+                    break;
+                }
             }
+        }
+        if(breakOutOfLoop){
+            console.log(visited);
+            break;
         }
         visited.push(frontier.shift());
     }
