@@ -10,8 +10,16 @@ var actorList=[
     Cave,
     TestObject
 ];
+var actorMapTranslator={
+    Goblin,
+    Tree,
+    Wall,
+    Cave,
+    TestObject
+}
 import { updateWorldTable, initializeWorldMap, createWorldTable, worldLocation, displayCellContents } from "./worldMap.js"
 import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace} from "./worldMap.js"
+import {checkFileReaderSupported, handleFileInput} from "./fileReading.js"
 //TODOS IN COMMENTS
 
 
@@ -19,6 +27,7 @@ import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace
 export var myActorHolder = new ActorHolder();
 export var playerChar;
 export var worldMap = [];
+//assumed to be square
 export var worldMapLength = 16;
 var logKeyDowns = false;
 export var selectedCell=[];
@@ -27,6 +36,12 @@ export var selectedCell=[];
 function main() {
     console.log("Hit main")
     // console.log(new Person().alive);
+    //if FileReader is supported, set up the handling. if not, tell me
+    if(checkFileReaderSupported()){
+        document.getElementById("fileInput").addEventListener("change", fileInputHandler);
+    } else{
+        alert("The file APIs are not fully supported here. Inputting maps isn't going to work, sorry.")
+    }
     populateAddActorList();
     initializeWorldMap();
     spawnInitialActors();
@@ -100,6 +115,14 @@ function addActorHandler(e){
     updateWorldTable();
     displayCellContents(...selectedCell);
 }
+//this is where the fileInput is handled WORLDMAP IS CLEARED AND REMADE
+async function fileInputHandler(e){
+    let map=await handleFileInput(e);
+    initializeWorldMap();
+    updateWorldMapFromInputMap(map);
+    updateWorldTable();
+}
+
 //checks if given actor shares its location with any actor of a given class, excluding itself
 export function sharesLocation(actor, typeToLookFor) {
     for (let i = 0; i < actor.location.presentActors.length; i++) {
@@ -125,3 +148,14 @@ export function testIsPassable(targetX,targetY){
     return true;
 }
 
+export function updateWorldMapFromInputMap(map){
+    for(let i=0; i<map.length;i++){
+        for(let j=0; j<map[i].length;j++){
+            if(map[i][j]){
+                let myObject=actorMapTranslator[map[i][j]];
+                new myObject(i,j)
+            }
+            
+        }
+    }
+}

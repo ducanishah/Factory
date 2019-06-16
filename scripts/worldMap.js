@@ -18,7 +18,7 @@ export function updateWorldTable() {
     document.getElementById("tableWrapper").append(createWorldTable());
     document.getElementById("tableWrapper").children[0].addEventListener("click", clickHandler);
 }
-
+//initializes the empty worldMap with only the worldLocations
 export function initializeWorldMap() {
     for (let i = 0; i < worldMapLength; i++) {
         worldMap[i] = new Array(worldMapLength);

@@ -9,7 +9,16 @@ table td {
     height:20px;
     text-align:center;
 }
-#wrapper {
+#topBarWrapper{
+    border:2px solid black;
+    padding:5px;
+    display:flex;
+    align-items: center;
+}
+#fileInput {
+    margin-left:10px;
+}
+#mainWrapper {
     display:flex;
     
 }
