@@ -9,12 +9,14 @@ export class Actor {
         this.mapSymbol = mySymbol;
         this.displayPriority = dispPrior;
         this.location;
+        this.alive=true;
         myActorHolder.aliveActors.push(this);
         if(actorPlace(this, xSet, ySet)===false){
             this.destroy();
         }
     }
     destroy (){
+        this.alive=false;
         myActorHolder.aliveActors.splice(myActorHolder.aliveActors.indexOf(this),1);
         if(this.location){
             worldMap[this.location.x][this.location.y].presentActors.splice(
@@ -27,6 +29,7 @@ export class Actor {
 
 //Call update on this to have it call update AND postUpdate on all the actors
 //put movement and stuff in update, checking for shared squares in postUpdate
+//call destroyAll on it to do exactly what you expect
 export class ActorHolder {
     constructor() {
         this.aliveActors = [];
@@ -39,6 +42,17 @@ export class ActorHolder {
             if (this.aliveActors[i].postUpdate) { this.aliveActors[i].postUpdate(); }
         }
     }
+    destroyAll(){
+        this.destroyList=[];
+        for(let i=0;i<this.aliveActors.length;i++){
+            this.destroyList.push(this.aliveActors[i]);
+        }
+        for(let i=0;i<this.destroyList.length;i++){
+            this.destroyList[i].destroy();
+        }
+        
+            
+    }
 }
 
 export class Player extends Actor {
@@ -46,6 +60,9 @@ export class Player extends Actor {
         super(setX, setY, dispPrior, "player", "P")
     }
     move(direction) {
+        if(this.alive===false){
+            return;
+        }
         switch (direction) {
             case "up":
                 actorPlace(this, this.location.x, this.location.y - 1);

@@ -21,7 +21,7 @@ import { updateWorldTable, initializeWorldMap, createWorldTable, worldLocation, 
 import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace} from "./worldMap.js"
 import {checkFileReaderSupported, handleFileInput} from "./fileReading.js"
 //TODOS IN COMMENTS
-
+//OKAY SO THERE ARE STILL A BUNCH OF BUGS
 
 
 export var myActorHolder = new ActorHolder();
@@ -119,6 +119,8 @@ function addActorHandler(e){
 async function fileInputHandler(e){
     let map=await handleFileInput(e);
     initializeWorldMap();
+    //kill all the existing actors!
+    myActorHolder.destroyAll();
     updateWorldMapFromInputMap(map);
     updateWorldTable();
 }
