@@ -3,6 +3,7 @@ import {actorPlace} from "./worldMap.js"
 import {breadthFirstPathfindingToLocation, breadthFirstPathfindingToActorWithTestFunction} from "./pathfinding.js"
 //has a destroy function. the destroy function sets a variable, then destroys it in a later collection phase
 //constructor parameters: x value, y value, display priority, name, symbol
+//modify displaySting on inheritees(?) to change what is displayed in display window
 export class Actor {
     constructor(xSet, ySet, dispPrior = 0, myName, mySymbol) {
         this.name = myName;
@@ -10,6 +11,7 @@ export class Actor {
         this.displayPriority = dispPrior;
         this.location;
         this.alive=true;
+        this.displayString=`${this.name} (${this.mapSymbol})`
         myActorHolder.aliveActors.push(this);
         if(actorPlace(this, xSet, ySet)===false){
             this.destroy();
@@ -97,6 +99,7 @@ export class Goblin extends Actor {
         let dispPrior=1;
         super(setX, setY, dispPrior, "goblin", "g");
         this.team=myTeam || 0;
+        this.displayString+=` [${this.team}]`
     }
     update() {
         let enemyOnMySquare=sharesLocation(this,Goblin,
@@ -152,6 +155,7 @@ export class Cave extends Actor {
         super(setX,setY,dispPrior,"cave","C")
         this.count=0;
         this.team=myTeam || 0;
+        this.displayString+=` [${this.team}]`
 
     }
     postUpdate(){

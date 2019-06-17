@@ -51,8 +51,8 @@ function main() {
 //what it says on the tin
 function spawnInitialActors() {
 
-    new Goblin(0,0,0);
-    new Goblin(15,0,1);
+    new Cave(0,0,0);
+    new Cave(15,0,1);
 
 
 

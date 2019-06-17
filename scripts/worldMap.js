@@ -114,7 +114,7 @@ export function displayCellContents(cellX, cellY) {
     //make new nodes
     for (let i = 0; i < worldMap[cellX][cellY].presentActors.length; i++) {
         let li = document.createElement("p");
-        li.innerText = worldMap[cellX][cellY].presentActors[i].name + ` (${worldMap[cellX][cellY].presentActors[i].mapSymbol})`;
+        li.innerText = worldMap[cellX][cellY].presentActors[i].displayString;
         liList.push(li);
     }
     //add new nodes
