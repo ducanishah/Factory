@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
 document.getElementById("addActorButton").addEventListener("click",addActorHandler);
 import { Actor, ActorHolder, Player, Goblin, Tree, Wall, Cave, TestObject } from "./actors.js"
-//REMEMBER TO UPDATE THE ACTORLIST
+//REMEMBER TO UPDATE THE ACTORLIST AND TRANSLATOR
 var actorList=[
     Goblin,
     Tree,
@@ -21,7 +21,6 @@ import { updateWorldTable, initializeWorldMap, createWorldTable, worldLocation, 
 import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace} from "./worldMap.js"
 import {checkFileReaderSupported, handleFileInput} from "./fileReading.js"
 //TODOS IN COMMENTS
-//OKAY SO THERE ARE STILL A BUNCH OF BUGS
 
 
 export var myActorHolder = new ActorHolder();

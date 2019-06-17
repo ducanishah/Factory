@@ -22,7 +22,6 @@ export function breadthFirstPathfinding(startLocation, goalLocation) {
             }
         }
         if(breakOutOfLoop){
-            console.log(visited);
             break;
         }
         visited.push(frontier.shift());
