@@ -1,7 +1,7 @@
-import { worldMap, testIsPassable } from "./index.js" 
+import { worldMap, testIsPassable, locationContainsType } from "./index.js" 
 
 //takes location and returns route to other location in form of list of locations to move to
-export function breadthFirstPathfinding(startLocation, goalLocation) {
+export function breadthFirstPathfindingToLocation(startLocation, goalLocation) {
     let frontier = [startLocation];
     let visited = [];
     let breakOutOfLoop=false;
@@ -64,4 +64,58 @@ export function getNeighborLocations(location) {
         }
     }
     return neighbors;
+}
+
+export function breadthFirstPathfindingToActorWithTestFunction(startLocation, actorTypeToLookFor, testFunction) {
+    let frontier = [startLocation];
+    let visited = [];
+    let breakOutOfLoop=false;
+    let goalLocation=undefined;
+    while (frontier.length) {
+        let currentNeighbors = getNeighborLocations(frontier[0]);
+        for (let i = 0; i < currentNeighbors.length; i++) {
+            if (
+                visited.indexOf(currentNeighbors[i]) === -1 
+                && frontier.indexOf(currentNeighbors[i]) === -1 
+                && testIsPassable(currentNeighbors[i].x,currentNeighbors[i].y)
+                ) {
+                frontier.push(currentNeighbors[i]);
+                currentNeighbors[i].cameFrom = frontier[0];
+                if(testFunction(locationContainsType(currentNeighbors[i],actorTypeToLookFor))===true){
+                    goalLocation=currentNeighbors[i];
+                    breakOutOfLoop=true;
+                    break;
+                }
+            }
+        }
+        if(breakOutOfLoop){
+            break;
+        }
+        visited.push(frontier.shift());
+    }
+    if(goalLocation===undefined){
+        console.log("such a creature as is desired does not exist!");
+        return;
+    }
+    let path=[goalLocation];
+    startLocation.cameFrom=[];
+
+    //BEWARE INFINITE LOOP\
+    let loopCount=0;
+
+    while(true){
+        loopCount++;
+        if(loopCount>300){
+            alert("infinite loop in pathfinding!")
+            break;
+        }
+        if(path[path.length-1].cameFrom){
+            path.push(path[path.length-1].cameFrom)
+        } else { 
+            path.reverse()
+            path.shift()
+            path.shift()
+            return path;
+        }
+    }
 }

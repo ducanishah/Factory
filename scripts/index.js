@@ -20,6 +20,7 @@ var actorMapTranslator={
 import { updateWorldTable, initializeWorldMap, createWorldTable, worldLocation, displayCellContents } from "./worldMap.js"
 import {generateRandomCoordinates, generateRandomPassableCoordinates, actorPlace} from "./worldMap.js"
 import {checkFileReaderSupported, handleFileInput} from "./fileReading.js"
+import { breadthFirstPathfindingToActorWithTestFunction } from "./pathfinding.js";
 //TODOS IN COMMENTS
 
 
@@ -43,18 +44,24 @@ function main() {
     }
     populateAddActorList();
     initializeWorldMap();
-    // spawnInitialActors();
+    spawnInitialActors();
     updateWorldTable();
     // console.log(playerChar instanceof Player)
 }
 //what it says on the tin
 function spawnInitialActors() {
+
+    new Goblin(0,0,0);
+    new Goblin(15,0,1);
+
+
+
     //let place = generateRandomCoordinates();
-    new Cave(...generateRandomPassableCoordinates());
-    new Wall(...generateRandomCoordinates());
-    playerChar = new Player(8, 8);
-    new Goblin(...generateRandomPassableCoordinates());
-    new Tree(...generateRandomPassableCoordinates());
+    // new Cave(...generateRandomPassableCoordinates());
+    // new Wall(...generateRandomCoordinates());
+    // playerChar = new Player(8, 8);
+    // new Goblin(...generateRandomPassableCoordinates());
+    // new Tree(...generateRandomPassableCoordinates());
 }
 //populates the selector with all actors in the list
 function populateAddActorList(){
@@ -126,15 +133,28 @@ async function fileInputHandler(e){
     updateWorldTable();
 }
 
-//checks if given actor shares its location with any actor of a given class, excluding itself
-export function sharesLocation(actor, typeToLookFor) {
+//checks if given actor shares its location with any actor of a given class that passes testFunction. 
+//IMPORTANT: testFunction MUST use arrow notation to avoid creating its own 'this'
+//Excludes self. returns given actor or false.
+export function sharesLocation(actor, typeToLookFor, testFunction) {
+    testFunction = testFunction || function(){return true;}
     for (let i = 0; i < actor.location.presentActors.length; i++) {
-        if (actor.location.presentActors[i] instanceof typeToLookFor && actor.location.presentActors[i] != actor) {
-            return true;
+        if (actor.location.presentActors[i] instanceof typeToLookFor && actor.location.presentActors[i] != actor && testFunction(actor.location.presentActors[i]===true)) {
+            return actor.location.presentActors[i];
         }
     }
     return false;
 }
+//checks if a given location contains any actor of a given class, returns said actor or false
+export function locationContainsType(location,typeToLookFor){
+    for(let i=0; i<location.presentActors.length;i++){
+        if(location.presentActors[i] instanceof typeToLookFor){
+            return location.presentActors[i];
+        }
+    }
+    return false;
+}
+
 //checks if a target coordinate location is passable
 export function testIsPassable(targetX,targetY){
     if((!targetX&&targetX!=0) || (!targetY&&targetY!=0)){

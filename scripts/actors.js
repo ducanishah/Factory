@@ -1,6 +1,6 @@
 import {myActorHolder, sharesLocation, worldMap, playerChar} from "./index.js"
 import {actorPlace} from "./worldMap.js"
-import {breadthFirstPathfinding} from "./pathfinding.js"
+import {breadthFirstPathfindingToLocation, breadthFirstPathfindingToActorWithTestFunction} from "./pathfinding.js"
 //has a destroy function. the destroy function sets a variable, then destroys it in a later collection phase
 //constructor parameters: x value, y value, display priority, name, symbol
 export class Actor {
@@ -64,8 +64,9 @@ export class ActorHolder {
 }
 
 export class Player extends Actor {
-    constructor(setX, setY, dispPrior = 2) {
-        super(setX, setY, dispPrior, "player", "P")
+    constructor(setX, setY) {
+        let dispPrior=2;
+        super(setX, setY, dispPrior, "player", "P");
     }
     move(direction) {
         if(this.alive===false){
@@ -92,60 +93,49 @@ export class Player extends Actor {
 }
 
 export class Goblin extends Actor {
-    constructor(setX, setY, dispPrior = 1) {
+    constructor(setX, setY, myTeam) {
+        let dispPrior=1;
         super(setX, setY, dispPrior, "goblin", "g");
+        this.team=myTeam || 0;
     }
     update() {
-        // this.wander()
-        
-        // if(!sharesLocation(this,Player)){
-        //     this.path=breadthFirstPathfinding(this.location, playerChar.location);
-        //     actorPlace(this,this.path[0].x,this.path[0].y);
-        // }
-        
-    }
-    postUpdate() {
-        if (sharesLocation(this, Player)) {
-            console.log("Eek! A player!")
-            this.destroy();
+        let enemyOnMySquare=sharesLocation(this,Goblin,
+            (actor)=>{return actor.team!=this.team;});
+        if(enemyOnMySquare){
+            this.destroy()
+            enemyOnMySquare.destroy()
+            return;
+        }
+        let path=breadthFirstPathfindingToActorWithTestFunction(this.location,Goblin,
+            (actor)=>{
+                if(!actor){
+                    return false;
+                }
+                return actor.team!=this.team;
+            }
+        );
+        if(path){
+            actorPlace(this,path[0].x,path[0].y);
         }
     }
-    // outdated wander and move function, uses array of direction not direct location
-    // wander() {
-    //     let myDirection;
-    //     switch (Math.ceil(Math.random() * 4)) {
-    //         case (1):
-    //             //up
-    //             myDirection = [0, -1]
-    //             break;
-    //         case (2):
-    //             //down
-    //             myDirection = [0, 1]
-    //             break;
-    //         case (3):
-    //             //left
-    //             myDirection = [1, 0]
-    //             break;
-    //         case (4):
-    //             //right
-    //             myDirection = [-1, 0]
-    //             break;
-    //     }
-    //     this.move(myDirection)
-    // }
-    // move(direction) {
-    //     actorPlace(this, this.location.x + direction[0], this.location.y + direction[1]);
-    // }
+    postUpdate() {
+        // if (sharesLocation(this, Player)) {
+        //     console.log("Eek! A player!")
+        //     this.destroy();
+        // }
+    }
 }
 
 export class Tree extends Actor {
-    constructor(setX, setY, dispPrior = 0) {
+    constructor(setX, setY) {
+        let dispPrior=0
         super(setX, setY, dispPrior, "tree", "T");
     }
 }
 
 export class Wall extends Actor {
-    constructor (setX,setY, dispPrior=-1){
+    constructor (setX,setY){
+        let dispPrior=-1;
         super(setX,setY,dispPrior,"wall","W");
         this.isPassable=false;
     }
@@ -155,15 +145,18 @@ export class Wall extends Actor {
         }
     }
 }
-//THIS SPAWNS A GOBLIN IN POSTUPDATE EVERY 5th? 6th? TICK
+//CAVES SPAWN A GOBLIN IN POSTUPDATE EVERY 5th? 6th? TICK
 export class Cave extends Actor {
-    constructor(setX,setY,dispPrior=-1){
+    constructor(setX,setY,myTeam){
+        let dispPrior=-1;
         super(setX,setY,dispPrior,"cave","C")
         this.count=0;
+        this.team=myTeam || 0;
+
     }
     postUpdate(){
         if (this.count===5){
-            new Goblin(this.location.x,this.location.y);
+            new Goblin(this.location.x,this.location.y,this.team);
             this.count=0;
             return;
         }
@@ -172,7 +165,8 @@ export class Cave extends Actor {
 }
 
 export class TestObject extends Actor{
-    constructor(setX,setY,dispPrior=3){
+    constructor(setX,setY){
+        let dispPrior=3;
         super(setX,setY,dispPrior,"testObject","T");
         // console.log(getNeighborLocations(this.location))
     }
