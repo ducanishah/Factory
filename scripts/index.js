@@ -148,7 +148,7 @@ export function testIsPassable(targetX,targetY){
     }
     return true;
 }
-
+//instantiates objects based on the input map
 export function updateWorldMapFromInputMap(map){
     for(let i=0; i<map.length;i++){
         for(let j=0; j<map[i].length;j++){

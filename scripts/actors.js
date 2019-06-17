@@ -1,7 +1,7 @@
 import {myActorHolder, sharesLocation, worldMap, playerChar} from "./index.js"
 import {actorPlace} from "./worldMap.js"
 import {breadthFirstPathfinding} from "./pathfinding.js"
-//has a destroy function!
+//has a destroy function. the destroy function sets a variable, then destroys it in a later collection phase
 //constructor parameters: x value, y value, display priority, name, symbol
 export class Actor {
     constructor(xSet, ySet, dispPrior = 0, myName, mySymbol) {
@@ -15,7 +15,11 @@ export class Actor {
             this.destroy();
         }
     }
-    destroy (){
+    destroy (isCollectionPhase=false){
+        if(isCollectionPhase===false){
+            this.toDestroy=true;
+            return;
+        }
         this.alive=false;
         myActorHolder.aliveActors.splice(myActorHolder.aliveActors.indexOf(this),1);
         if(this.location){
@@ -40,6 +44,10 @@ export class ActorHolder {
         }
         for (let i = 0; i < this.aliveActors.length; i++) {
             if (this.aliveActors[i].postUpdate) { this.aliveActors[i].postUpdate(); }
+        }
+        //counts backwards to account for destruction
+        for (let i = this.aliveActors.length-1; i >-1; i-=1) {
+            if (this.aliveActors[i].toDestroy===true) { this.aliveActors[i].destroy(true); }
         }
     }
     destroyAll(){
@@ -97,7 +105,8 @@ export class Goblin extends Actor {
     }
     postUpdate() {
         if (sharesLocation(this, Player)) {
-            // console.log("Eek! A player!")
+            console.log("Eek! A player!")
+            this.destroy();
         }
     }
     // outdated wander and move function, uses array of direction not direct location
