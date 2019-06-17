@@ -97,10 +97,11 @@ export class Goblin extends Actor {
     }
     update() {
         // this.wander()
-        if(!sharesLocation(this,Player)){
-            this.path=breadthFirstPathfinding(this.location, playerChar.location);
-            actorPlace(this,this.path[0].x,this.path[0].y);
-        }
+        
+        // if(!sharesLocation(this,Player)){
+        //     this.path=breadthFirstPathfinding(this.location, playerChar.location);
+        //     actorPlace(this,this.path[0].x,this.path[0].y);
+        // }
         
     }
     postUpdate() {
