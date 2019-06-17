@@ -43,7 +43,7 @@ function main() {
     }
     populateAddActorList();
     initializeWorldMap();
-    spawnInitialActors();
+    // spawnInitialActors();
     updateWorldTable();
     // console.log(playerChar instanceof Player)
 }
@@ -69,25 +69,27 @@ function populateAddActorList(){
 //THERE ARE UPDATE CALLS IN HERE
 export function keydownHandler(e) {
     if (logKeyDowns) { console.log(e.code); }
-    switch (e.code) {
-        case "ArrowUp":
-            playerChar.move("up")
-            break;
-        case "ArrowDown":
-            playerChar.move("down")
-            break;
-        case "ArrowLeft":
-            playerChar.move("left")
-            break;
-        case "ArrowRight":
-            playerChar.move("right")
-            break;
-        case "MetaLeft":
-        case "ControlLeft":
-            return;
-            break;
-        default:
-            break;
+    if(playerChar){
+        switch (e.code) {
+            case "ArrowUp":
+                playerChar.move("up")
+                break;
+            case "ArrowDown":
+                playerChar.move("down")
+                break;
+            case "ArrowLeft":
+                playerChar.move("left")
+                break;
+            case "ArrowRight":
+                playerChar.move("right")
+                break;
+            case "MetaLeft":
+            case "ControlLeft":
+                return;
+                break;
+            default:
+                break;
+        }
     }
     myActorHolder.update();
     updateWorldTable();

@@ -32,7 +32,7 @@ export class Actor {
 }
 
 //Call update on this to have it call update AND postUpdate on all the actors
-//put movement and stuff in update, checking for shared squares in postUpdate
+//put movement and stuff in update, checking and such in postUpdate
 //call destroyAll on it to do exactly what you expect
 export class ActorHolder {
     constructor() {
@@ -154,10 +154,19 @@ export class Wall extends Actor {
         }
     }
 }
-
+//THIS SPAWNS A GOBLIN IN POSTUPDATE EVERY 5th? 6th? TICK
 export class Cave extends Actor {
     constructor(setX,setY,dispPrior=-1){
         super(setX,setY,dispPrior,"cave","C")
+        this.count=0;
+    }
+    postUpdate(){
+        if (this.count===5){
+            new Goblin(this.location.x,this.location.y);
+            this.count=0;
+            return;
+        }
+        this.count++
     }
 }
 
