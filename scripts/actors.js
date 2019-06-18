@@ -33,7 +33,7 @@ export class Actor {
     }
 }
 
-//Call update on this to have it call update AND postUpdate on all the actors
+//Call update on this to have it call preUpdate AND update AND postUpdate on all the actors
 //put movement and stuff in update, checking and such in postUpdate
 //call destroyAll on it to do exactly what you expect
 export class ActorHolder {
@@ -41,6 +41,9 @@ export class ActorHolder {
         this.aliveActors = [];
     }
     update() {
+        for (let i = 0; i < this.aliveActors.length; i++) {
+            if (this.aliveActors[i].preUpdate) { this.aliveActors[i].preUpdate(); }
+        }
         for (let i = 0; i < this.aliveActors.length; i++) {
             if (this.aliveActors[i].update) { this.aliveActors[i].update(); }
         }
@@ -93,7 +96,7 @@ export class Player extends Actor {
         }
     }
 }
-
+//Goblins seek out goblins of opposing teams, and destroy themselves if they share a space in update OR preupdate
 export class Goblin extends Actor {
     constructor(setX, setY, myTeam) {
         let dispPrior=1;
@@ -101,9 +104,28 @@ export class Goblin extends Actor {
         this.team=myTeam || 0;
         this.displayString+=` [${this.team}]`
     }
+    preUpdate(){
+        let enemyOnMySquare=sharesLocation(this,Goblin,
+            (actor)=>{
+                if(!actor){
+                    return false;
+                }
+                return actor.team!=this.team;
+            });
+        if(enemyOnMySquare){
+            this.destroy()
+            enemyOnMySquare.destroy()
+            return;
+        }
+    }
     update() {
         let enemyOnMySquare=sharesLocation(this,Goblin,
-            (actor)=>{return actor.team!=this.team;});
+            (actor)=>{
+                if(!actor){
+                    return false;
+                }
+                return actor.team!=this.team;
+            });
         if(enemyOnMySquare){
             this.destroy()
             enemyOnMySquare.destroy()

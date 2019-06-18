@@ -53,6 +53,7 @@ function spawnInitialActors() {
 
     new Cave(0,0,0);
     new Cave(15,0,1);
+    new Cave(15,15,2);
 
 
 
@@ -139,7 +140,7 @@ async function fileInputHandler(e){
 export function sharesLocation(actor, typeToLookFor, testFunction) {
     testFunction = testFunction || function(){return true;}
     for (let i = 0; i < actor.location.presentActors.length; i++) {
-        if (actor.location.presentActors[i] instanceof typeToLookFor && actor.location.presentActors[i] != actor && testFunction(actor.location.presentActors[i]===true)) {
+        if (actor.location.presentActors[i] instanceof typeToLookFor && actor.location.presentActors[i] != actor && (testFunction(actor.location.presentActors[i])===true)) {
             return actor.location.presentActors[i];
         }
     }
