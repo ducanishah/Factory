@@ -1,4 +1,4 @@
-import {selectedCell} from "../index.js"
+import {selectedCell, myWorldMap} from "../index.js"
 import {displayCellContents} from "../worldMap.js"
 //for clicking on table cells
 //Used in worldMap
@@ -14,6 +14,6 @@ export function clickHandler(e) {
         selectedCell.push(e.target.cellIndex, e.target.parentElement.rowIndex);
         //Tint the selected cell border
         e.target.classList.add("selectedCell");
-        displayCellContents(...selectedCell);
+        displayCellContents(myWorldMap,...selectedCell);
     }
 }

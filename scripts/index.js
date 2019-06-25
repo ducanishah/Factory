@@ -7,23 +7,22 @@ import { updateWorldTable, initializeWorldMap } from "./worldMap.js"
 
 
 export var myActorHolder = new ActorHolder();
-export var playerChar;
-export var worldMap = [];
+export var myWorldMap = [];
 //assumed to be square
-export var worldMapLength = 16;
+var worldMapLength = 16;
 var logKeyDowns = false;
 export var selectedCell=[];
 
 //the calls made when the page is loaded
 function main() {
     console.log("Hit main")
-    initializeWorldMap();
+    myWorldMap = initializeWorldMap(worldMapLength);
     spawnInitialActors();
-    updateWorldTable();
+    updateWorldTable(myWorldMap);
 }
 
 function spawnInitialActors() {
-    new Tree(0,0)
+    new Tree(myWorldMap,0,0)
 }
 
 function keydownHandler(e) {

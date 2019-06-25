@@ -1,6 +1,6 @@
 //needed for hooking onto the world table when world table is updated
 import { clickHandler } from "./helperScripts/inputsHandlers.js"
-import { worldMap, worldMapLength, selectedCell } from "./index.js"
+
 
 export class worldLocation {
     constructor(setX, setY) {
@@ -11,26 +11,27 @@ export class worldLocation {
     }
 }
 
-export function updateWorldTable() {
+export function updateWorldTable(worldMap) {
     if (document.getElementById("tableWrapper").children[0]) {
         document.getElementById("tableWrapper").children[0].remove();
     }
 
-    document.getElementById("tableWrapper").append(createWorldTable());
+    document.getElementById("tableWrapper").append(createWorldTable(worldMap));
     document.getElementById("tableWrapper").children[0].addEventListener("click", clickHandler);
 }
-//initializes the empty worldMap with only the worldLocations
-export function initializeWorldMap() {
-    for (let i = 0; i < worldMapLength; i++) {
-        worldMap[i] = new Array(worldMapLength);
+//initializes an empty worldMap with only the empty worldLocations
+export function initializeWorldMap(length) {
+    let worldMap=[]
+    for (let i = 0; i < length; i++) {
+        worldMap[i] = new Array(length);
         for (let ind = 0; ind < worldMap[i].length; ind++) {
             worldMap[i][ind] = new worldLocation(i, ind);
         }
     }
-
+    return worldMap;
 }
 
-export function createWorldTable() {
+export function createWorldTable(worldMap) {
     let myTable = document.createElement("table");
     let myRows = new Array(worldMap.length);
     for (let i = 0; i < myRows.length; i++) {
@@ -45,7 +46,7 @@ export function createWorldTable() {
                 for (let i = 1; i < item.presentActors.length; i++) {
                     if (item.presentActors[i].displayPriority > topItem.displayPriority) {
                         topItem = item.presentActors[i];
-                    }//TODO CONTINUE
+                    }
                 }
                 //display symbol of whichever actor has highest displayPriority
                 tempData.innerHTML = topItem.mapSymbol;
@@ -82,10 +83,10 @@ export function generateRandomCoordinates(arr) {
 }
 
 //call this to move an actor from its present spot (or non-spot) to another spot
-export function actorPlace(actor, x, y) {
+export function actorPlace(worldMap, actor, x, y) {
     //test out of bounds
     if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
-        console.log("Out of bounds error");
+        console.log("Out of bounds error"+` [${x},${y}]`);
         return false;
     }
     //if the actor is somewhere, remove the actor from the listed location
@@ -98,7 +99,7 @@ export function actorPlace(actor, x, y) {
     actor.location = worldMap[x][y];
 }
 //take given cell and display info in the box
-export function displayCellContents(cellX, cellY) {
+export function displayCellContents(worldMap, cellX, cellY) {
     //list the cell contents
     let contentList = document.getElementById("cellContents");
     let liList = [];
