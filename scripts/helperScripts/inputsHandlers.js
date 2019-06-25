@@ -1,4 +1,4 @@
-import {selectedCell, myWorldMap} from "../index.js"
+import {selectedCell, myWorldMap, logKeyDowns} from "../index.js"
 import {displayCellContents} from "../worldMap.js"
 //for clicking on table cells
 //Used in worldMap
@@ -13,7 +13,12 @@ export function clickHandler(e) {
         selectedCell.length=0;
         selectedCell.push(e.target.cellIndex, e.target.parentElement.rowIndex);
         //Tint the selected cell border
-        e.target.classList.add("selectedCell");
+        // e.target.classList.add("selectedCell");
         displayCellContents(myWorldMap,...selectedCell);
     }
+}
+
+export function keydownHandler(e) {
+    if (logKeyDowns) { console.log(e.code); }
+
 }

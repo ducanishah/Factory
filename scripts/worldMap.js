@@ -100,7 +100,11 @@ export function actorPlace(worldMap, actor, x, y) {
 }
 //take given cell and display info in the box
 export function displayCellContents(worldMap, cellX, cellY) {
-    //list the cell contents
+    //adds class to selected cell for color
+    let td=document.getElementById("tableWrapper").children[0].children[cellY].children[cellX]
+    td.classList.add("selectedCell");
+    
+    //list for cell contents
     let contentList = document.getElementById("cellContents");
     let liList = [];
     //clear all child nodes
