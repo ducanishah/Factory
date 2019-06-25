@@ -21,17 +21,18 @@ function main() {
     spawnInitialActors();
     updateWorldTable();
 }
-//what it says on the tin
+
 function spawnInitialActors() {
     new Tree(0,0)
 }
 
-export function keydownHandler(e) {
+function keydownHandler(e) {
     if (logKeyDowns) { console.log(e.code); }
 
 }
 
 //for clicking on table cells
+//Used in worldMap
 export function clickHandler(e) {
     // console.log(`location: (${e.target.cellIndex},${e.target.parentElement.rowIndex})`);
     if ((e.target.cellIndex||e.target.cellIndex===0) && (e.target.parentElement.rowIndex||e.target.parentElement.rowIndex===0)) {

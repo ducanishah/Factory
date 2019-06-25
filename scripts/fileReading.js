@@ -1,5 +1,5 @@
 //VERY IMPORTANT: if any rows are longer than any row above them, it will mess up
-
+//None of this is currently used
 
 export function checkFileReaderSupported() {
     if (window.File && window.FileReader && window.FileList) {
