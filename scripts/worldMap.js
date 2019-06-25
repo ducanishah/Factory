@@ -1,3 +1,4 @@
+//needed for hooking onto the world table when world table is updated
 import { clickHandler } from "./index.js"
 import { worldMap, worldMapLength, selectedCell } from "./index.js"
 
