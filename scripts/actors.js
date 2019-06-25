@@ -1,4 +1,4 @@
-import {myActorHolder, sharesLocation, worldMap, playerChar} from "./index.js"
+import {myActorHolder, worldMap, playerChar} from "./index.js"
 import {actorPlace} from "./worldMap.js"
 //constructor parameters: x value, y value, display priority, name, symbol
 //modify displayString on inheritees(?) to change what is displayed in display window

@@ -1,4 +1,4 @@
-import { clickHandler, testIsPassable } from "./index.js"
+import { clickHandler } from "./index.js"
 import { worldMap, worldMapLength, selectedCell } from "./index.js"
 
 export class worldLocation {
@@ -46,7 +46,7 @@ export function createWorldTable() {
                         topItem = item.presentActors[i];
                     }//TODO CONTINUE
                 }
-                //display symbol of whichever is first
+                //display symbol of whichever actor has highest displayPriority
                 tempData.innerHTML = topItem.mapSymbol;
             }
             myRows[itemIndex].append(tempData);
@@ -61,6 +61,7 @@ export function createWorldTable() {
 export function generateRandomCoordinates(arr) {
     let x;
     let y;
+    //if there is an array, generate coords within the bounds
     if (arr) {
         if (arr[0] < 0 || arr[2] < 0 || arr[1] > worldMap.length - 1 || arr[3] > worldMap.length - 1) {
             console.log("These bounds are out of this world!");
@@ -70,38 +71,29 @@ export function generateRandomCoordinates(arr) {
         }
         x = Math.floor(Math.random() * (arr[1] - arr[0])) + arr[0];
         y = Math.floor(Math.random() * (arr[3] - arr[2])) + arr[2];
-    } else {
+    } 
+    //if there isn't an array, then generate within worldMap.length
+    else {
         x = Math.floor(Math.random() * worldMap.length);
         y = Math.floor(Math.random() * worldMap.length);
     }
     return [x, y];
 }
-//same as above, but tests for passable
-export function generateRandomPassableCoordinates(arr) {
-    let coords;
-    while (!coords) {
-        coords = generateRandomCoordinates(arr);
-        if (!testIsPassable(...coords)) {
-            coords = "";
-        }
-    }
-    return coords;
-}
 
 //call this to move an actor from its present spot (or non-spot) to another spot
 export function actorPlace(actor, x, y) {
+    //test out of bounds
     if (x < 0 || x > worldMap.length - 1 || y < 0 || y > worldMap.length - 1) {
         console.log("Out of bounds error");
         return false;
     }
-    if(!testIsPassable(x,y)){
-        console.log("Move to impassable error!")
-        return false;
-    }
+    //if the actor is somewhere, remove the actor from the listed location
     if (actor.location) {
         actor.location.presentActors.splice(actor.location.presentActors.indexOf(actor), 1);
     }
+    //add the actor to the listed location
     worldMap[x][y].presentActors.push(actor);
+    //set the actors listed location properly
     actor.location = worldMap[x][y];
 }
 //take given cell and display info in the box
@@ -122,3 +114,4 @@ export function displayCellContents(cellX, cellY) {
     //change the x,y thing
     document.getElementById("cellCoordinates").innerHTML = `(${cellX},${cellY})`;
 }
+
