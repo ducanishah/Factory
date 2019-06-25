@@ -1,9 +1,7 @@
 import {myActorHolder, sharesLocation, worldMap, playerChar} from "./index.js"
 import {actorPlace} from "./worldMap.js"
-import {breadthFirstPathfindingToLocation, breadthFirstPathfindingToActorWithTestFunction} from "./pathfinding.js"
-//has a destroy function. the destroy function sets a variable, then destroys it in a later collection phase
 //constructor parameters: x value, y value, display priority, name, symbol
-//modify displaySting on inheritees(?) to change what is displayed in display window
+//modify displayString on inheritees(?) to change what is displayed in display window
 export class Actor {
     constructor(xSet, ySet, dispPrior = 0, myName, mySymbol) {
         this.name = myName;
@@ -13,58 +11,14 @@ export class Actor {
         this.alive=true;
         this.displayString=`${this.name} (${this.mapSymbol})`
         myActorHolder.aliveActors.push(this);
-        if(actorPlace(this, xSet, ySet)===false){
-            this.destroy();
-        }
+        actorPlace(this,xSet,ySet);
     }
-    destroy (isCollectionPhase=false){
-        if(isCollectionPhase===false){
-            this.toDestroy=true;
-            return;
-        }
-        this.alive=false;
-        myActorHolder.aliveActors.splice(myActorHolder.aliveActors.indexOf(this),1);
-        if(this.location){
-            worldMap[this.location.x][this.location.y].presentActors.splice(
-                worldMap[this.location.x][this.location.y].presentActors.indexOf(this),
-                1
-            )
-        }
-    }
+
 }
 
-//Call update on this to have it call preUpdate AND update AND postUpdate on all the actors
-//put movement and stuff in update, checking and such in postUpdate
-//call destroyAll on it to do exactly what you expect
 export class ActorHolder {
     constructor() {
         this.aliveActors = [];
-    }
-    update() {
-        for (let i = 0; i < this.aliveActors.length; i++) {
-            if (this.aliveActors[i].preUpdate) { this.aliveActors[i].preUpdate(); }
-        }
-        for (let i = 0; i < this.aliveActors.length; i++) {
-            if (this.aliveActors[i].update) { this.aliveActors[i].update(); }
-        }
-        for (let i = 0; i < this.aliveActors.length; i++) {
-            if (this.aliveActors[i].postUpdate) { this.aliveActors[i].postUpdate(); }
-        }
-        //counts backwards to account for destruction
-        for (let i = this.aliveActors.length-1; i >-1; i-=1) {
-            if (this.aliveActors[i].toDestroy===true) { this.aliveActors[i].destroy(true); }
-        }
-    }
-    destroyAll(){
-        this.destroyList=[];
-        for(let i=0;i<this.aliveActors.length;i++){
-            this.destroyList.push(this.aliveActors[i]);
-        }
-        for(let i=0;i<this.destroyList.length;i++){
-            this.destroyList[i].destroy();
-        }
-        
-            
     }
 }
 
@@ -73,127 +27,20 @@ export class Player extends Actor {
         let dispPrior=2;
         super(setX, setY, dispPrior, "player", "P");
     }
-    move(direction) {
-        if(this.alive===false){
-            return;
-        }
-        switch (direction) {
-            case "up":
-                actorPlace(this, this.location.x, this.location.y - 1);
-                break;
-            case "down":
-                actorPlace(this, this.location.x, this.location.y + 1)
-                break;
-            case "left":
-                actorPlace(this, this.location.x - 1, this.location.y)
-                break;
-            case "right":
-                actorPlace(this, this.location.x + 1, this.location.y)
-                break;
-            default:
-                console.log("Why the fuck isn't there a direction for this move")
-                break;
-        }
-    }
 }
 //Goblins seek out goblins of opposing teams, and destroy themselves if they share a space in update OR preupdate
 export class Goblin extends Actor {
-    constructor(setX, setY, myTeam) {
+    constructor(setX, setY) {
         let dispPrior=1;
         super(setX, setY, dispPrior, "goblin", "g");
-        this.team=myTeam || 0;
-        this.displayString+=` [${this.team}]`
+
     }
-    preUpdate(){
-        let enemyOnMySquare=sharesLocation(this,Goblin,
-            (actor)=>{
-                if(!actor){
-                    return false;
-                }
-                return actor.team!=this.team;
-            });
-        if(enemyOnMySquare){
-            this.destroy()
-            enemyOnMySquare.destroy()
-            return;
-        }
-    }
-    update() {
-        let enemyOnMySquare=sharesLocation(this,Goblin,
-            (actor)=>{
-                if(!actor){
-                    return false;
-                }
-                return actor.team!=this.team;
-            });
-        if(enemyOnMySquare){
-            this.destroy()
-            enemyOnMySquare.destroy()
-            return;
-        }
-        let path=breadthFirstPathfindingToActorWithTestFunction(this.location,Goblin,
-            (actor)=>{
-                if(!actor){
-                    return false;
-                }
-                return actor.team!=this.team;
-            }
-        );
-        if(path){
-            actorPlace(this,path[0].x,path[0].y);
-        }
-    }
-    postUpdate() {
-        // if (sharesLocation(this, Player)) {
-        //     console.log("Eek! A player!")
-        //     this.destroy();
-        // }
-    }
+
 }
 
 export class Tree extends Actor {
     constructor(setX, setY) {
         let dispPrior=0
         super(setX, setY, dispPrior, "tree", "T");
-    }
-}
-
-export class Wall extends Actor {
-    constructor (setX,setY){
-        let dispPrior=-1;
-        super(setX,setY,dispPrior,"wall","W");
-        this.isPassable=false;
-    }
-    postUpdate(){
-        if(sharesLocation(this,Actor)){
-            console.log("Someone's on the wall!");
-        }
-    }
-}
-//CAVES SPAWN A GOBLIN IN POSTUPDATE EVERY 5th? 6th? TICK
-export class Cave extends Actor {
-    constructor(setX,setY,myTeam){
-        let dispPrior=-1;
-        super(setX,setY,dispPrior,"cave","C")
-        this.count=0;
-        this.team=myTeam || 0;
-        this.displayString+=` [${this.team}]`
-
-    }
-    postUpdate(){
-        if (this.count===5){
-            new Goblin(this.location.x,this.location.y,this.team);
-            this.count=0;
-            return;
-        }
-        this.count++
-    }
-}
-
-export class TestObject extends Actor{
-    constructor(setX,setY){
-        let dispPrior=3;
-        super(setX,setY,dispPrior,"testObject","T");
-        // console.log(getNeighborLocations(this.location))
     }
 }
