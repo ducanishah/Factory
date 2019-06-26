@@ -1,14 +1,14 @@
 import { Actor, ActorHolder, Goblin, Tree } from "./actors.js"
 import { updateWorldTable, initializeWorldMap } from "./worldMap.js"
-import {keydownHandler, addActorHandler} from "./helperScripts/inputsHandlers.js"
+import { keydownHandler, addActorHandler } from "./helperScripts/inputsHandlers.js"
 
-export var addableActorsList={Goblin,Tree}
+export var addableActorsList = { Goblin, Tree }
 
 
 
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
-document.getElementById("addActorButton").addEventListener("click",addActorHandler);
+document.getElementById("addActorButton").addEventListener("click", addActorHandler);
 
 
 export var myActorHolder = new ActorHolder();
@@ -16,7 +16,7 @@ export var myWorldMap = [];
 //assumed to be square
 var worldMapLength = 16;
 export var logKeyDowns = false;
-export var selectedCell=[];
+export var selectedCell = [];
 
 //the calls made when the page is loaded
 function main() {
@@ -28,14 +28,15 @@ function main() {
 }
 
 function spawnInitialActors() {
-    new Tree(myWorldMap,0,0);
+    new Tree(myWorldMap, 0, 0);
 }
+
 //populates the addActorSelector with the given list of actors
-function populateAddActorList (actorList){
-    let addActorOptions=[]
-    Object.keys(actorList).forEach((key)=>{
-        let newActorOption=document.createElement("option");
-        newActorOption.innerHTML=key;
+function populateAddActorList(actorList) {
+    let addActorOptions = []
+    Object.keys(actorList).forEach((key) => {
+        let newActorOption = document.createElement("option");
+        newActorOption.innerHTML = key;
         addActorOptions.push(newActorOption);
     })
     document.getElementById("addActorSelector").append(...addActorOptions);

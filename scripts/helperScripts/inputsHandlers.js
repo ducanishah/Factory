@@ -24,6 +24,10 @@ export function keydownHandler(e) {
 }
 //adds selected actor to the worldMap AND updates the world table
 export function addActorHandler(e){
+    if(!selectedCell.length){
+        alert("You need to select a cell to add an actor!")
+        return;
+    }
     let chosenActor=addableActorsList[document.getElementById("addActorSelector").value];
     new chosenActor(myWorldMap,...selectedCell)
     updateWorldTable(myWorldMap);
