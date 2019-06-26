@@ -1,5 +1,5 @@
-import {selectedCell, myWorldMap, logKeyDowns} from "../index.js"
-import {displayCellContents} from "../worldMap.js"
+import {selectedCell, myWorldMap, logKeyDowns, addableActorsList} from "../index.js"
+import {displayCellContents, updateWorldTable} from "../worldMap.js"
 //for clicking on table cells
 //Used in worldMap
 export function clickHandler(e) {
@@ -21,4 +21,10 @@ export function clickHandler(e) {
 export function keydownHandler(e) {
     if (logKeyDowns) { console.log(e.code); }
 
+}
+//adds selected actor to the worldMap AND updates the world table
+export function addActorHandler(e){
+    let chosenActor=addableActorsList[document.getElementById("addActorSelector").value];
+    new chosenActor(myWorldMap,...selectedCell)
+    updateWorldTable(myWorldMap);
 }

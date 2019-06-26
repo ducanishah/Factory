@@ -1,6 +1,6 @@
 //needed for hooking onto the world table when world table is updated
 import { clickHandler } from "./helperScripts/inputsHandlers.js"
-
+import {selectedCell, myWorldMap} from "./index.js"
 
 export class worldLocation {
     constructor(setX, setY) {
@@ -11,6 +11,7 @@ export class worldLocation {
     }
 }
 
+//updates worldTable AND redisplays selected cell
 export function updateWorldTable(worldMap) {
     if (document.getElementById("tableWrapper").children[0]) {
         document.getElementById("tableWrapper").children[0].remove();
@@ -18,6 +19,9 @@ export function updateWorldTable(worldMap) {
 
     document.getElementById("tableWrapper").append(createWorldTable(worldMap));
     document.getElementById("tableWrapper").children[0].addEventListener("click", clickHandler);
+    if(selectedCell.length){
+        displayCellContents(myWorldMap,...selectedCell);
+    }
 }
 //initializes an empty worldMap with only the empty worldLocations
 export function initializeWorldMap(length) {
