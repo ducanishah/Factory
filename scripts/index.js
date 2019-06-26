@@ -1,6 +1,6 @@
 import { Actor, ActorHolder, Goblin, Tree } from "./actors.js"
 import { updateWorldTable, initializeWorldMap } from "./worldMap.js"
-import { keydownHandler, addActorHandler } from "./helperScripts/inputsHandlers.js"
+import { keydownHandler, addActorHandler, selectActorHandler } from "./helperScripts/inputsHandlers.js"
 
 export var addableActorsList = { Goblin, Tree }
 
@@ -9,7 +9,7 @@ export var addableActorsList = { Goblin, Tree }
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
 document.getElementById("addActorButton").addEventListener("click", addActorHandler);
-
+document.getElementById("cellContents").addEventListener("click",selectActorHandler)
 
 export var myActorHolder = new ActorHolder();
 export var myWorldMap = [];
@@ -17,6 +17,8 @@ export var myWorldMap = [];
 var worldMapLength = 16;
 export var logKeyDowns = false;
 export var selectedCell = [];
+//use array for actor to get around constancy of exports
+export var selectedActor = [];
 
 //the calls made when the page is loaded
 function main() {

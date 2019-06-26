@@ -122,6 +122,6 @@ export function displayCellContents(worldMap, cellX, cellY) {
     //add new nodes
     contentList.append(...liList);
     //change the x,y thing
-    document.getElementById("cellCoordinates").innerHTML = `(${cellX},${cellY})`;
+    document.getElementById("selectedCellCoordinates").innerHTML = `(${cellX},${cellY})`;
 }
 

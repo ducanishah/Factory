@@ -19,12 +19,12 @@
         <div id="tableWrapper">
             <!-- Table is inserted here! -->
         </div>
-        <div id="infoBox">
+        <div class="box">
             <h2>Selected cell</h2>
-            <h3 id="cellCoordinates">(none)</h3>
+            <h3 class="centerText" id="selectedCellCoordinates">(none)</h3>
             <hr>
             <div id="cellContentsWrapper">
-                <ul id="cellContents">
+                <ul class="clickable centerText listWithoutPaddingRight" id="cellContents">
 
                 </ul>
                 <select id="addActorSelector">
@@ -32,6 +32,11 @@
                 </select>
                 <button id="addActorButton">Add Actor</button>
             </div>
+        </div>
+        <div class="box">
+            <h2>Selected Actor</h2>
+            <h3 class="centerText" id="selectedActorName">(none)</h3>
+            <hr>
         </div>
     </div>
 </body>

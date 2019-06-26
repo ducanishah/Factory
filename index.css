@@ -26,17 +26,35 @@ table td {
     margin:5px;
 }
 
-div#infoBox {
+div.box {
     border: 1px solid black;
     margin:10px;
     padding:5px;
 }
 
-h3#cellCoordinates {
+.centerText {
     text-align: center;
 }
 
 .selectedCell {
     border-right:2px solid red;
     border-bottom:2px solid red;
+    background-color:#eadcdc;
+}
+
+td:hover{
+    cursor:pointer;
+}
+
+.clickable:hover{
+    cursor:pointer;
+}
+.selected{
+    padding:5px;
+    display:block;
+    background-color:#fcf2f2;
+}
+
+.listWithoutPaddingRight{
+    padding:0px;
 }

@@ -1,4 +1,4 @@
-import {selectedCell, myWorldMap, logKeyDowns, addableActorsList} from "../index.js"
+import {selectedCell, myWorldMap, logKeyDowns, addableActorsList, selectedActor} from "../index.js"
 import {displayCellContents, updateWorldTable} from "../worldMap.js"
 //for clicking on table cells
 //Used in worldMap
@@ -31,4 +31,21 @@ export function addActorHandler(e){
     let chosenActor=addableActorsList[document.getElementById("addActorSelector").value];
     new chosenActor(myWorldMap,...selectedCell)
     updateWorldTable(myWorldMap);
+}
+//tints selected li from cellContents
+export function selectActorHandler(e){
+    if(e.target.nodeName==="P"){
+        e.target.classList.add("selected");
+        //remove selected actor if it exists
+        if(selectedActor.length){
+            selectedActor.pop()
+        }
+        selectedActor.push(
+            //gets actor
+            myWorldMap[selectedCell[0]][selectedCell[1]].presentActors[
+                //this gets the index of the selected node
+                [...e.target.parentNode.children].indexOf(e.target)
+            ]
+        )
+    }
 }
