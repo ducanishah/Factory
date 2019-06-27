@@ -1,6 +1,6 @@
 //needed for hooking onto the world table when world table is updated
 import { clickHandler } from "./helperScripts/inputsHandlers.js"
-import {selectedCell, myWorldMap} from "./index.js"
+import {selectedCell, myWorldMap, selectedActor} from "./index.js"
 
 export class worldLocation {
     constructor(setX, setY) {
@@ -102,7 +102,7 @@ export function actorPlace(worldMap, actor, x, y) {
     //set the actors listed location properly
     actor.location = worldMap[x][y];
 }
-//take given cell and display info in the box
+//take given cell and display info in the box AND if the cell contains the selected actor, highlights it
 export function displayCellContents(worldMap, cellX, cellY) {
     //adds class to selected cell for color
     let td=document.getElementById("tableWrapper").children[0].children[cellY].children[cellX]
@@ -117,11 +117,15 @@ export function displayCellContents(worldMap, cellX, cellY) {
     for (let i = 0; i < worldMap[cellX][cellY].presentActors.length; i++) {
         let li = document.createElement("p");
         li.innerText = worldMap[cellX][cellY].presentActors[i].displayString;
+        if(worldMap[cellX][cellY].presentActors[i]===selectedActor[0]){
+            li.classList.add("selected");
+        }
         liList.push(li);
     }
     //add new nodes
     contentList.append(...liList);
     //change the x,y thing
     document.getElementById("selectedCellCoordinates").innerHTML = `(${cellX},${cellY})`;
+    
 }
 

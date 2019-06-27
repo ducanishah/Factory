@@ -1,5 +1,9 @@
 import {selectedCell, myWorldMap, logKeyDowns, addableActorsList, selectedActor} from "../index.js"
 import {displayCellContents, updateWorldTable} from "../worldMap.js"
+
+//for use in actor displaying
+var lastSelectedNode;
+
 //for clicking on table cells
 //Used in worldMap
 export function clickHandler(e) {
@@ -34,7 +38,15 @@ export function addActorHandler(e){
 }
 //tints selected li from cellContents
 export function selectActorHandler(e){
+    //set selected Actor
     if(e.target.nodeName==="P"){
+        //remove tint from any other nodes around
+        for(let i=0; i<document.getElementById("cellContents").children.length;i++){
+            let temp=document.getElementById("cellContents").children[i]
+            if(temp.classList.contains("selected")){
+                temp.classList.remove("selected")
+            }
+        }
         e.target.classList.add("selected");
         //remove selected actor if it exists
         if(selectedActor.length){
@@ -47,5 +59,13 @@ export function selectActorHandler(e){
                 [...e.target.parentNode.children].indexOf(e.target)
             ]
         )
-    }
+    } else {return;}
+    displaySelectedActor(selectedActor[0]);
+}
+
+function displaySelectedActor(actor){
+    document.getElementById("selectedActorName").innerHTML=(
+        `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
+        )
+
 }
