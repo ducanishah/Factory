@@ -1,8 +1,8 @@
-import { Actor, ActorHolder, Goblin, Tree } from "./actors.js"
+import { Actor, ActorHolder, Goblin, Tree, TestObject } from "./actors.js"
 import { updateWorldTable, initializeWorldMap } from "./worldMap.js"
 import { keydownHandler, addActorHandler, selectActorHandler } from "./helperScripts/inputsHandlers.js"
 
-export var addableActorsList = { Goblin, Tree }
+export var addableActorsList = { Goblin, Tree, TestObject }
 
 
 

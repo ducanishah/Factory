@@ -12,8 +12,8 @@
 
 <body>
     <div id="topBarWrapper">
-            <h3>Input Map:</h3>
-            <input type="file" id="fileInput" />
+        <h3>Input Map:</h3>
+        <input type="file" id="fileInput" />
     </div>
     <div id="mainWrapper">
         <div id="tableWrapper">
@@ -24,9 +24,8 @@
             <h3 class="centerText" id="selectedCellCoordinates">(none)</h3>
             <hr>
             <div id="cellContentsWrapper">
-                <ul class="clickable centerText listWithoutPaddingRight" id="cellContents">
-
-                </ul>
+                <!-- If this ul gets any blank space in it it will cause an infinite loop error when code tries to clean it-->
+                <ul class="clickable centerText listWithoutPadding" id="cellContents"></ul>
                 <select id="addActorSelector">
 
                 </select>
@@ -37,6 +36,8 @@
             <h2>Selected Actor</h2>
             <h3 class="centerText" id="selectedActorName">(none)</h3>
             <hr>
+            <!-- If this ul gets any blank space in it it will cause an infinite loop error when code tries to clean it-->
+            <ul id="selectedActorProperties"></ul>
         </div>
     </div>
 </body>
