@@ -60,33 +60,57 @@ export function selectActorHandler(e) {
     displaySelectedActor(selectedActor[0]);
 }
 
+//displays selected actor!
 function displaySelectedActor(actor) {
     document.getElementById("selectedActorName").innerHTML = (
         `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
     )
-    //creates lis
-    let ul = document.getElementById("selectedActorProperties");
-    let keys = Object.keys(actor)
-    let liList=[];
-    for (let i = 0; i < keys.length; i++) {
-        let li = document.createElement("li");
-        li.innerHTML = `${keys[i]}: ${actor[keys[i]]}`;
-        liList.push(li);
+
+    let existingul = document.getElementById("selectedActorProperties")
+    //just in case of mistakes, this will keep infinite recursion at bay
+    let recursionCounter = 0;
+
+    let newul = createNestedListFrom(actor);
+
+    existingul.parentNode.replaceChild(newul, existingul);
+
+
+
+    //RECURSIVE PROPERTY DISPLAYING!!!!!
+    function createNestedListFrom(parent) {
+        recursionCounter++;
+        if (recursionCounter > 5) {
+            alert("You forgot to exclude a self-containing property! Infinite recursion on actor display! (loops>5)")
+            return;
+        }
+        let ul = document.createElement("ul");
+        ul.id = "selectedActorProperties";
+
+        //make sure property is not in list that should not be displayed!
+        //(prevents infinite recursive loop)
+        let keys = Object.keys(parent)
+        if(parent.propertiesThatShouldNotBeDisplayed!==undefined){
+            keys = keys.filter(
+                key => {
+                    return (parent.propertiesThatShouldNotBeDisplayed.indexOf(key) === -1)
+                }
+            )
+        }
+        
+        let elementList = [];
+        for (let i = 0; i < keys.length; i++) {
+            let li = document.createElement("li");
+            li.innerHTML = `${keys[i]}: `
+            //makes a new list if needed
+            if (typeof parent[keys[i]] === "object") {
+                li.append(createNestedListFrom(parent[keys[i]]));
+                //make the element if no new list needed
+            } else {
+                li.innerHTML += `${parent[keys[i]]}`;
+            }
+            elementList.push(li);
+        }
+        ul.append(...elementList);
+        return ul;
     }
-
-    //empties ul
-    while(ul.firstChild){
-        ul.remove(ul.firstChild);
-    } 
-
-
-      
-
-
-    //appends lis
-    ul.append(...liList)
-
-
-
-    
 }
