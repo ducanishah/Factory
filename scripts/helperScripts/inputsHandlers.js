@@ -77,10 +77,10 @@ function displaySelectedActor(actor) {
     //empties ul
     while(ul.firstChild){
         ul.remove(ul.firstChild);
-    }
+    } 
 
 
-
+      
 
 
     //appends lis
