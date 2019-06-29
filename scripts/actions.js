@@ -18,9 +18,11 @@ export class Move{
         this.name=name || "Move";
         // this.display=false;
         this.enabled=true;
+        //Binds execute to context
+        this.execute=this.execute.bind(this.context);
     }
     execute(){
-        // Execute is what is called for children
+        // Execute in what is called for children
         console.log(`Oy! The move ${this.name} should have it's own execute!`);
     }
 }
@@ -33,5 +35,6 @@ export class TestMove extends Move{
     }
     execute(){
         alert("TestMove worked!")
+        
     }
 }

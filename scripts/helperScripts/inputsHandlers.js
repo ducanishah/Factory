@@ -19,15 +19,15 @@ export function clickHandler(e) {
 }
 
 //for double clicking on table cells
-export function doubleClickHandler(e){
+export function doubleClickHandler(e) {
     //requires that a cell have been clicked on
     if ((e.target.cellIndex || e.target.cellIndex === 0) && (e.target.parentElement.rowIndex || e.target.parentElement.rowIndex === 0)) {
         //if there's a top actor, display it
-        if(myWorldMap[selectedCell[0]][selectedCell[1]].currentDisplayedActor){
+        if (myWorldMap[selectedCell[0]][selectedCell[1]].currentDisplayedActor) {
             displaySelectedActor(myWorldMap[selectedCell[0]][selectedCell[1]].currentDisplayedActor);
-            displayCellContents(myWorldMap,selectedCell[0],selectedCell[1]);
+            displayCellContents(myWorldMap, selectedCell[0], selectedCell[1]);
         }
-        
+
     }
 }
 
@@ -78,7 +78,7 @@ export function selectActorHandler(e) {
 //displays selected actor! Has functions within functions!
 export function displaySelectedActor(actor) {
     //in case of actor being selected in a way other than clicking
-    if(selectedActor[0]!==actor){
+    if (selectedActor[0] !== actor) {
         selectedActor.pop();
         selectedActor.push(actor);
     }
@@ -108,14 +108,14 @@ export function displaySelectedActor(actor) {
         //make sure property is not in list that should not be displayed!
         //(prevents infinite recursive loop)
         let keys = Object.keys(parent)
-        if(parent.propertiesThatShouldNotBeDisplayed!==undefined){
+        if (parent.propertiesThatShouldNotBeDisplayed !== undefined) {
             keys = keys.filter(
                 key => {
                     return (parent.propertiesThatShouldNotBeDisplayed.indexOf(key) === -1)
                 }
             )
         }
-        
+
         let elementList = [];
         for (let i = 0; i < keys.length; i++) {
             let li = document.createElement("li");
@@ -133,18 +133,24 @@ export function displaySelectedActor(actor) {
         return ul;
     }
 
-    function displayActions(actor){
-        if(actor.moveSet){
-            let moveButtons=[];
-            for(let i=0; i<actor.moveSet.moves.length; i++){
-                if(actor.moveSet.moves[i].enabled===true){
-                    let newMoveButton=document.createElement("button");
-                    newMoveButton.innerText=actor.moveSet.moves[i].name;
-                    newMoveButton.onclick=actor.moveSet.moves[i].execute
+    function displayActions(actor) {
+        //empty the thing
+        let actionsWrapper = document.getElementById("selectedActorActions");
+        while (actionsWrapper.firstChild) {
+            actionsWrapper.removeChild(actionsWrapper.firstChild);
+        }
+        if (actor.moveSet) {
+            let moveButtons = [];
+            for (let i = 0; i < actor.moveSet.moves.length; i++) {
+                if (actor.moveSet.moves[i].enabled === true) {
+                    let newMoveButton = document.createElement("button");
+                    newMoveButton.innerText = actor.moveSet.moves[i].name;
+                    newMoveButton.onclick = actor.moveSet.moves[i].execute
                     moveButtons.push(newMoveButton);
                 }
             }
-            document.getElementById("selectedActorActions").append(...moveButtons);
+
+            actionsWrapper.append(...moveButtons);
         }
     }
 
