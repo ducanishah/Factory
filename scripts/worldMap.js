@@ -51,19 +51,27 @@ export function createWorldTable(worldMap) {
     //create the tds
     worldMap.forEach((subArray, subArrayIndex) => {
         subArray.forEach((item, itemIndex) => {
-            let tempData = document.createElement("td");
+            let newtd = document.createElement("td");
             if (item.presentActors.length) {
-                let topActor = item.presentActors[0];
-                for (let i = 1; i < item.presentActors.length; i++) {
-                    if (item.presentActors[i].displayPriority > topActor.displayPriority) {
+                let topActor;
+                for (let i = 0; i < item.presentActors.length; i++) {
+                    
+                    if(item.presentActors[i]===selectedActor[0]){
+                        topActor=item.presentActors[i];
+                        newtd.classList.add("containsSelectedActor");
+                        break;
+                    }
+
+                    if (!topActor || item.presentActors[i].displayPriority > topActor.displayPriority) {
                         topActor = item.presentActors[i];
                     }
                 }
                 item.currentDisplayedActor=topActor;
                 //display symbol of whichever actor has highest displayPriority
-                tempData.innerHTML = topActor.mapSymbol;
+                newtd.innerHTML = topActor.mapSymbol;
+                
             }
-            myRows[itemIndex].append(tempData);
+            myRows[itemIndex].append(newtd);
         });
     });
     myTable.append(...myRows);

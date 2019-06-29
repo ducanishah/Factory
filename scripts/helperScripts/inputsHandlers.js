@@ -30,9 +30,7 @@ export function doubleClickHandler(e) {
 
     }
 }
-
-
-
+//currently does nothing but logKeyDowns if you flip that global var
 export function keydownHandler(e) {
     if (logKeyDowns) { console.log(e.code); }
 
@@ -59,29 +57,40 @@ export function selectActorHandler(e) {
             }
         }
         e.target.classList.add("selected");
-        //remove selected actor if it exists
-        if (selectedActor.length) {
-            selectedActor.pop()
-        }
         //sets selected actor to selected actor
-        selectedActor.push(
-            //gets actor
-            myWorldMap[selectedCell[0]][selectedCell[1]].presentActors[
-            //this gets the index of the selected node
-            [...e.target.parentNode.children].indexOf(e.target)
-            ]
-        )
+
     } else { return; }
-    displaySelectedActor(selectedActor[0]);
+
+
+    displaySelectedActor(
+        //gets actor
+        myWorldMap[selectedCell[0]][selectedCell[1]].presentActors[
+        //this gets the index of the selected node
+        [...e.target.parentNode.children].indexOf(e.target)
+        ]);
 }
 
 //displays selected actor! Has functions within functions!
 export function displaySelectedActor(actor) {
+    let table = document.getElementById("tableWrapper").children[0];
+
     //in case of actor being selected in a way other than clicking
-    if (selectedActor[0] !== actor) {
+    if (selectedActor[0] && selectedActor[0] !== actor) {
+        //so spawn display doesn't break
+        if (table) {
+            //clear class from previously selected actor's cell
+            let previousActorLocation = selectedActor[0].location;
+            table.children[previousActorLocation.y].children[previousActorLocation.x].classList.remove("containsSelectedActor");
+        }
         selectedActor.pop();
-        selectedActor.push(actor);
     }
+    selectedActor.push(actor);
+    //add class to newly selected actor's cell
+    if(table){
+        table.children[actor.location.y].children[actor.location.x].classList.add("containsSelectedActor");
+    }
+    
+
     document.getElementById("selectedActorName").innerHTML = (
         `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
     )
