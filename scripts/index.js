@@ -33,7 +33,7 @@ function main() {
 }
 
 function spawnInitialActors() {
-    // displaySelectedActor( new Tree(myWorldMap, 0, 0) );
+    displaySelectedActor( new TestObject(myWorldMap,15,15) );
     new Tree(myWorldMap, 0, 0)
 }
 

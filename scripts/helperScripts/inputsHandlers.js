@@ -75,7 +75,7 @@ export function selectActorHandler(e) {
     displaySelectedActor(selectedActor[0]);
 }
 
-//displays selected actor!
+//displays selected actor! Has functions within functions!
 export function displaySelectedActor(actor) {
     //in case of actor being selected in a way other than clicking
     if(selectedActor[0]!==actor){
@@ -88,19 +88,18 @@ export function displaySelectedActor(actor) {
 
     let existingul = document.getElementById("selectedActorProperties")
     //just in case of mistakes, this will keep infinite recursion at bay
-    let recursionCounter = 0;
-
+    let recursionLimit = 10;
     let newul = createNestedListFrom(actor);
-
     existingul.parentNode.replaceChild(newul, existingul);
 
+    displayActions(actor);
 
 
     //RECURSIVE PROPERTY DISPLAYING!!!!!
     function createNestedListFrom(parent) {
-        recursionCounter++;
-        if (recursionCounter > 5) {
-            alert("You forgot to exclude a self-containing property! Infinite recursion on actor display! (loops>5)")
+        recursionLimit--;
+        if (recursionLimit < 0) {
+            alert("You forgot to exclude a self-containing property! Infinite recursion on actor display!")
             return;
         }
         let ul = document.createElement("ul");
@@ -133,4 +132,20 @@ export function displaySelectedActor(actor) {
         ul.append(...elementList);
         return ul;
     }
+
+    function displayActions(actor){
+        if(actor.moveSet){
+            let moveButtons=[];
+            for(let i=0; i<actor.moveSet.moves.length; i++){
+                if(actor.moveSet.moves[i].enabled===true){
+                    let newMoveButton=document.createElement("button");
+                    newMoveButton.innerText=actor.moveSet.moves[i].name;
+                    newMoveButton.onclick=actor.moveSet.moves[i].execute
+                    moveButtons.push(newMoveButton);
+                }
+            }
+            document.getElementById("selectedActorActions").append(...moveButtons);
+        }
+    }
+
 }
