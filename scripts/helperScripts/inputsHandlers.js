@@ -49,6 +49,7 @@ export function selectActorHandler(e) {
         if (selectedActor.length) {
             selectedActor.pop()
         }
+        //sets selected actor to selected actor
         selectedActor.push(
             //gets actor
             myWorldMap[selectedCell[0]][selectedCell[1]].presentActors[
@@ -61,7 +62,13 @@ export function selectActorHandler(e) {
 }
 
 //displays selected actor!
-function displaySelectedActor(actor) {
+export function displaySelectedActor(actor) {
+    //in case of actor being selected in a way other than clicking
+    if(selectedActor[0]!==actor){
+        selectedActor.pop();
+        selectedActor.push(actor);
+    }
+
     document.getElementById("selectedActorName").innerHTML = (
         `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
     )

@@ -1,6 +1,6 @@
 import { Actor, ActorHolder, Goblin, Tree, TestObject } from "./actors.js"
 import { updateWorldTable, initializeWorldMap } from "./worldMap.js"
-import { keydownHandler, addActorHandler, selectActorHandler } from "./helperScripts/inputsHandlers.js"
+import { keydownHandler, addActorHandler, selectActorHandler, displaySelectedActor } from "./helperScripts/inputsHandlers.js"
 
 export var addableActorsList = { Goblin, Tree, TestObject }
 
@@ -30,7 +30,7 @@ function main() {
 }
 
 function spawnInitialActors() {
-    new Tree(myWorldMap, 0, 0);
+    displaySelectedActor( new Tree(myWorldMap, 0, 0) );
 }
 
 //populates the addActorSelector with the given list of actors

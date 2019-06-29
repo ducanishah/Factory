@@ -20,7 +20,7 @@
             <!-- Table is inserted here! -->
         </div>
         <div class="box">
-            <h2>Selected cell</h2>
+            <h2 class="centerText">Selected cell</h2>
             <h3 class="centerText" id="selectedCellCoordinates">(none)</h3>
             <hr>
             <div id="cellContentsWrapper">
@@ -33,11 +33,20 @@
             </div>
         </div>
         <div class="box">
-            <h2>Selected Actor</h2>
+            <h2 class="centerText">Selected Actor</h2>
             <h3 class="centerText" id="selectedActorName">(none)</h3>
             <hr>
+            <div style="display:flex;">
+                <div>
+                    <ul id="selectedActorProperties"></ul>
+                </div>
+                <div>
+                    <p>test</p>
+                    <p>another test</p>
+                </div>
+            </div>
             <!-- If this ul gets any blank space in it it will cause an infinite loop error when code tries to clean it-->
-            <ul id="selectedActorProperties"></ul>
+            
         </div>
     </div>
 </body>

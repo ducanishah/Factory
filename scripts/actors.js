@@ -5,7 +5,7 @@ import {actorPlace} from "./worldMap.js"
 export class Actor {
     constructor(worldMap,xSet, ySet, dispPrior = 0, myName, mySymbol) {
         //IMPORTANT: must push self-containing properties to this list or displaying of actor will lead to infinite recursion!
-        this.propertiesThatShouldNotBeDisplayed=["location", "propertiesThatShouldNotBeDisplayed"]
+        this.propertiesThatShouldNotBeDisplayed=["location", "propertiesThatShouldNotBeDisplayed", "name", "displayString", "mapSymbol"]
         this.name = myName;
         this.mapSymbol = mySymbol;
         this.displayPriority = dispPrior;
