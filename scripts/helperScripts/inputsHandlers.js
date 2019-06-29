@@ -154,7 +154,7 @@ export function displaySelectedActor(actor) {
                 if (actor.moveSet.moves[i].enabled === true) {
                     let newMoveButton = document.createElement("button");
                     newMoveButton.innerText = actor.moveSet.moves[i].name;
-                    newMoveButton.onclick = actor.moveSet.moves[i].execute
+                    newMoveButton.onclick = actor.moveSet.moves[i].execute;
                     moveButtons.push(newMoveButton);
                 }
             }
