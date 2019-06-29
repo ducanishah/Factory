@@ -30,7 +30,8 @@ function main() {
 }
 
 function spawnInitialActors() {
-    displaySelectedActor( new Tree(myWorldMap, 0, 0) );
+    // displaySelectedActor( new Tree(myWorldMap, 0, 0) );
+    new Tree(myWorldMap, 0, 0)
 }
 
 //populates the addActorSelector with the given list of actors

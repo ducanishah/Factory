@@ -33,7 +33,7 @@ export function addActorHandler(e) {
     new chosenActor(myWorldMap, ...selectedCell)
     updateWorldTable(myWorldMap);
 }
-//tints selected li from cellContents
+//used for selecting actor form the cell contents list
 export function selectActorHandler(e) {
     //set selected Actor
     if (e.target.nodeName === "P") {
