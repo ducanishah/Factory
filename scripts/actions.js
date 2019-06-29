@@ -48,6 +48,7 @@ export class ShiftOneSpace extends Move {
         super(actorForContext, "Shift");
     }
     execute(e) {
+        //just tests for selectedCell being one away, then moves and updates the world table
         if ( 
             selectedCell.length&&
             myWorldMap[selectedCell[0]][selectedCell[1]] !== this.location &&
@@ -59,7 +60,7 @@ export class ShiftOneSpace extends Move {
             actorPlace(myWorldMap,this,selectedCell[0],selectedCell[1]);
             updateWorldTable(myWorldMap);
         } else {
-            alert("You can only shift that one space!/select a cell!")
+            alert("You can only shift one space away!/select a cell! \n I'm too lazy to have cases!");
         }   
     }
 }
