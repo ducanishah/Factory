@@ -36,9 +36,7 @@ div.box {
     text-align: center;
 }
 
-.selectedCell {
-    border-right:2px solid red;
-    border-bottom:2px solid red;
+td.selectedCell {
     background-color:#eadcdc;
 }
 
@@ -52,9 +50,21 @@ td:hover{
 .selected{
     padding:5px;
     display:block;
-    background-color:#fcf2f2;
+    background-color:#dd9797;
+    font-weight: bold;
 }
 
 .listWithoutPadding{
     padding:0px;
+}
+
+.leftBorder{
+    border-left:2px solid black;
+    padding-left:15px;
+    margin-left:15px;
+}
+
+td.containsSelectedActor{
+    font-weight:bold;
+    border:4px solid black;
 }

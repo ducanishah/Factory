@@ -1,6 +1,6 @@
 import { Actor, ActorHolder, Goblin, Tree, TestObject } from "./actors.js"
 import { updateWorldTable, initializeWorldMap } from "./worldMap.js"
-import { keydownHandler, addActorHandler, selectActorHandler } from "./helperScripts/inputsHandlers.js"
+import { keydownHandler, addActorHandler, selectActorHandler, displaySelectedActor } from "./helperScripts/inputsHandlers.js"
 
 export var addableActorsList = { Goblin, Tree, TestObject }
 
@@ -8,8 +8,11 @@ export var addableActorsList = { Goblin, Tree, TestObject }
 
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
+//for adding actors from the selected cell menu
 document.getElementById("addActorButton").addEventListener("click", addActorHandler);
-document.getElementById("cellContents").addEventListener("click",selectActorHandler)
+//for selecting an actor from the selected cell menu
+document.getElementById("cellContents").addEventListener("click",selectActorHandler);
+
 
 export var myActorHolder = new ActorHolder();
 export var myWorldMap = [];
@@ -30,7 +33,8 @@ function main() {
 }
 
 function spawnInitialActors() {
-    new Tree(myWorldMap, 0, 0);
+    displaySelectedActor( new TestObject(myWorldMap,15,15) );
+    new Tree(myWorldMap, 0, 0)
 }
 
 //populates the addActorSelector with the given list of actors
