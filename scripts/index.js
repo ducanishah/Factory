@@ -8,8 +8,11 @@ export var addableActorsList = { Goblin, Tree, TestObject }
 
 document.addEventListener("DOMContentLoaded", main);
 document.addEventListener("keydown", keydownHandler);
+//for adding actors from the selected cell menu
 document.getElementById("addActorButton").addEventListener("click", addActorHandler);
-document.getElementById("cellContents").addEventListener("click",selectActorHandler)
+//for selecting an actor from the selected cell menu
+document.getElementById("cellContents").addEventListener("click",selectActorHandler);
+
 
 export var myActorHolder = new ActorHolder();
 export var myWorldMap = [];

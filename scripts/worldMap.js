@@ -1,13 +1,17 @@
 //needed for hooking onto the world table when world table is updated
-import { clickHandler } from "./helperScripts/inputsHandlers.js"
+import { clickHandler, doubleClickHandler } from "./helperScripts/inputsHandlers.js"
 import {selectedCell, myWorldMap, selectedActor} from "./index.js"
 
+
+//x,y
+//has: presentActor,x,y,cameFrom,currentDisplayedActor
 export class worldLocation {
     constructor(setX, setY) {
         this.presentActors = []
         this.x = setX;
         this.y = setY;
         this.cameFrom;
+        this.currentDisplayedActor;
     }
 }
 
@@ -18,7 +22,10 @@ export function updateWorldTable(worldMap) {
     }
 
     document.getElementById("tableWrapper").append(createWorldTable(worldMap));
+    //for displaying cell contents
     document.getElementById("tableWrapper").children[0].addEventListener("click", clickHandler);
+    //for selecting actor by doubleclick
+    document.getElementById("tableWrapper").children[0].addEventListener("dblclick", doubleClickHandler)
     if(selectedCell.length){
         displayCellContents(myWorldMap,...selectedCell);
     }
@@ -46,14 +53,15 @@ export function createWorldTable(worldMap) {
         subArray.forEach((item, itemIndex) => {
             let tempData = document.createElement("td");
             if (item.presentActors.length) {
-                let topItem = item.presentActors[0];
+                let topActor = item.presentActors[0];
                 for (let i = 1; i < item.presentActors.length; i++) {
-                    if (item.presentActors[i].displayPriority > topItem.displayPriority) {
-                        topItem = item.presentActors[i];
+                    if (item.presentActors[i].displayPriority > topActor.displayPriority) {
+                        topActor = item.presentActors[i];
                     }
                 }
+                item.currentDisplayedActor=topActor;
                 //display symbol of whichever actor has highest displayPriority
-                tempData.innerHTML = topItem.mapSymbol;
+                tempData.innerHTML = topActor.mapSymbol;
             }
             myRows[itemIndex].append(tempData);
         });

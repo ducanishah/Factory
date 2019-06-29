@@ -2,7 +2,6 @@ import { selectedCell, myWorldMap, logKeyDowns, addableActorsList, selectedActor
 import { displayCellContents, updateWorldTable } from "../worldMap.js"
 
 //for clicking on table cells
-//Used in worldMap
 export function clickHandler(e) {
     //the displaying of a cell and messing with selectedCell value requires that there IS a cell clicked on
     if ((e.target.cellIndex || e.target.cellIndex === 0) && (e.target.parentElement.rowIndex || e.target.parentElement.rowIndex === 0)) {
@@ -18,6 +17,21 @@ export function clickHandler(e) {
         displayCellContents(myWorldMap, ...selectedCell);
     }
 }
+
+//for double clicking on table cells
+export function doubleClickHandler(e){
+    //requires that a cell have been clicked on
+    if ((e.target.cellIndex || e.target.cellIndex === 0) && (e.target.parentElement.rowIndex || e.target.parentElement.rowIndex === 0)) {
+        //if there's a top actor, display it
+        if(myWorldMap[selectedCell[0]][selectedCell[1]].currentDisplayedActor){
+            displaySelectedActor(myWorldMap[selectedCell[0]][selectedCell[1]].currentDisplayedActor);
+            displayCellContents(myWorldMap,selectedCell[0],selectedCell[1]);
+        }
+        
+    }
+}
+
+
 
 export function keydownHandler(e) {
     if (logKeyDowns) { console.log(e.code); }
@@ -68,7 +82,6 @@ export function displaySelectedActor(actor) {
         selectedActor.pop();
         selectedActor.push(actor);
     }
-
     document.getElementById("selectedActorName").innerHTML = (
         `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
     )
