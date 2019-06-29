@@ -1,6 +1,7 @@
 # my-test-things
 Hello hello hello!
-Link to actual thing: 
+
+Link to actual thing: https://ducanishah.github.io/my-test-things/
 
 This is a practice in using vanilla JS and HTML to create a web-something-or-other.
 Grid based, with a nice table.
