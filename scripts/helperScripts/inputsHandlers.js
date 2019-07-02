@@ -94,7 +94,7 @@ export function displaySelectedActor(actor) {
         displayActions();
 
     }
-    if(actor){
+    if(actor && actor!==selectedActor[0]){
         selectedActor.push(actor);
         //add class to newly selected actor's cell
         if(table){
