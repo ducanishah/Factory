@@ -71,8 +71,11 @@ export function selectActorHandler(e) {
 }
 
 //displays selected actor! Has functions within functions!
+//CALL WITHOUT ARGUMENT TO CLEAR SELECTED ACTOR
 export function displaySelectedActor(actor) {
     let table = document.getElementById("tableWrapper").children[0];
+    //just in case of mistakes, this will keep infinite recursion at bay
+    let recursionLimit = 10;
 
     //in case of actor being selected in a way other than clicking
     if (selectedActor[0] && selectedActor[0] !== actor) {
@@ -83,27 +86,35 @@ export function displaySelectedActor(actor) {
             table.children[previousActorLocation.y].children[previousActorLocation.x].classList.remove("containsSelectedActor");
         }
         selectedActor.pop();
+        document.getElementById("selectedActorName").innerHTML = ("")
+        let existingul = document.getElementById("selectedActorProperties")
+        let newul=document.createElement("ul");
+        newul.id="selectedActorProperties";
+        existingul.parentNode.replaceChild(newul, existingul);
+        displayActions();
+
     }
-    selectedActor.push(actor);
-    //add class to newly selected actor's cell
-    if(table){
-        table.children[actor.location.y].children[actor.location.x].classList.add("containsSelectedActor");
+    if(actor){
+        selectedActor.push(actor);
+        //add class to newly selected actor's cell
+        if(table){
+            table.children[actor.location.y].children[actor.location.x].classList.add("containsSelectedActor");
+        }
+        
+    
+        document.getElementById("selectedActorName").innerHTML = (
+            `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
+        )
+    
+        let existingul = document.getElementById("selectedActorProperties")
+        
+        let newul = createNestedListFrom(actor);
+        existingul.parentNode.replaceChild(newul, existingul);
+    
+        displayActions(actor);
     }
     
-
-    document.getElementById("selectedActorName").innerHTML = (
-        `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
-    )
-
-    let existingul = document.getElementById("selectedActorProperties")
-    //just in case of mistakes, this will keep infinite recursion at bay
-    let recursionLimit = 10;
-    let newul = createNestedListFrom(actor);
-    existingul.parentNode.replaceChild(newul, existingul);
-
-    displayActions(actor);
-
-
+    
     //RECURSIVE PROPERTY DISPLAYING!!!!!
     function createNestedListFrom(parent) {
         recursionLimit--;
@@ -148,7 +159,7 @@ export function displaySelectedActor(actor) {
         while (actionsWrapper.firstChild) {
             actionsWrapper.removeChild(actionsWrapper.firstChild);
         }
-        if (actor.moveSet) {
+        if (actor && actor.moveSet) {
             let moveButtons = [];
             for (let i = 0; i < actor.moveSet.moves.length; i++) {
                 if (actor.moveSet.moves[i].enabled === true) {

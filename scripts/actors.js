@@ -1,6 +1,7 @@
-import {myActorHolder} from "./index.js"
-import {actorPlace} from "./worldMap.js"
+import {myActorHolder, selectedActor, myWorldMap} from "./index.js"
+import {actorPlace, updateWorldTable} from "./worldMap.js"
 import {MoveSet, Move,TestMove,ShiftOneSpace} from "./moves.js"
+import { displaySelectedActor } from "./helperScripts/inputsHandlers.js";
 //constructor parameters: worldMap, x value, y value, display priority, name, symbol
 //modify displayString on inheritees(?) to change what is displayed in display window
 export class Actor {
@@ -16,7 +17,16 @@ export class Actor {
         myActorHolder.aliveActors.push(this);
         actorPlace(worldMap,this,xSet,ySet);
     }
-
+    
+    destroy(){
+        if(this.location){
+            if(selectedActor[0]===this){
+                displaySelectedActor();
+            }
+            this.location.presentActors.splice(this.location.presentActors.indexOf(this),1);
+            updateWorldTable(myWorldMap);
+        }
+    }
 }
 
 export class ActorHolder {
@@ -59,5 +69,6 @@ export class TestObject extends Actor{
         }
         this.moveSet=new MoveSet(this);
         this.moveSet.add(ShiftOneSpace);
+        this.moveSet.add(TestMove);
     }
 }
