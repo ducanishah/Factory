@@ -1,20 +1,13 @@
-import { selectedCell, myWorldMap, logKeyDowns, addableActorsList, selectedActor } from "../index.js"
+import { selectedCell, myWorldMap, logKeyDowns, addableActorsList, selectedActor, setmyWorldMapAndRedisplay } from "../index.js"
 import { displayCellContents, updateWorldTable } from "../worldMap.js"
+import {handleFileInput} from "../fileReading.js"
 
 //for clicking on table cells
 export function clickHandler(e) {
     //the displaying of a cell and messing with selectedCell value requires that there IS a cell clicked on
     if ((e.target.cellIndex || e.target.cellIndex === 0) && (e.target.parentElement.rowIndex || e.target.parentElement.rowIndex === 0)) {
-        //clear tint from last selected cell (if one exists)
-        if (selectedCell.length) {
-            let td = document.getElementById("tableWrapper").children[0].children[selectedCell[1]].children[selectedCell[0]];
-            td.classList.remove("selectedCell");
-        }
-        selectedCell.length = 0;
-        selectedCell.push(e.target.cellIndex, e.target.parentElement.rowIndex);
-        //Tint the selected cell border
-        // e.target.classList.add("selectedCell");
-        displayCellContents(myWorldMap, ...selectedCell);
+        
+        displayCellContents(myWorldMap, e.target.cellIndex,e.target.parentElement.rowIndex);
     }
 }
 
@@ -23,8 +16,8 @@ export function doubleClickHandler(e) {
     //requires that a cell have been clicked on
     if ((e.target.cellIndex || e.target.cellIndex === 0) && (e.target.parentElement.rowIndex || e.target.parentElement.rowIndex === 0)) {
         //if there's a top actor, display it
-        if (myWorldMap[selectedCell[0]][selectedCell[1]].currentDisplayedActor) {
-            displaySelectedActor(myWorldMap[selectedCell[0]][selectedCell[1]].currentDisplayedActor);
+        if (myWorldMap.map[selectedCell[0]][selectedCell[1]].currentDisplayedActor) {
+            displaySelectedActor(myWorldMap.map[selectedCell[0]][selectedCell[1]].currentDisplayedActor);
             displayCellContents(myWorldMap, selectedCell[0], selectedCell[1]);
         }
 
@@ -64,15 +57,18 @@ export function selectActorHandler(e) {
 
     displaySelectedActor(
         //gets actor
-        myWorldMap[selectedCell[0]][selectedCell[1]].presentActors[
+        myWorldMap.map[selectedCell[0]][selectedCell[1]].presentActors[
         //this gets the index of the selected node
         [...e.target.parentNode.children].indexOf(e.target)
         ]);
 }
 
 //displays selected actor! Has functions within functions!
+//CALL WITHOUT ARGUMENT TO CLEAR SELECTED ACTOR
 export function displaySelectedActor(actor) {
     let table = document.getElementById("tableWrapper").children[0];
+    //just in case of mistakes, this will keep infinite recursion at bay
+    let recursionLimit = 10;
 
     //in case of actor being selected in a way other than clicking
     if (selectedActor[0] && selectedActor[0] !== actor) {
@@ -83,27 +79,35 @@ export function displaySelectedActor(actor) {
             table.children[previousActorLocation.y].children[previousActorLocation.x].classList.remove("containsSelectedActor");
         }
         selectedActor.pop();
+        document.getElementById("selectedActorName").innerHTML = ("")
+        let existingul = document.getElementById("selectedActorProperties")
+        let newul=document.createElement("ul");
+        newul.id="selectedActorProperties";
+        existingul.parentNode.replaceChild(newul, existingul);
+        displayActions();
+
     }
-    selectedActor.push(actor);
-    //add class to newly selected actor's cell
-    if(table){
-        table.children[actor.location.y].children[actor.location.x].classList.add("containsSelectedActor");
+    if(actor && actor!==selectedActor[0]){
+        selectedActor.push(actor);
+        //add class to newly selected actor's cell
+        if(table){
+            table.children[actor.location.y].children[actor.location.x].classList.add("containsSelectedActor");
+        }
+        
+    
+        document.getElementById("selectedActorName").innerHTML = (
+            `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
+        )
+    
+        let existingul = document.getElementById("selectedActorProperties")
+        
+        let newul = createNestedListFrom(actor);
+        existingul.parentNode.replaceChild(newul, existingul);
+    
+        displayActions(actor);
     }
     
-
-    document.getElementById("selectedActorName").innerHTML = (
-        `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
-    )
-
-    let existingul = document.getElementById("selectedActorProperties")
-    //just in case of mistakes, this will keep infinite recursion at bay
-    let recursionLimit = 10;
-    let newul = createNestedListFrom(actor);
-    existingul.parentNode.replaceChild(newul, existingul);
-
-    displayActions(actor);
-
-
+    
     //RECURSIVE PROPERTY DISPLAYING!!!!!
     function createNestedListFrom(parent) {
         recursionLimit--;
@@ -148,7 +152,7 @@ export function displaySelectedActor(actor) {
         while (actionsWrapper.firstChild) {
             actionsWrapper.removeChild(actionsWrapper.firstChild);
         }
-        if (actor.moveSet) {
+        if (actor && actor.moveSet) {
             let moveButtons = [];
             for (let i = 0; i < actor.moveSet.moves.length; i++) {
                 if (actor.moveSet.moves[i].enabled === true) {
@@ -163,4 +167,10 @@ export function displaySelectedActor(actor) {
         }
     }
 
+}
+
+//sets myWorldMap to the created map; redisplays it
+export async function fileInputHandler(e){
+    let map= await handleFileInput(e);
+    setmyWorldMapAndRedisplay(map);    
 }
