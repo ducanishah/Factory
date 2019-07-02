@@ -158,7 +158,7 @@ export function displaySelectedActor(actor) {
                 if (actor.moveSet.moves[i].enabled === true) {
                     let newMoveButton = document.createElement("button");
                     newMoveButton.innerText = actor.moveSet.moves[i].name;
-                    newMoveButton.onclick = actor.moveSet.moves[i].execute;
+                    newMoveButton.onclick = actor.moveSet.moves[i].addToQueue;
                     moveButtons.push(newMoveButton);
                 }
             }
@@ -173,4 +173,24 @@ export function displaySelectedActor(actor) {
 export async function fileInputHandler(e){
     let map= await handleFileInput(e);
     setmyWorldMapAndRedisplay(map);    
+}
+
+//call without arguments to clear move queue display
+export function displayMoveQueue(moveQueue){
+    let holder= document.getElementById("moveQueue");
+    while(holder.firstChild){
+        holder.removeChild(holder.firstChild);
+    }
+    if(moveQueue){
+        for(let i=0; i<moveQueue.queue.length; i++){
+            let p=document.createElement("p");
+            p.innerHTML=moveQueue.queue[i].name+",";
+            holder.append(p);
+        }
+    }
+    
+}
+
+export function executeMoveQueueHandler(){
+    myWorldMap.moveQueue.execute();
 }

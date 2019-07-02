@@ -7,18 +7,21 @@ import { displaySelectedActor } from "./helperScripts/inputsHandlers.js";
 export class Actor {
     constructor(worldMap,xSet, ySet, dispPrior = 0, myName, mySymbol) {
         //IMPORTANT: must push self-containing properties to this list or displaying of actor will lead to infinite recursion!
-        this.propertiesThatShouldNotBeDisplayed=["location", "propertiesThatShouldNotBeDisplayed", "name", "displayString", "mapSymbol"]
+        this.propertiesThatShouldNotBeDisplayed=["location", "mapParent", "propertiesThatShouldNotBeDisplayed", "name", "displayString", "mapSymbol"]
         this.name = myName;
         this.mapSymbol = mySymbol;
         this.displayPriority = dispPrior;
         this.location;
         this.alive=true;
+        this.mapParent=worldMap;
+        this.moveSet=new MoveSet(this);
         this.displayString=`${this.name} (${this.mapSymbol})`
         worldMap.actorHolder.aliveActors.push(this);
         actorPlace(worldMap,this,xSet,ySet);
     }
     
     destroy(){
+        this.alive=false;
         if(this.location){
             if(selectedActor[0]===this){
                 displaySelectedActor();
@@ -67,7 +70,6 @@ export class TestObject extends Actor{
             two:true,
             three:3
         }
-        this.moveSet=new MoveSet(this);
         this.moveSet.add(ShiftOneSpace);
         this.moveSet.add(TestMove);
     }

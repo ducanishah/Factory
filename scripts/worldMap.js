@@ -2,6 +2,7 @@
 import { clickHandler, doubleClickHandler } from "./helperScripts/inputsHandlers.js"
 import {selectedCell, myWorldMap, selectedActor} from "./index.js"
 import { ActorHolder } from "./actors.js";
+import { MoveQueue } from "./moves.js";
 
 
 
@@ -9,6 +10,7 @@ export class WorldMap{
     constructor(length){
         this.map=initializeWorldMap(length);
         this.actorHolder=new ActorHolder();
+        this.moveQueue=new MoveQueue();
     }
 }
 
@@ -125,6 +127,7 @@ export function actorPlace(worldMap, actor, x, y) {
     worldMap.map[x][y].presentActors.push(actor);
     //set the actors listed location properly
     actor.location = worldMap.map[x][y];
+    actor.mapParent=worldMap;
 }
 //take given cell and display info in the box AND if the cell contains the selected actor, highlights it
 export function displayCellContents(worldMap, cellX, cellY) {

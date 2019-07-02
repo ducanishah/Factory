@@ -1,6 +1,6 @@
 import { Actor, ActorHolder, Goblin, Tree, TestObject } from "./actors.js"
 import { updateWorldTable, initializeWorldMap, WorldMap } from "./worldMap.js"
-import { keydownHandler, addActorHandler, selectActorHandler, displaySelectedActor, fileInputHandler } from "./helperScripts/inputsHandlers.js"
+import { keydownHandler, addActorHandler, selectActorHandler, displaySelectedActor, fileInputHandler, executeMoveQueueHandler } from "./helperScripts/inputsHandlers.js"
 import {checkFileReaderSupported} from "./fileReading.js"
 
 export var addableActorsList = { Goblin, Tree, TestObject }
@@ -13,8 +13,7 @@ document.addEventListener("keydown", keydownHandler);
 document.getElementById("addActorButton").addEventListener("click", addActorHandler);
 //for selecting an actor from the selected cell menu
 document.getElementById("cellContents").addEventListener("click", selectActorHandler);
-
-
+document.getElementById("executeMoveQueueButton").addEventListener("click",executeMoveQueueHandler);
 
 export var myWorldMap = [];
 //assumed to be square
@@ -23,6 +22,9 @@ export var logKeyDowns = false;
 export var selectedCell = [];
 //use array for actor to get around constancy of exports
 export var selectedActor = [];
+
+
+
 
 //the calls made when the page is loaded
 function main() {
