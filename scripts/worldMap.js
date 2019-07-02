@@ -57,9 +57,7 @@ export function createWorldTable(worldMap) {
                 for (let i = 0; i < item.presentActors.length; i++) {
                     
                     if(item.presentActors[i]===selectedActor[0]){
-                        topActor=item.presentActors[i];
-                        newtd.classList.add("containsSelectedActor");
-                        break;
+                        newtd.classList.add("containsSelectedActor")
                     }
 
                     if (!topActor || item.presentActors[i].displayPriority > topActor.displayPriority) {

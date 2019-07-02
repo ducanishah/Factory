@@ -1,6 +1,6 @@
 import {myActorHolder} from "./index.js"
 import {actorPlace} from "./worldMap.js"
-import {MoveSet, Move,TestMove,ShiftOneSpace} from "./actions.js"
+import {MoveSet, Move,TestMove,ShiftOneSpace} from "./moves.js"
 //constructor parameters: worldMap, x value, y value, display priority, name, symbol
 //modify displayString on inheritees(?) to change what is displayed in display window
 export class Actor {
