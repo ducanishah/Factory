@@ -1,4 +1,4 @@
-import {myActorHolder, selectedActor, myWorldMap} from "./index.js"
+import {selectedActor, myWorldMap} from "./index.js"
 import {actorPlace, updateWorldTable} from "./worldMap.js"
 import {MoveSet, Move,TestMove,ShiftOneSpace} from "./moves.js"
 import { displaySelectedActor } from "./helperScripts/inputsHandlers.js";
@@ -14,7 +14,7 @@ export class Actor {
         this.location;
         this.alive=true;
         this.displayString=`${this.name} (${this.mapSymbol})`
-        myActorHolder.aliveActors.push(this);
+        worldMap.actorHolder.aliveActors.push(this);
         actorPlace(worldMap,this,xSet,ySet);
     }
     

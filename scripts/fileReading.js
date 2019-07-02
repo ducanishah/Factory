@@ -1,5 +1,8 @@
+import { addableActorsList } from "./index.js";
+import { WorldMap } from "./worldMap.js";
+
 //VERY IMPORTANT: if any rows are longer than any row above them, it will mess up
-//None of this is currently used
+
 
 export function checkFileReaderSupported() {
     if (window.File && window.FileReader && window.FileList) {
@@ -47,7 +50,21 @@ function fileOutputToMap(fileOutput) {
             map[j].push(content);
         }
     }
+    map=createWorldMapFromInputMap(map);
     return map;
 }
 
 
+function createWorldMapFromInputMap(map){
+    let worldMap=new WorldMap(map.length);
+    for(let i=0; i<map.length;i++){
+        for(let j=0; j<map[i].length;j++){
+            if(map[i][j]){
+                let myObject=addableActorsList[map[i][j]];
+                new myObject(worldMap,i,j);
+            }
+            
+        }
+    }
+    return worldMap;
+}
