@@ -61,6 +61,9 @@ function createWorldMapFromInputMap(map){
         for(let j=0; j<map[i].length;j++){
             if(map[i][j]){
                 let myObject=addableActorsList[map[i][j]];
+                if(!myObject){
+                    alert("There is text in this map that is not a valid object!: "+map[i][j])
+                }
                 new myObject(worldMap,i,j);
             }
             
