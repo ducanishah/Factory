@@ -1,19 +1,15 @@
 import { Actor, ActorHolder, Goblin, Tree, TestObject } from "./actors.js"
 import { updateWorldTable, initializeWorldMap, WorldMap } from "./worldMap.js"
-import { keydownHandler, addActorHandler, selectActorHandler, displaySelectedActor, fileInputHandler, executeMoveQueueHandler } from "./helperScripts/inputsHandlers.js"
-import {checkFileReaderSupported} from "./fileReading.js"
+import { keydownHandler, addActorHandler, selectActorHandler, displaySelectedActor, fileInputHandler, executeMoveQueueHandler, displayMoveQueue } from "./helperScripts/inputsHandlers.js"
+import {checkFileReaderSupported} from "./helperScripts/fileReading.js"
+import {spawnInitialActors,populateAddActorList, addBasicEventListeners} from "./helperScripts/pageSetup.js"
 
 export var addableActorsList = { Goblin, Tree, TestObject }
 
 
-
 document.addEventListener("DOMContentLoaded", main);
-document.addEventListener("keydown", keydownHandler);
-//for adding actors from the selected cell menu
-document.getElementById("addActorButton").addEventListener("click", addActorHandler);
-//for selecting an actor from the selected cell menu
-document.getElementById("cellContents").addEventListener("click", selectActorHandler);
-document.getElementById("executeMoveQueueButton").addEventListener("click",executeMoveQueueHandler);
+
+
 
 export var myWorldMap = [];
 //assumed to be square
@@ -26,11 +22,10 @@ export var selectedActor = [];
 document.getElementById("logWorldMapButton").addEventListener("click",function(){console.log(myWorldMap);});
 
 
-
 //the calls made when the page is loaded
 function main() {
     console.log("Hit main")
-
+    addBasicEventListeners();
     //if FileReader is supported, set up the handling. if not, tell me
     if (checkFileReaderSupported()) {
         document.getElementById("fileInput").addEventListener("change", fileInputHandler);
@@ -45,24 +40,12 @@ function main() {
     populateAddActorList(addableActorsList);
 }
 
-function spawnInitialActors(worldMap) {
-    displaySelectedActor(new TestObject(worldMap, 15, 15));
-    new Tree(worldMap, 0, 0)
-}
 
-//populates the addActorSelector with the given list of actors
-function populateAddActorList(actorList) {
-    let addActorOptions = []
-    Object.keys(actorList).forEach((key) => {
-        let newActorOption = document.createElement("option");
-        newActorOption.innerHTML = key;
-        addActorOptions.push(newActorOption);
-    })
-    document.getElementById("addActorSelector").append(...addActorOptions);
-}
+
 //THIS HAS TO GO ON THIS PAGE IN ORDER TO MODIFY THE EXPORTED VARIABLE
 export function setmyWorldMapAndRedisplay(map){
     myWorldMap=map;
     updateWorldTable(myWorldMap);
     displaySelectedActor();
+    displayMoveQueue(myWorldMap.moveQueue);
 }

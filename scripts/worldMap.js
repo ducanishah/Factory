@@ -75,13 +75,11 @@ export function createWorldTable(worldMap) {
                         topActor = item.presentActors[i];
                     }
                 }
-                console.log(topActor)
                 item.currentDisplayedActor=topActor;
                 //display symbol of whichever actor has highest displayPriority
                 newtd.innerHTML = topActor.mapSymbol;
                 
             } else {
-
                 item.currentDisplayedActor=undefined;
             }
             

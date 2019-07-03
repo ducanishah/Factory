@@ -1,6 +1,6 @@
 import { selectedCell, myWorldMap, logKeyDowns, addableActorsList, selectedActor, setmyWorldMapAndRedisplay } from "../index.js"
 import { displayCellContents, updateWorldTable } from "../worldMap.js"
-import {handleFileInput} from "../fileReading.js"
+import {handleFileInput} from "./fileReading.js"
 
 //for clicking on table cells
 export function clickHandler(e) {

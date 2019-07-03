@@ -67,11 +67,6 @@ export class TestObject extends Actor{
     constructor(worldMap,setX,setY){
         let dispPrior=2;
         super(worldMap,setX,setY,dispPrior,"testObject","tO");
-        this.testProps={
-            one:"one",
-            two:true,
-            three:3
-        }
         this.moveSet.add(ShiftOneSpace);
         this.moveSet.add(TestMove);
     }
