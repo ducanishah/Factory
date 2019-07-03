@@ -26,6 +26,7 @@ export class Actor {
             if(selectedActor[0]===this){
                 displaySelectedActor();
             }
+            this.mapParent.actorHolder.aliveActors.splice(this.mapParent.actorHolder.aliveActors.indexOf(this),1);
             this.location.presentActors.splice(this.location.presentActors.indexOf(this),1);
             updateWorldTable(myWorldMap);
         }
@@ -44,7 +45,7 @@ export class Player extends Actor {
         super(setX, setY, dispPrior, "player", "P");
     }
 }
-//Goblins seek out goblins of opposing teams, and destroy themselves if they share a space in update OR preupdate
+
 export class Goblin extends Actor {
     constructor(worldMap, setX, setY) {
         let dispPrior=1;
@@ -58,6 +59,7 @@ export class Tree extends Actor {
     constructor(worldMap, setX, setY) {
         let dispPrior=0
         super(worldMap, setX, setY, dispPrior, "tree", "T");
+        this.moveSet.add(TestMove)
     }
 }
 

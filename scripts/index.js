@@ -23,6 +23,7 @@ export var selectedCell = [];
 //use array for actor to get around constancy of exports
 export var selectedActor = [];
 
+document.getElementById("logWorldMapButton").addEventListener("click",function(){console.log(myWorldMap);});
 
 
 
