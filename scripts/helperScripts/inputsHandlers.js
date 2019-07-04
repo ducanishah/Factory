@@ -192,5 +192,5 @@ export function displayMoveQueue(moveQueue){
 }
 
 export function executeMoveQueueHandler(){
-    myWorldMap.moveQueue.execute();
+    myWorldMap.executeMoveQueue();
 }

@@ -4,8 +4,9 @@ import { displayMoveQueue } from "./helperScripts/inputsHandlers.js";
 
 
 export class MoveQueue {
-    constructor (){
+    constructor (worldMapParent){
         this.queue=[];
+        this.worldMapParent=worldMapParent;
     }
     add(move){
         if(this.queue.indexOf(move)===-1){
@@ -33,6 +34,15 @@ export class MoveSet {
     add(moveToAdd) {
         this.moves.push(new moveToAdd(this.context));
     }
+    queue(moveToQueueName){
+        let moveNamesList=this.moves.map(value=>value.name)
+        
+        if(moveNamesList.indexOf(moveToQueueName)===-1){
+            alert("That move is not in this MoveSet!")
+        } else {
+            this.moves[moveNamesList.indexOf(moveToQueueName)].addToQueue();
+        }
+    }
 }
 
 export class Move {
@@ -40,6 +50,7 @@ export class Move {
     this.propertiesThatShouldNotBeDisplayed = ["propertiesThatShouldNotBeDisplayed", "context","execute","addToQueue"];
         this.context = actorForContext;
         this.name = name || "Move";
+        if(this.name==="Move"){alert("THIS MOVE NEEDS IT's OWN NAME!!!")}
         // this.display=false;
         this.enabled = true; 
         this.execute = this.execute.bind(this.context);

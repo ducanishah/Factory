@@ -10,7 +10,15 @@ export class WorldMap{
     constructor(length){
         this.map=initializeWorldMap(length);
         this.actorHolder=new ActorHolder();
-        this.moveQueue=new MoveQueue();
+        this.moveQueue=new MoveQueue(this);
+    }
+    autoQueueMoves(){
+        //just passes on the command lol
+        this.actorHolder.autoQueueMoves();
+    }
+    executeMoveQueue(){
+        //same as above lol
+        this.moveQueue.execute();
     }
 }
 
