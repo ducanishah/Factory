@@ -19,7 +19,10 @@ export class Actor {
         worldMap.actorHolder.aliveActors.push(this);
         actorPlace(worldMap,this,xSet,ySet);
     }
-    
+    //should be replaced in inheritees!
+    autoQueue(){
+
+    }
     destroy(){
         this.alive=false;
         if(this.location){
@@ -32,10 +35,15 @@ export class Actor {
         }
     }
 }
-
+//autoQueue called here
 export class ActorHolder {
     constructor() {
         this.aliveActors = [];
+    }
+    autoQueueMoves(){
+        for(let i=0;i<this.aliveActors.length;i++){
+            this.aliveActors[i].autoQueue();
+        }
     }
 }
 
@@ -69,5 +77,8 @@ export class TestObject extends Actor{
         super(worldMap,setX,setY,dispPrior,"testObject","tO");
         this.moveSet.add(ShiftOneSpace);
         this.moveSet.add(TestMove);
+    }
+    autoQueue(){
+        this.moveSet.queue("TestMove");
     }
 }

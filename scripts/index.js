@@ -1,6 +1,6 @@
-import { Actor, ActorHolder, Goblin, Tree, TestObject } from "./actors.js"
-import { updateWorldTable, initializeWorldMap, WorldMap } from "./worldMap.js"
-import { keydownHandler, addActorHandler, selectActorHandler, displaySelectedActor, fileInputHandler, executeMoveQueueHandler, displayMoveQueue } from "./helperScripts/inputsHandlers.js"
+import { Goblin, Tree, TestObject } from "./actors.js"
+import { updateWorldTable,  WorldMap } from "./worldMap.js"
+import { displaySelectedActor, fileInputHandler, displayMoveQueue } from "./helperScripts/inputsHandlers.js"
 import {checkFileReaderSupported} from "./helperScripts/fileReading.js"
 import {spawnInitialActors,populateAddActorList, addBasicEventListeners} from "./helperScripts/pageSetup.js"
 
@@ -20,6 +20,7 @@ export var selectedCell = [];
 export var selectedActor = [];
 
 document.getElementById("logWorldMapButton").addEventListener("click",function(){console.log(myWorldMap);});
+document.getElementById("autoQueueMovesButton").addEventListener("click", function(){myWorldMap.autoQueueMoves()})
 
 
 //the calls made when the page is loaded
@@ -39,8 +40,6 @@ function main() {
     updateWorldTable(myWorldMap);
     populateAddActorList(addableActorsList);
 }
-
-
 
 //THIS HAS TO GO ON THIS PAGE IN ORDER TO MODIFY THE EXPORTED VARIABLE
 export function setmyWorldMapAndRedisplay(map){
