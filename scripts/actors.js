@@ -35,7 +35,7 @@ export class Actor {
         }
     }
 }
-//also calls autoQueue
+//autoQueue called here
 export class ActorHolder {
     constructor() {
         this.aliveActors = [];
