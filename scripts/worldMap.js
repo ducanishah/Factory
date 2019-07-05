@@ -8,12 +8,13 @@ import { MoveQueue } from "./moves.js";
 
 export class WorldMap{
     constructor(length){
-        this.map=initializeWorldMap(length);
+        this.map=initializeWorldMap(this,length);
         this.actorHolder=new ActorHolder();
         this.moveQueue=new MoveQueue(this);
     }
     autoQueueMoves(){
-        //just passes on the command lol
+        //just passes on the commands lol
+        this.moveQueue.emptyQueue()
         this.actorHolder.autoQueueMoves();
     }
     executeMoveQueue(){
@@ -25,8 +26,9 @@ export class WorldMap{
 //x,y
 //has: presentActor,x,y,cameFrom,currentDisplayedActor
 export class WorldLocation {
-    constructor(setX, setY) {
-        this.presentActors = []
+    constructor(worldMap,setX, setY) {
+        this.presentActors = [];
+        this.mapParent=worldMap;
         this.x = setX;
         this.y = setY;
         this.cameFrom;
@@ -50,12 +52,12 @@ export function updateWorldTable(worldMap) {
     }
 }
 //initializes an empty worldMap with only the empty WorldLocations
-export function initializeWorldMap(length) {
+export function initializeWorldMap(parentWorldMap,length) {
     let worldMap=[]
     for (let i = 0; i < length; i++) {
         worldMap[i] = new Array(length);
         for (let ind = 0; ind < worldMap[i].length; ind++) {
-            worldMap[i][ind] = new WorldLocation(i, ind);
+            worldMap[i][ind] = new WorldLocation(parentWorldMap,i, ind);
         }
     }
     return worldMap;
@@ -176,3 +178,30 @@ export function displayCellContents(worldMap, cellX, cellY) {
     
 }
 
+//checks if a target location contains a non-passable actor (e.g. a wall)
+export function testIsPassable(location){
+    
+    let targetLocationActors=location.presentActors;
+    for (let i=0; i<targetLocationActors.length;i++){
+        if (targetLocationActors[i].isPassable===false){
+            return false;
+        }
+    }
+    return true;
+}
+//Accepts the location object, returns location objects
+export function getNeighborLocations(location) {
+    let coordsToTest = [
+        [location.x + 1, location.y],
+        [location.x - 1, location.y],
+        [location.x, location.y + 1],
+        [location.x, location.y - 1]
+    ]
+    let neighbors = [];
+    for (let i = 0; i < coordsToTest.length; i++) {
+        if (location.mapParent.map[coordsToTest[i][0]] && location.mapParent.map[coordsToTest[i][0]][coordsToTest[i][1]]) {
+            neighbors.push(location.mapParent.map[coordsToTest[i][0]][coordsToTest[i][1]]);
+        }
+    }
+    return neighbors;
+}

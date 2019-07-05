@@ -1,10 +1,10 @@
-import { Goblin, Tree, TestObject } from "./actors.js"
+import { Goblin, Tree, TestObject, Wall } from "./actors.js"
 import { updateWorldTable,  WorldMap } from "./worldMap.js"
 import { displaySelectedActor, fileInputHandler, displayMoveQueue } from "./helperScripts/inputsHandlers.js"
 import {checkFileReaderSupported} from "./helperScripts/fileReading.js"
 import {spawnInitialActors,populateAddActorList, addBasicEventListeners} from "./helperScripts/pageSetup.js"
 
-export var addableActorsList = { Goblin, Tree, TestObject }
+export var addableActorsList = { Goblin, Tree, TestObject, Wall }
 
 
 document.addEventListener("DOMContentLoaded", main);
@@ -14,13 +14,12 @@ document.addEventListener("DOMContentLoaded", main);
 export var myWorldMap = [];
 //assumed to be square
 var worldMapLength = 16;
-export var logKeyDowns = false;
 export var selectedCell = [];
 //use array for actor to get around constancy of exports
 export var selectedActor = [];
 
 document.getElementById("logWorldMapButton").addEventListener("click",function(){console.log(myWorldMap);});
-document.getElementById("autoQueueMovesButton").addEventListener("click", function(){myWorldMap.autoQueueMoves()})
+document.getElementById("autoQueueMovesButton").addEventListener("click", function(){myWorldMap.autoQueueMoves()});
 
 
 //the calls made when the page is loaded

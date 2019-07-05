@@ -1,4 +1,4 @@
-import { selectedCell, myWorldMap, logKeyDowns, addableActorsList, selectedActor, setmyWorldMapAndRedisplay } from "../index.js"
+import { selectedCell, myWorldMap,  addableActorsList, selectedActor, setmyWorldMapAndRedisplay } from "../index.js"
 import { displayCellContents, updateWorldTable } from "../worldMap.js"
 import {handleFileInput} from "./fileReading.js"
 
@@ -23,9 +23,17 @@ export function doubleClickHandler(e) {
 
     }
 }
-//currently does nothing but logKeyDowns if you flip that global var
+//currently used for AutoQueue and ExecuteQueue
 export function keydownHandler(e) {
-    if (logKeyDowns) { console.log(e.code); }
+    // console.log(e.code); 
+    switch(e.code){
+        case "KeyA":
+            myWorldMap.autoQueueMoves();
+            break;
+        case "KeyM":
+            executeMoveQueueHandler();
+            break;
+    }
 
 }
 //adds selected actor to the worldMap AND updates the world table
@@ -87,7 +95,7 @@ export function displaySelectedActor(actor) {
         displayActions();
 
     }
-    if(actor && actor!==selectedActor[0]){
+    if(actor){
         selectedActor.push(actor);
         //add class to newly selected actor's cell
         if(table){
