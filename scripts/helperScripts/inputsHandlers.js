@@ -23,9 +23,10 @@ export function doubleClickHandler(e) {
 
     }
 }
-//currently used for AutoQueue and ExecuteQueue and runRound
+//currently used for AutoQueue and ExecuteQueue and runRound AND cellSwitchByKey
 export function keydownHandler(e) {
-    // console.log(e.code); 
+    // console.log(e.code);
+    let newSelectedCoords = [];
     switch (e.code) {
         case "KeyQ":
             myWorldMap.autoQueueMoves();
@@ -39,10 +40,33 @@ export function keydownHandler(e) {
         case "KeyA":
             addActorHandler();
             break;
+        //cell switching
+        case "ArrowUp":
+            if (selectedCell.length) {
+                newSelectedCoords = [selectedCell[0], selectedCell[1] - 1]
+            }
+            break;
+        case "ArrowDown":
+            if (selectedCell.length) {
+                newSelectedCoords = [selectedCell[0], selectedCell[1] + 1]
+            }
+            break;
+        case "ArrowLeft":
+            if (selectedCell.length) {
+                newSelectedCoords = [selectedCell[0] - 1, selectedCell[1]]
+            }
+            break;
+        case "ArrowRight":
+            if (selectedCell.length) {
+                newSelectedCoords = [selectedCell[0] + 1, selectedCell[1]]
+            }
+            break;
     }
-
+    if (newSelectedCoords && myWorldMap.map[newSelectedCoords[0]] && myWorldMap.map[newSelectedCoords[0]][newSelectedCoords[1]]) {
+        displayCellContents(myWorldMap, newSelectedCoords[0], newSelectedCoords[1]);
+    }
 }
-//adds selected actor to the worldMap AND updates the world table
+//adds selected actor to the worldMap AND updates the world table 
 export function addActorHandler(e) {
     if (!selectedCell.length) {
         alert("You need to select a cell to add an actor!")
@@ -212,3 +236,5 @@ export function executeMoveQueueHandler() {
 export function runRoundHandler() {
     myWorldMap.runRound();
 }
+
+

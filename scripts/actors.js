@@ -2,7 +2,7 @@ import {selectedActor, myWorldMap} from "./index.js"
 import {actorPlace, updateWorldTable} from "./worldMap.js"
 import {MoveSet, Move,TestMove,ShiftOneSpace} from "./moves.js"
 import { displaySelectedActor } from "./helperScripts/inputsHandlers.js";
-import {breadthFirstPathfindingToFrom} from "./pathfinding.js"
+import {breadthFirstPathfindingToFrom,getAllActorsPathableToFrom} from "./pathfinding.js"
 //constructor parameters: worldMap, x value, y value, display priority, name, symbol
 //modify displayString on inheritees(?) to change what is displayed in display window
 export class Actor {
@@ -80,6 +80,7 @@ export class TestObject extends Actor{
         this.moveSet.add(TestMove);
     }
     autoQueue(){
+        console.log(getAllActorsPathableToFrom(this))
         let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,this.mapParent.map[0][0])[0];
         if(firstStepOnPath){
             this.moveSet.queue("Shift",{target:firstStepOnPath});

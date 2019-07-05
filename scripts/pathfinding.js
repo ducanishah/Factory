@@ -54,3 +54,32 @@ export function breadthFirstPathfindingToFrom(startLocation, goalLocation) {
         }
     }
 }
+
+export function getAllActorsPathableToFrom(actor) {
+    let frontier = [actor.location];
+    let visited = [];
+    let actorList=[];
+    let breakOutOfLoop = false;
+    while (frontier.length) {
+        actorList.push(...frontier[0].presentActors);
+        let currentNeighbors = getNeighborLocations(frontier[0]);
+        for (let i = 0; i < currentNeighbors.length; i++) {
+            if (
+                visited.indexOf(currentNeighbors[i]) === -1
+                && frontier.indexOf(currentNeighbors[i]) === -1
+                
+            ) {
+                currentNeighbors[i].cameFrom=undefined;
+                if(testIsPassable(currentNeighbors[i])){
+                    frontier.push(currentNeighbors[i]);
+                }
+            }
+        }
+        visited.push(frontier.shift());
+    }
+    if(actorList.indexOf(actor)===-1){
+        alert("The actor searching did not include origin actor! something is fucky!")
+    }
+    actorList.splice(actorList.indexOf(actor),1);
+    return actorList;
+}
