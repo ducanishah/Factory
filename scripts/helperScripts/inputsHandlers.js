@@ -42,22 +42,22 @@ export function keydownHandler(e) {
             break;
         //cell switching
         case "ArrowUp":
-            if (selectedCell.length) {
+            if (selectedCell.length && document.activeElement!==document.getElementById("addActorSelector")) {
                 newSelectedCoords = [selectedCell[0], selectedCell[1] - 1]
             }
             break;
         case "ArrowDown":
-            if (selectedCell.length) {
+            if (selectedCell.length && document.activeElement!==document.getElementById("addActorSelector")) {
                 newSelectedCoords = [selectedCell[0], selectedCell[1] + 1]
             }
             break;
         case "ArrowLeft":
-            if (selectedCell.length) {
+            if (selectedCell.length && document.activeElement!==document.getElementById("addActorSelector")) {
                 newSelectedCoords = [selectedCell[0] - 1, selectedCell[1]]
             }
             break;
         case "ArrowRight":
-            if (selectedCell.length) {
+            if (selectedCell.length && document.activeElement!==document.getElementById("addActorSelector")) {
                 newSelectedCoords = [selectedCell[0] + 1, selectedCell[1]]
             }
             break;
