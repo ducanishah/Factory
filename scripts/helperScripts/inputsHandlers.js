@@ -1,13 +1,13 @@
-import { selectedCell, myWorldMap,  addableActorsList, selectedActor, setmyWorldMapAndRedisplay } from "../index.js"
+import { selectedCell, myWorldMap, addableActorsList, selectedActor, setmyWorldMapAndRedisplay } from "../index.js"
 import { displayCellContents, updateWorldTable } from "../worldMap.js"
-import {handleFileInput} from "./fileReading.js"
+import { handleFileInput } from "./fileReading.js"
 
 //for clicking on table cells
 export function clickHandler(e) {
     //the displaying of a cell and messing with selectedCell value requires that there IS a cell clicked on
     if ((e.target.cellIndex || e.target.cellIndex === 0) && (e.target.parentElement.rowIndex || e.target.parentElement.rowIndex === 0)) {
-        
-        displayCellContents(myWorldMap, e.target.cellIndex,e.target.parentElement.rowIndex);
+
+        displayCellContents(myWorldMap, e.target.cellIndex, e.target.parentElement.rowIndex);
     }
 }
 
@@ -23,15 +23,21 @@ export function doubleClickHandler(e) {
 
     }
 }
-//currently used for AutoQueue and ExecuteQueue
+//currently used for AutoQueue and ExecuteQueue and runRound
 export function keydownHandler(e) {
     // console.log(e.code); 
-    switch(e.code){
-        case "KeyA":
+    switch (e.code) {
+        case "KeyQ":
             myWorldMap.autoQueueMoves();
             break;
         case "KeyM":
             executeMoveQueueHandler();
+            break;
+        case "KeyR":
+            runRoundHandler();
+            break;
+        case "KeyA":
+            addActorHandler();
             break;
     }
 
@@ -89,33 +95,33 @@ export function displaySelectedActor(actor) {
         selectedActor.pop();
         document.getElementById("selectedActorName").innerHTML = ("")
         let existingul = document.getElementById("selectedActorProperties")
-        let newul=document.createElement("ul");
-        newul.id="selectedActorProperties";
+        let newul = document.createElement("ul");
+        newul.id = "selectedActorProperties";
         existingul.parentNode.replaceChild(newul, existingul);
         displayActions();
 
     }
-    if(actor){
+    if (actor) {
         selectedActor.push(actor);
         //add class to newly selected actor's cell
-        if(table){
+        if (table) {
             table.children[actor.location.y].children[actor.location.x].classList.add("containsSelectedActor");
         }
-        
-    
+
+
         document.getElementById("selectedActorName").innerHTML = (
             `${selectedActor[0].name} (${selectedActor[0].location.x},${selectedActor[0].location.y})`
         )
-    
+
         let existingul = document.getElementById("selectedActorProperties")
-        
+
         let newul = createNestedListFrom(actor);
         existingul.parentNode.replaceChild(newul, existingul);
-    
+
         displayActions(actor);
     }
-    
-    
+
+
     //RECURSIVE PROPERTY DISPLAYING!!!!!
     function createNestedListFrom(parent) {
         recursionLimit--;
@@ -178,27 +184,31 @@ export function displaySelectedActor(actor) {
 }
 
 //sets myWorldMap to the created map; redisplays it
-export async function fileInputHandler(e){
-    let map= await handleFileInput(e);
-    setmyWorldMapAndRedisplay(map);    
+export async function fileInputHandler(e) {
+    let map = await handleFileInput(e);
+    setmyWorldMapAndRedisplay(map);
 }
 
 //call without arguments to clear move queue display
-export function displayMoveQueue(moveQueue){
-    let holder= document.getElementById("moveQueue");
-    while(holder.firstChild){
+export function displayMoveQueue(moveQueue) {
+    let holder = document.getElementById("moveQueue");
+    while (holder.firstChild) {
         holder.removeChild(holder.firstChild);
     }
-    if(moveQueue){
-        for(let i=0; i<moveQueue.queue.length; i++){
-            let p=document.createElement("p");
-            p.innerHTML=moveQueue.queue[i].name+",";
+    if (moveQueue) {
+        for (let i = 0; i < moveQueue.queue.length; i++) {
+            let p = document.createElement("p");
+            p.innerHTML = moveQueue.queue[i].name + ",";
             holder.append(p);
         }
     }
-    
+
 }
 
-export function executeMoveQueueHandler(){
+export function executeMoveQueueHandler() {
     myWorldMap.executeMoveQueue();
+}
+
+export function runRoundHandler() {
+    myWorldMap.runRound();
 }

@@ -1,6 +1,7 @@
 import { TestObject, Tree, Goblin } from "../actors.js"
-import { displaySelectedActor, keydownHandler, addActorHandler, selectActorHandler, executeMoveQueueHandler } from "./inputsHandlers.js"
-
+import { displaySelectedActor, keydownHandler, addActorHandler, 
+    selectActorHandler, executeMoveQueueHandler,runRoundHandler } from "./inputsHandlers.js"
+import {myWorldMap} from "../index.js"
 
 export function addBasicEventListeners() {
     document.addEventListener("keydown", keydownHandler);
@@ -9,6 +10,9 @@ export function addBasicEventListeners() {
     //for selecting an actor from the selected cell menu
     document.getElementById("cellContents").addEventListener("click", selectActorHandler);
     document.getElementById("executeMoveQueueButton").addEventListener("click", executeMoveQueueHandler);
+    document.getElementById("logWorldMapButton").addEventListener("click",function(){console.log(myWorldMap);});
+    document.getElementById("autoQueueMovesButton").addEventListener("click", function(){myWorldMap.autoQueueMoves()});
+    document.getElementById("runRoundButton").addEventListener("click",runRoundHandler);
 }
 
 export function spawnInitialActors(worldMap) {

@@ -18,8 +18,7 @@ export var selectedCell = [];
 //use array for actor to get around constancy of exports
 export var selectedActor = [];
 
-document.getElementById("logWorldMapButton").addEventListener("click",function(){console.log(myWorldMap);});
-document.getElementById("autoQueueMovesButton").addEventListener("click", function(){myWorldMap.autoQueueMoves()});
+
 
 
 //the calls made when the page is loaded

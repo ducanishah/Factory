@@ -80,7 +80,10 @@ export class TestObject extends Actor{
         this.moveSet.add(TestMove);
     }
     autoQueue(){
-        this.moveSet.queue("Shift",{target:breadthFirstPathfindingToFrom(this.location,this.mapParent.map[0][0])[0]});
+        let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,this.mapParent.map[0][0])[0];
+        if(firstStepOnPath){
+            this.moveSet.queue("Shift",{target:firstStepOnPath});
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-import {testIsPassable, getNeighborLocations} from "./worldMap.js"
+import { testIsPassable, getNeighborLocations } from "./worldMap.js"
 
 export function breadthFirstPathfindingToFrom(startLocation, goalLocation) {
     let frontier = [startLocation];
@@ -10,13 +10,16 @@ export function breadthFirstPathfindingToFrom(startLocation, goalLocation) {
             if (
                 visited.indexOf(currentNeighbors[i]) === -1
                 && frontier.indexOf(currentNeighbors[i]) === -1
-                && testIsPassable(currentNeighbors[i])
+                
             ) {
-                frontier.push(currentNeighbors[i]);
-                currentNeighbors[i].cameFrom = frontier[0];
-                if (currentNeighbors[i] === goalLocation) {
-                    breakOutOfLoop = true;
-                    break;
+                currentNeighbors[i].cameFrom=undefined;
+                if(testIsPassable(currentNeighbors[i])){
+                    frontier.push(currentNeighbors[i]);
+                    currentNeighbors[i].cameFrom = frontier[0];
+                    if (currentNeighbors[i] === goalLocation) {
+                        breakOutOfLoop = true;
+                        break;
+                    }
                 }
             }
         }
@@ -40,10 +43,14 @@ export function breadthFirstPathfindingToFrom(startLocation, goalLocation) {
         if (path[path.length - 1].cameFrom) {
             path.push(path[path.length - 1].cameFrom)
         } else {
-            path.reverse()
-            path.shift()
-            path.shift()
-            return path;
+            if (path.indexOf(startLocation) !== -1) {
+                path.reverse()
+                path.shift()
+                path.shift()
+                return path;
+            } else {
+                return false;
+            }
         }
     }
 }
