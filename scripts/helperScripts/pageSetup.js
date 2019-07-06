@@ -18,7 +18,8 @@ export function addBasicEventListeners() {
 export function spawnInitialActors(worldMap) {
     
     new Tree(worldMap, 0, 0)
-    new Goblin(worldMap,15,15)
+    new Goblin(worldMap,15,15,1)
+    new Goblin(worldMap,15,10,2)
 }
 
 //populates the addActorSelector with the given list of actors

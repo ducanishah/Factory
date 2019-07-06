@@ -84,13 +84,11 @@ export function getAllActorsPathableToFrom(actor) {
 }
 //returns closest actor from list. if multiple, returns a random one
 export function getClosestActorOfFrom(listOfActors,actor){
-    let actorCoords=[actor.location.x,actor.location.y]
     let closestActors=[];
     let distToClosestActors=undefined;
     
     for(let i=0;i<listOfActors.length;i++){
-        let currentCoords=[listOfActors[i].location.x,listOfActors[i].location.y];
-        let distToActor=Math.abs(actorCoords[0]-currentCoords[0])+Math.abs(actorCoords[1]-currentCoords[1]);
+        let distToActor=getDistFromTo(listOfActors[i],actor);
         if(!distToClosestActors){
             closestActors.push(listOfActors[i]);
             distToClosestActors=distToActor;
@@ -107,4 +105,11 @@ export function getClosestActorOfFrom(listOfActors,actor){
     } else {
         return closestActors[Math.floor(Math.random()*closestActors.length)];
     }
+}
+
+export function getDistFromTo(firstActor,secondActor){
+    let firstCoords=[firstActor.location.x,firstActor.location.y];
+    let secondCoords=[secondActor.location.x,secondActor.location.y];
+    let dist=Math.abs(firstCoords[0]-secondCoords[0])+Math.abs(firstCoords[1]-secondCoords[1]);
+    return dist;
 }

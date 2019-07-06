@@ -1,6 +1,6 @@
 import { updateWorldTable, actorPlace } from "./worldMap.js"
 import { myWorldMap, selectedCell,selectedActor } from "./index.js";
-import { displayMoveQueue, displaySelectedActor } from "./helperScripts/inputsHandlers.js";
+import { displayMoveQueue, displaySelectedActor, fileInputHandler } from "./helperScripts/inputsHandlers.js";
 
 
 export class MoveQueue {
@@ -92,13 +92,23 @@ export class TestMove extends Move {
 
 export class ShiftOneSpace extends Move {
     constructor(actorForContext) {
-        super(actorForContext, "Shift");
+        super(actorForContext, "ShiftOneSpace");
     }
     execute() {
-        if(!this.context.alive){return;}
         if(this.moveArguments.target){
             actorPlace(this.context.mapParent,this.context,this.moveArguments.target.x,this.moveArguments.target.y)
         }
     }
 }
 
+export class Attack extends Move{
+    constructor(actorForContext){
+        super(actorForContext,"Attack");
+        this.damage=1;
+    }
+    execute(){
+        if(this.moveArguments.target){
+            this.moveArguments.target.dealDamage(this.damage);
+        }
+    }
+}

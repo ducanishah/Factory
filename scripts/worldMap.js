@@ -21,9 +21,11 @@ export class WorldMap{
         //same as above lol
         this.moveQueue.execute();
     }
+    
     runRound(){
         this.autoQueueMoves();
         this.executeMoveQueue()
+        this.actorHolder.destroyActors();
     }
 }
 
