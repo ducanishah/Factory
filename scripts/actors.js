@@ -25,6 +25,7 @@ export class Actor {
         
     }
     destroy(isCollectionPhase){
+        
         if(isCollectionPhase){
             this.alive=false;
             if(this.location){
@@ -34,9 +35,11 @@ export class Actor {
                 this.mapParent.actorHolder.aliveActors.splice(this.mapParent.actorHolder.aliveActors.indexOf(this),1);
                 this.location.presentActors.splice(this.location.presentActors.indexOf(this),1);
                 updateWorldTable(myWorldMap);
+                this.mapParent.logToRound(`${this.name} at ${this.location.x},${this.location.y} has been destroyed.`)
             }
         } else {
             this.mapParent.actorHolder.markForDestruction(this);
+            this.mapParent.logToRound(`${this.name} at ${this.location.x},${this.location.y} has been marked for destruction.`)
         }
     } 
 }
@@ -63,6 +66,7 @@ export class ActorHolder {
         for(let i=this.actorsToDestroy.length-1;i>-1;i-=1){
             this.actorsToDestroy[i].destroy(true);
         }
+        this.actorsToDestroy=[];
     }
 }
 
@@ -100,6 +104,7 @@ export class Goblin extends Actor {
     //actually is for this taking damage, it makes sense in use
     dealDamage(damage){
         this.health-=damage;
+        this.mapParent.logToRound(`Goblin at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
         if(this.health<=0){
             this.destroy();
         }

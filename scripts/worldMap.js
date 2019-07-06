@@ -3,7 +3,7 @@ import { clickHandler, doubleClickHandler } from "./helperScripts/inputsHandlers
 import {selectedCell, myWorldMap, selectedActor} from "./index.js"
 import { ActorHolder } from "./actors.js";
 import { MoveQueue } from "./moves.js";
-
+import { RoundLog } from "./helperScripts/logging.js"
 
 
 export class WorldMap{
@@ -11,6 +11,7 @@ export class WorldMap{
         this.map=initializeWorldMap(this,length);
         this.actorHolder=new ActorHolder();
         this.moveQueue=new MoveQueue(this);
+        this.roundLog=new RoundLog();
     }
     autoQueueMoves(){
         //just passes on the commands lol
@@ -21,11 +22,16 @@ export class WorldMap{
         //same as above lol
         this.moveQueue.execute();
     }
-    
     runRound(){
+        this.roundLog.newRound();
         this.autoQueueMoves();
         this.executeMoveQueue()
         this.actorHolder.destroyActors();
+        this.logToRound("Round ended")
+        console.log(this.roundLog.currentRound);
+    }
+    logToRound(obj){
+        this.roundLog.logToCurrentRound(obj);
     }
 }
 

@@ -48,6 +48,8 @@ export class MoveSet {
         } else {
             this.moves[moveNamesList.indexOf(moveToQueueName)].addToQueue();
             this.moves[moveNamesList.indexOf(moveToQueueName)].moveArguments=paramArguments;
+            this.context.mapParent.logToRound(`${this.context.name} at ${this.context.location.x},${this.context.location.y} queued ${moveToQueueName} with arguments:`);
+            this.context.mapParent.logToRound(paramArguments);
         }
     }
 }
@@ -108,7 +110,10 @@ export class Attack extends Move{
     }
     execute(){
         if(this.moveArguments.target){
+            this.context.mapParent.logToRound(`${this.context.name} at ${this.context.location.x},${this.context.location.y} is executing an attack against ${this.moveArguments.target.name} at ${this.moveArguments.target.location.x},${this.moveArguments.target.location.y} with ${this.damage} damage`);
             this.moveArguments.target.dealDamage(this.damage);
+        } else {
+            alert("No target provided!")
         }
     }
 }
