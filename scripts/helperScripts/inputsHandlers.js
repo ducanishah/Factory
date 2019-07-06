@@ -142,7 +142,7 @@ export function displaySelectedActor(actor) {
         let newul = createNestedListFrom(actor);
         existingul.parentNode.replaceChild(newul, existingul);
 
-        displayActions(actor);
+        // displayActions(actor);
     }
 
 

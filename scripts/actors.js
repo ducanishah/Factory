@@ -2,7 +2,7 @@ import {selectedActor, myWorldMap} from "./index.js"
 import {actorPlace, updateWorldTable} from "./worldMap.js"
 import {MoveSet, Move,TestMove,ShiftOneSpace} from "./moves.js"
 import { displaySelectedActor } from "./helperScripts/inputsHandlers.js";
-import {breadthFirstPathfindingToFrom,getAllActorsPathableToFrom} from "./pathfinding.js"
+import {breadthFirstPathfindingToFrom,getAllActorsPathableToFrom,getClosestActorOfFrom} from "./pathfinding.js"
 //constructor parameters: worldMap, x value, y value, display priority, name, symbol
 //modify displayString on inheritees(?) to change what is displayed in display window
 export class Actor {
@@ -22,7 +22,7 @@ export class Actor {
     }
     //should be replaced in inheritees!
     autoQueue(){
-
+        
     }
     destroy(){
         this.alive=false;
@@ -54,21 +54,28 @@ export class Player extends Actor {
         super(setX, setY, dispPrior, "player", "P");
     }
 }
-
+//runs after nearest tree
 export class Goblin extends Actor {
     constructor(worldMap, setX, setY) {
         let dispPrior=1;
         super(worldMap, setX, setY, dispPrior, "goblin", "g");
-
+        this.moveSet.add(ShiftOneSpace);
+        this.team=1;
     }
-
+    autoQueue(){
+        let target= getClosestActorOfFrom(getAllActorsPathableToFrom(this),this)
+        if(target){
+            let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,target.location)[0];
+            this.moveSet.queue("Shift",{target:firstStepOnPath});
+        }
+    }
 }
 
 export class Tree extends Actor {
     constructor(worldMap, setX, setY) {
         let dispPrior=0
         super(worldMap, setX, setY, dispPrior, "tree", "T");
-        this.moveSet.add(TestMove)
+        this.team=0;
     }
 }
 
@@ -76,16 +83,15 @@ export class TestObject extends Actor{
     constructor(worldMap,setX,setY){
         let dispPrior=2;
         super(worldMap,setX,setY,dispPrior,"testObject","tO");
-        this.moveSet.add(ShiftOneSpace);
         this.moveSet.add(TestMove);
     }
-    autoQueue(){
-        console.log(getAllActorsPathableToFrom(this))
-        let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,this.mapParent.map[0][0])[0];
-        if(firstStepOnPath){
-            this.moveSet.queue("Shift",{target:firstStepOnPath});
-        }
-    }
+    // autoQueue(){
+    //     console.log(getAllActorsPathableToFrom(this))
+    //     let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,this.mapParent.map[0][0])[0];
+    //     if(firstStepOnPath){
+    //         this.moveSet.queue("Shift",{target:firstStepOnPath});
+    //     }
+    // }
 }
 
 export class Wall extends Actor{

@@ -59,7 +59,6 @@ export function getAllActorsPathableToFrom(actor) {
     let frontier = [actor.location];
     let visited = [];
     let actorList=[];
-    let breakOutOfLoop = false;
     while (frontier.length) {
         actorList.push(...frontier[0].presentActors);
         let currentNeighbors = getNeighborLocations(frontier[0]);
@@ -82,4 +81,30 @@ export function getAllActorsPathableToFrom(actor) {
     }
     actorList.splice(actorList.indexOf(actor),1);
     return actorList;
+}
+//returns closest actor from list. if multiple, returns a random one
+export function getClosestActorOfFrom(listOfActors,actor){
+    let actorCoords=[actor.location.x,actor.location.y]
+    let closestActors=[];
+    let distToClosestActors=undefined;
+    
+    for(let i=0;i<listOfActors.length;i++){
+        let currentCoords=[listOfActors[i].location.x,listOfActors[i].location.y];
+        let distToActor=Math.abs(actorCoords[0]-currentCoords[0])+Math.abs(actorCoords[1]-currentCoords[1]);
+        if(!distToClosestActors){
+            closestActors.push(listOfActors[i]);
+            distToClosestActors=distToActor;
+        } else {
+            if(distToActor<distToClosestActors){
+                closestActors=[listOfActors[i]];
+                distToClosestActors=distToActor;
+            }
+        }
+
+    }
+    if(closestActors.length=1){
+        return closestActors[0];
+    } else {
+        return closestActors[Math.floor(Math.random()*closestActors.length)];
+    }
 }
