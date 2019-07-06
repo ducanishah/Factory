@@ -54,19 +54,30 @@ export class Player extends Actor {
         super(setX, setY, dispPrior, "player", "P");
     }
 }
-//runs after nearest tree
+//runs after nearest of differing team
 export class Goblin extends Actor {
     constructor(worldMap, setX, setY) {
         let dispPrior=1;
         super(worldMap, setX, setY, dispPrior, "goblin", "g");
         this.moveSet.add(ShiftOneSpace);
         this.team=1;
+        this.health=5;
     }
     autoQueue(){
-        let target= getClosestActorOfFrom(getAllActorsPathableToFrom(this),this)
+        let target= getClosestActorOfFrom(getAllActorsPathableToFrom(this).filter(
+            (actor)=>{
+                if(actor.team&& actor.team!==this.team){return true;} else return false;
+            }),this)
         if(target){
             let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,target.location)[0];
             this.moveSet.queue("Shift",{target:firstStepOnPath});
+        }
+    }
+    //actually is for this taking damage, it makes sense in use
+    dealDamage(damage){
+        this.health-=damage;
+        if(this.health<=0){
+            this.destroy();
         }
     }
 }
@@ -75,7 +86,6 @@ export class Tree extends Actor {
     constructor(worldMap, setX, setY) {
         let dispPrior=0
         super(worldMap, setX, setY, dispPrior, "tree", "T");
-        this.team=0;
     }
 }
 
