@@ -12,8 +12,19 @@
 
 <body>
     <div id="topBarWrapper">
-        <h3>Input Map:</h3>
-        <input type="file" id="fileInput" />
+        <div style="display:flex; flex-direction:column;">
+            <button id="logWorldMapButton">Log</button>
+            <button id="autoQueueMovesButton">AutoQueue (q)</button>
+            <button id="runRoundButton">Run a Round (r)</button>
+        </div>
+        <div>
+                <h3>Input Map:</h3>
+                <input type="file" id="fileInput" />
+        </div>
+        <button id="executeMoveQueueButton">Execute Move Queue (m) -></button>
+        <div id="moveQueue" >
+
+        </div>
     </div>
     <div id="mainWrapper">
         <div id="tableWrapper">
@@ -29,26 +40,27 @@
                 <select id="addActorSelector">
 
                 </select>
-                <button id="addActorButton">Add Actor</button>
+                <button id="addActorButton">Add Actor (a)</button>
             </div>
         </div>
         <div class="box">
             <h2 class="centerText">Selected Actor</h2>
             <h3 class="centerText" id="selectedActorName">(none)</h3>
             <hr>
-            <div style="display:flex;">
+            
+            <div>
                 <div>
                     <h4 class="centerText">Properties</h4>
-
                     <ul id="selectedActorProperties"></ul>
-
                 </div>
-                <div class="leftBorder">
+
+                
+                <!-- <div class="leftBorder">
                     <h4 class="centerText" >Actions</h4>
                     <div id="selectedActorActions">
-                        <!-- Buttons go here -->
+                        
                     </div>
-                </div>
+                </div> -->
             </div>
             <!-- If this ul gets any blank space in it it will cause an infinite loop error when code tries to clean it-->
 

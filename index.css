@@ -68,3 +68,10 @@ td.containsSelectedActor{
     font-weight:bold;
     border:4px solid black;
 }
+
+#moveQueue{
+    display:flex;
+}
+#moveQueue p{
+    margin-left:3px;
+}
