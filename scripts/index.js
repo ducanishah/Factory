@@ -1,10 +1,10 @@
-import { Goblin, Tree, TestObject, Wall } from "./actors.js"
+import { Peasant, Tree, TestObject, Wall, Huntsman } from "./actors.js"
 import { updateWorldTable,  WorldMap } from "./worldMap.js"
 import { displaySelectedActor, fileInputHandler, displayMoveQueue } from "./helperScripts/inputsHandlers.js"
 import {checkFileReaderSupported} from "./helperScripts/fileReading.js"
 import {spawnInitialActors,populateAddActorList, addBasicEventListeners} from "./helperScripts/pageSetup.js"
 
-export var addableActorsList = { Goblin, Tree, TestObject, Wall }
+export var addableActorsList = { Peasant, Tree, TestObject, Wall, Huntsman }
 
 
 document.addEventListener("DOMContentLoaded", main);
