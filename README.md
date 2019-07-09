@@ -3,12 +3,4 @@ Hello hello hello!
 
 Link to actual thing: https://ducanishah.github.io/my-test-things/
 
-This is a practice in using vanilla JS and HTML to create a web-something-or-other.
-Grid based, with a nice table.
-
-Features!
--Clicking on cells to display their contents
-  -Adding new actors to selected cells
--Selecting actors from the cell! or by double clicking on a cell to select the top actor!
-  -Seeing the actor's properties (even the nested ones) with the power of RECURSION
-  -using moves on an actor!
+This is a rudimental autochess-like simulator created to explore grid-based interaction between actors on a turn based system, and to expand my knowledge of js. Having created the rudimental pathfinding, actor-and-move system, and combat, I am deeming this project completed. I will likely fork this in the future to use as the basis for future grid-based enterprises.
