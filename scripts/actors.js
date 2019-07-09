@@ -76,11 +76,11 @@ export class Player extends Actor {
         super(setX, setY, dispPrior, "player", "P");
     }
 }
-//runs after nearest of differing team
-export class Goblin extends Actor {
+//runs after nearest of differing team and attacks
+export class Peasant extends Actor {
     constructor(worldMap, setX, setY, team) {
         let dispPrior=1;
-        super(worldMap, setX, setY, dispPrior, "goblin", "g");
+        super(worldMap, setX, setY, dispPrior, "peasant", "p");
         this.moveSet.add(ShiftOneSpace);
         this.moveSet.add(Attack);
         this.team=team || 1;
@@ -92,6 +92,7 @@ export class Goblin extends Actor {
                 if(actor.team&& actor.team!==this.team){return true;} else return false;
             }),this)
         if(target){
+            //if target is in range (in this case one square), queue the attack move
             if(getDistFromTo(target,this)<=1){
                 this.moveSet.queue("Attack", {target:target});
                 return;
@@ -99,17 +100,61 @@ export class Goblin extends Actor {
             let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,target.location)[0];
             this.moveSet.queue("ShiftOneSpace",{target:firstStepOnPath});
             return;
+        } else {
+            this.mapParent.logToRound(`Peasant at ${this.location.x},${this.location.y} has no target and queued no action.`)
         }
     }
     //actually is for this taking damage, it makes sense in use
     dealDamage(damage){
         this.health-=damage;
-        this.mapParent.logToRound(`Goblin at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
+        this.mapParent.logToRound(`Peasant at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
         if(this.health<=0){
             this.destroy();
         }
     }
 }
+
+//runs after nearest of differing team and attacks
+export class Huntsman extends Actor {
+    constructor(worldMap, setX, setY, team) {
+        let dispPrior=1;
+        super(worldMap, setX, setY, dispPrior, "huntsman", "h");
+        this.moveSet.add(ShiftOneSpace);
+        this.moveSet.add(Attack);
+        this.team=team || 1;
+        this.health=3;
+    }
+    autoQueue(){
+        let target= getClosestActorOfFrom(getAllActorsPathableToFrom(this).filter(
+            (actor)=>{
+                if(actor.team&& actor.team!==this.team){return true;} else return false;
+            }),this)
+        if(target){
+            //if target is in range (in this case one square), queue the attack move
+            if(getDistFromTo(target,this)<=3){
+                this.moveSet.queue("Attack", {target:target});
+                return;
+            }
+            let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,target.location)[0];
+            this.moveSet.queue("ShiftOneSpace",{target:firstStepOnPath});
+            return;
+        } else {
+            this.mapParent.logToRound(`Hunter at ${this.location.x},${this.location.y} has no target and queued no action.`)
+        }
+    }
+    //actually is for this taking damage, it makes sense in use
+    dealDamage(damage){
+        this.health-=damage;
+        this.mapParent.logToRound(`Hunter at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
+        if(this.health<=0){
+            this.destroy();
+        }
+    }
+}
+
+
+
+
 
 export class Tree extends Actor {
     constructor(worldMap, setX, setY) {

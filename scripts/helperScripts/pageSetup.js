@@ -1,4 +1,4 @@
-import { TestObject, Tree, Goblin } from "../actors.js"
+import { TestObject, Tree, Peasant, Huntsman } from "../actors.js"
 import { displaySelectedActor, keydownHandler, addActorHandler, 
     selectActorHandler, executeMoveQueueHandler,runRoundHandler } from "./inputsHandlers.js"
 import {myWorldMap} from "../index.js"
@@ -17,9 +17,11 @@ export function addBasicEventListeners() {
 
 export function spawnInitialActors(worldMap) {
     
-    new Tree(worldMap, 0, 0)
-    new Goblin(worldMap,15,15,1)
-    new Goblin(worldMap,15,10,2)
+    new Tree(worldMap, 0, 0);
+    new Peasant(worldMap,15,15,1);
+    new Huntsman(worldMap,14,15,1);
+    new Peasant(worldMap,15,10,2);
+    new Peasant(worldMap,14,10,2);
 }
 
 //populates the addActorSelector with the given list of actors
