@@ -78,6 +78,7 @@ export function getAllActorsPathableToFrom(actor) {
     }
     if(actorList.indexOf(actor)===-1){
         alert("The actor searching did not include origin actor! something is fucky!")
+        console.log(actor);
     }
     actorList.splice(actorList.indexOf(actor),1);
     return actorList;

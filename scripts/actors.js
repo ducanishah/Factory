@@ -8,8 +8,9 @@ import {breadthFirstPathfindingToFrom,getAllActorsPathableToFrom,getClosestActor
 export class Actor {
     constructor(worldMap,xSet, ySet, dispPrior = 0, myName, mySymbol) {
         //IMPORTANT: must push self-containing properties to this list or displaying of actor will lead to infinite recursion!
+        this._id=worldMap.getNextId();
         this.propertiesThatShouldNotBeDisplayed=["location", "mapParent", "propertiesThatShouldNotBeDisplayed", "name", "displayString", "mapSymbol"]
-        this.name = myName;
+        this.name = myName+`(${this._id})`;
         this.mapSymbol = mySymbol;
         this.displayPriority = dispPrior;
         this.location;
@@ -19,6 +20,7 @@ export class Actor {
         this.displayString=`${this.name} (${this.mapSymbol})`
         worldMap.actorHolder.aliveActors.push(this);
         actorPlace(worldMap,this,xSet,ySet);
+        this.markedForDestruction=false;
     }
     //should be replaced in inheritees!
     autoQueue(){
@@ -33,11 +35,13 @@ export class Actor {
                     displaySelectedActor();
                 }
                 this.mapParent.actorHolder.aliveActors.splice(this.mapParent.actorHolder.aliveActors.indexOf(this),1);
+                this.mapParent.logToRound(`${this.name} at ${this.location.x},${this.location.y} has been removed from their location.`)
                 this.location.presentActors.splice(this.location.presentActors.indexOf(this),1);
                 updateWorldTable(myWorldMap);
                 this.mapParent.logToRound(`${this.name} at ${this.location.x},${this.location.y} has been destroyed.`)
             }
-        } else {
+        } else if(this.markedForDestruction===false) {
+            this.markedForDestruction=true;
             this.mapParent.actorHolder.markForDestruction(this);
             this.mapParent.logToRound(`${this.name} at ${this.location.x},${this.location.y} has been marked for destruction.`)
         }
@@ -56,7 +60,8 @@ export class ActorHolder {
     }
     markForDestruction(actor){
         if(this.aliveActors.indexOf(actor)===-1){
-            console.log("That actor is not present!");
+            console.log(actor);
+            console.log("That actor is not alive and present!");
             return;
         } else {
             this.actorsToDestroy.push(actor);
@@ -65,6 +70,7 @@ export class ActorHolder {
     destroyActors(){
         for(let i=this.actorsToDestroy.length-1;i>-1;i-=1){
             this.actorsToDestroy[i].destroy(true);
+            this.actorsToDestroy.pop();
         }
         this.actorsToDestroy=[];
     }
@@ -107,7 +113,7 @@ export class Peasant extends Actor {
     //actually is for this taking damage, it makes sense in use
     dealDamage(damage){
         this.health-=damage;
-        this.mapParent.logToRound(`Peasant at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
+        this.mapParent.logToRound(`Peasant(${this._id}) at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
         if(this.health<=0){
             this.destroy();
         }
@@ -145,7 +151,7 @@ export class Huntsman extends Actor {
     //actually is for this taking damage, it makes sense in use
     dealDamage(damage){
         this.health-=damage;
-        this.mapParent.logToRound(`Hunter at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
+        this.mapParent.logToRound(`Hunter(${this._id}) at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
         if(this.health<=0){
             this.destroy();
         }

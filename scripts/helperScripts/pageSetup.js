@@ -17,11 +17,13 @@ export function addBasicEventListeners() {
 
 export function spawnInitialActors(worldMap) {
     
-    // new Tree(worldMap, 0, 0);
-    // new Peasant(worldMap,15,15,1);
-    // new Huntsman(worldMap,14,15,1);
-    // new Peasant(worldMap,15,10,2);
-    // new Peasant(worldMap,14,10,2);
+    new Peasant(worldMap,0,1,1);
+    new Peasant (worldMap,1,0,1);
+    new Huntsman(worldMap,0,0,1);
+    new Peasant(worldMap,14,14,2);
+    new Peasant(worldMap,14,13,2)
+    new Peasant(worldMap,13,14,2)
+    
 }
 
 //populates the addActorSelector with the given list of actors

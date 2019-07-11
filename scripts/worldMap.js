@@ -8,6 +8,7 @@ import { RoundLog } from "./helperScripts/logging.js"
 
 export class WorldMap{
     constructor(length){
+        this.nextId=-1;
         this.map=initializeWorldMap(this,length);
         this.actorHolder=new ActorHolder();
         this.moveQueue=new MoveQueue(this);
@@ -33,12 +34,17 @@ export class WorldMap{
     logToRound(obj){
         this.roundLog.logToCurrentRound(obj);
     }
+    getNextId(){
+        this.nextId=this.nextId+1;
+        return this.nextId;
+    }
 }
 
 //x,y
 //has: presentActor,x,y,cameFrom,currentDisplayedActor
 export class WorldLocation {
     constructor(worldMap,setX, setY) {
+        
         this.presentActors = [];
         this.mapParent=worldMap;
         this.x = setX;
@@ -46,6 +52,7 @@ export class WorldLocation {
         this.cameFrom;
         this.currentDisplayedActor;
     }
+    
 }
 
 //updates worldTable AND redisplays selected cell

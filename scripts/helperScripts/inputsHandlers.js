@@ -107,9 +107,12 @@ export function displaySelectedActor(actor) {
     let table = document.getElementById("tableWrapper").children[0];
     //just in case of mistakes, this will keep infinite recursion at bay
     let recursionLimit = 10;
+    
+   
 
     //in case of actor being selected in a way other than clicking
-    if (selectedActor[0] && selectedActor[0] !== actor) {
+    if (selectedActor[0] && (selectedActor[0] !== actor)) {
+
         //so spawn display doesn't break
         if (table) {
             //clear class from previously selected actor's cell
@@ -122,11 +125,11 @@ export function displaySelectedActor(actor) {
         let newul = document.createElement("ul");
         newul.id = "selectedActorProperties";
         existingul.parentNode.replaceChild(newul, existingul);
-        displayActions();
+        // displayActions();
 
     }
     if (actor) {
-        selectedActor.push(actor);
+        selectedActor[0]=actor;
         //add class to newly selected actor's cell
         if (table) {
             table.children[actor.location.y].children[actor.location.x].classList.add("containsSelectedActor");
@@ -145,7 +148,9 @@ export function displaySelectedActor(actor) {
         // displayActions(actor);
     }
 
-
+    if(actor===undefined && selectedActor[0]!==undefined){
+        selectedActor[0]=undefined;
+    }
     //RECURSIVE PROPERTY DISPLAYING!!!!!
     function createNestedListFrom(parent) {
         recursionLimit--;
