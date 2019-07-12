@@ -92,7 +92,7 @@ export class Peasant extends Actor {
         super(worldMap, setX, setY, dispPrior, "peasant", "p");
         this.moveSet.add(ShiftOneSpace);
         this.moveSet.add(Attack);
-        this.team=team || 1;
+        this.team=team || 0;
         this.health=5;
     }
     autoQueue(){
@@ -130,7 +130,7 @@ export class Huntsman extends Actor {
         super(worldMap, setX, setY, dispPrior, "huntsman", "h");
         this.moveSet.add(ShiftOneSpace);
         this.moveSet.add(Attack);
-        this.team=team || 1;
+        this.team=team || 0;
         this.health=3;
     }
     autoQueue(){
