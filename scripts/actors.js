@@ -8,26 +8,29 @@ import {breadthFirstPathfindingToFrom,getAllActorsPathableToFrom,getClosestActor
 export class Actor {
     constructor(worldMap,xSet, ySet, dispPrior = 0, myName, mySymbol) {
         //IMPORTANT: must push self-containing properties to this list or displaying of actor will lead to infinite recursion!
-        this._id=worldMap.getNextId();
         this.propertiesThatShouldNotBeDisplayed=["location", "mapParent", "propertiesThatShouldNotBeDisplayed", "name", "displayString", "mapSymbol"]
-        this.name = myName+`(${this._id})`;
         this.mapSymbol = mySymbol;
         this.displayPriority = dispPrior;
         this.location;
         this.alive=true;
         this.mapParent=worldMap;
         this.moveSet=new MoveSet(this);
-        this.displayString=`${this.name} (${this.mapSymbol})`
-        worldMap.actorHolder.aliveActors.push(this);
-        actorPlace(worldMap,this,xSet,ySet);
         this.markedForDestruction=false;
+        //in case of attempted spawn outside range
+        if(!actorPlace(worldMap,this,xSet,ySet)){
+            this.destroy(true);
+            return;
+        }
+        worldMap.actorHolder.aliveActors.push(this);
+        this._id=worldMap.getNextId();
+        this.name = myName+`(${this._id})`;
+        this.displayString=`${this.name} (${this.mapSymbol})`
     }
     //should be replaced in inheritees!
     autoQueue(){
         
     }
     destroy(isCollectionPhase){
-        
         if(isCollectionPhase){
             this.alive=false;
             if(this.location){

@@ -1,6 +1,6 @@
 import { updateWorldTable, actorPlace } from "./worldMap.js"
 import { myWorldMap, selectedCell,selectedActor } from "./index.js";
-import { displayMoveQueue, displaySelectedActor, fileInputHandler } from "./helperScripts/inputsHandlers.js";
+import { displaySelectedActor, fileInputHandler } from "./helperScripts/inputsHandlers.js";
 
 
 export class MoveQueue {
@@ -22,7 +22,6 @@ export class MoveQueue {
             this.queue[i].execute();
         }
         this.queue.length=0;
-        displayMoveQueue();
         updateWorldTable(this.worldMapParent);
         displaySelectedActor(selectedActor[0]);
     }
@@ -74,7 +73,6 @@ export class Move {
     
     addToQueue(){
         this.context.mapParent.moveQueue.add(this);
-        displayMoveQueue(this.context.mapParent.moveQueue);
     }
 }
 

@@ -1,6 +1,6 @@
 import { Peasant, Tree, TestObject, Wall, Huntsman } from "./actors.js"
 import { updateWorldTable,  WorldMap } from "./worldMap.js"
-import { displaySelectedActor, fileInputHandler, displayMoveQueue } from "./helperScripts/inputsHandlers.js"
+import { displaySelectedActor, fileInputHandler } from "./helperScripts/inputsHandlers.js"
 import {checkFileReaderSupported} from "./helperScripts/fileReading.js"
 import {spawnInitialActors,populateAddActorList, addBasicEventListeners} from "./helperScripts/pageSetup.js"
 
@@ -29,7 +29,7 @@ function main() {
     if (checkFileReaderSupported()) {
         document.getElementById("fileInput").addEventListener("change", fileInputHandler);
     } else {
-        alert("The file APIs are not fully supported here. Inputting maps isn't going to work, sorry.")
+        alert("The file APIs are not fully supported in this browser. Inputting maps isn't going to work, sorry.")
     }
 
 
@@ -44,5 +44,4 @@ export function setmyWorldMapAndRedisplay(map){
     myWorldMap=map;
     updateWorldTable(myWorldMap);
     displaySelectedActor();
-    displayMoveQueue(myWorldMap.moveQueue);
 }

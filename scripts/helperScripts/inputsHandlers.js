@@ -25,15 +25,7 @@ export function doubleClickHandler(e) {
 }
 //currently used for AutoQueue and ExecuteQueue and runRound AND cellSwitchByKey
 export function keydownHandler(e) {
-    // console.log(e.code);
-    let newSelectedCoords = [];
     switch (e.code) {
-        case "KeyQ":
-            myWorldMap.autoQueueMoves();
-            break;
-        case "KeyM":
-            executeMoveQueueHandler();
-            break;
         case "KeyR":
             runRoundHandler();
             break;
@@ -42,28 +34,29 @@ export function keydownHandler(e) {
             break;
         //cell switching
         case "ArrowUp":
-            if (selectedCell.length && document.activeElement!==document.getElementById("addActorSelector")) {
-                newSelectedCoords = [selectedCell[0], selectedCell[1] - 1]
-            }
+            alterSelectedCell([0, -1]);
             break;
         case "ArrowDown":
-            if (selectedCell.length && document.activeElement!==document.getElementById("addActorSelector")) {
-                newSelectedCoords = [selectedCell[0], selectedCell[1] + 1]
-            }
+            alterSelectedCell([0, 1]);
             break;
         case "ArrowLeft":
-            if (selectedCell.length && document.activeElement!==document.getElementById("addActorSelector")) {
-                newSelectedCoords = [selectedCell[0] - 1, selectedCell[1]]
-            }
+            alterSelectedCell([-1, 0]);
             break;
         case "ArrowRight":
-            if (selectedCell.length && document.activeElement!==document.getElementById("addActorSelector")) {
-                newSelectedCoords = [selectedCell[0] + 1, selectedCell[1]]
-            }
+            alterSelectedCell([1, 0]);
             break;
     }
-    if (newSelectedCoords && myWorldMap.map[newSelectedCoords[0]] && myWorldMap.map[newSelectedCoords[0]][newSelectedCoords[1]]) {
-        displayCellContents(myWorldMap, newSelectedCoords[0], newSelectedCoords[1]);
+
+    function alterSelectedCell(alterations) {
+        //if selectedCell exists and addActorSelector not selected...
+        if (selectedCell.length && document.activeElement !== document.getElementById("addActorSelector")) {
+            //create new Coords
+            let newSelectedCoords = [selectedCell[0] + alterations[0], selectedCell[1] + alterations[1]];
+            //if those coords exist on the map...
+            if (myWorldMap.map[newSelectedCoords[0]] && myWorldMap.map[newSelectedCoords[0]][newSelectedCoords[1]]) {
+                displayCellContents(myWorldMap, newSelectedCoords[0], newSelectedCoords[1]);
+            }
+        }
     }
 }
 //adds selected actor to the worldMap AND updates the world table 
@@ -107,8 +100,8 @@ export function displaySelectedActor(actor) {
     let table = document.getElementById("tableWrapper").children[0];
     //just in case of mistakes, this will keep infinite recursion at bay
     let recursionLimit = 10;
-    
-   
+
+
 
     //in case of actor being selected in a way other than clicking
     if (selectedActor[0] && (selectedActor[0] !== actor)) {
@@ -129,7 +122,7 @@ export function displaySelectedActor(actor) {
 
     }
     if (actor) {
-        selectedActor[0]=actor;
+        selectedActor[0] = actor;
         //add class to newly selected actor's cell
         if (table) {
             table.children[actor.location.y].children[actor.location.x].classList.add("containsSelectedActor");
@@ -148,8 +141,8 @@ export function displaySelectedActor(actor) {
         // displayActions(actor);
     }
 
-    if(actor===undefined && selectedActor[0]!==undefined){
-        selectedActor[0]=undefined;
+    if (actor === undefined && selectedActor[0] !== undefined) {
+        selectedActor[0] = undefined;
     }
     //RECURSIVE PROPERTY DISPLAYING!!!!!
     function createNestedListFrom(parent) {
@@ -218,25 +211,6 @@ export async function fileInputHandler(e) {
     setmyWorldMapAndRedisplay(map);
 }
 
-//call without arguments to clear move queue display
-export function displayMoveQueue(moveQueue) {
-    let holder = document.getElementById("moveQueue");
-    while (holder.firstChild) {
-        holder.removeChild(holder.firstChild);
-    }
-    if (moveQueue) {
-        for (let i = 0; i < moveQueue.queue.length; i++) {
-            let p = document.createElement("p");
-            p.innerHTML = moveQueue.queue[i].name + ",";
-            holder.append(p);
-        }
-    }
-
-}
-
-export function executeMoveQueueHandler() {
-    myWorldMap.executeMoveQueue();
-}
 
 export function runRoundHandler() {
     myWorldMap.runRound();

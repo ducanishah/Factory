@@ -1,6 +1,6 @@
 import { TestObject, Tree, Peasant, Huntsman } from "../actors.js"
 import { displaySelectedActor, keydownHandler, addActorHandler, 
-    selectActorHandler, executeMoveQueueHandler,runRoundHandler } from "./inputsHandlers.js"
+    selectActorHandler, runRoundHandler } from "./inputsHandlers.js"
 import {myWorldMap} from "../index.js"
 
 export function addBasicEventListeners() {
@@ -9,9 +9,7 @@ export function addBasicEventListeners() {
     document.getElementById("addActorButton").addEventListener("click", addActorHandler);
     //for selecting an actor from the selected cell menu
     document.getElementById("cellContents").addEventListener("click", selectActorHandler);
-    document.getElementById("executeMoveQueueButton").addEventListener("click", executeMoveQueueHandler);
     document.getElementById("logWorldMapButton").addEventListener("click",function(){console.log(myWorldMap);});
-    document.getElementById("autoQueueMovesButton").addEventListener("click", function(){myWorldMap.autoQueueMoves()});
     document.getElementById("runRoundButton").addEventListener("click",runRoundHandler);
 }
 
@@ -21,8 +19,9 @@ export function spawnInitialActors(worldMap) {
     new Peasant (worldMap,1,0,1);
     new Huntsman(worldMap,0,0,1);
     new Peasant(worldMap,14,14,2);
-    new Peasant(worldMap,14,13,2)
-    new Peasant(worldMap,13,14,2)
+    new Peasant(worldMap,14,13,2);
+    new Peasant(worldMap,13,14,2);
+    
     
 }
 

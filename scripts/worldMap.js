@@ -55,6 +55,18 @@ export class WorldLocation {
     
 }
 
+//initializes an empty worldMap with only the empty WorldLocations
+export function initializeWorldMap(parentWorldMap,length) {
+    let worldMap=[]
+    for (let i = 0; i < length; i++) {
+        worldMap[i] = new Array(length);
+        for (let ind = 0; ind < worldMap[i].length; ind++) {
+            worldMap[i][ind] = new WorldLocation(parentWorldMap,i, ind);
+        }
+    }
+    return worldMap;
+}
+
 //updates worldTable AND redisplays selected cell
 export function updateWorldTable(worldMap) {
     if (document.getElementById("tableWrapper").children[0]) {
@@ -70,17 +82,7 @@ export function updateWorldTable(worldMap) {
         displayCellContents(myWorldMap,...selectedCell);
     }
 }
-//initializes an empty worldMap with only the empty WorldLocations
-export function initializeWorldMap(parentWorldMap,length) {
-    let worldMap=[]
-    for (let i = 0; i < length; i++) {
-        worldMap[i] = new Array(length);
-        for (let ind = 0; ind < worldMap[i].length; ind++) {
-            worldMap[i][ind] = new WorldLocation(parentWorldMap,i, ind);
-        }
-    }
-    return worldMap;
-}
+
 
 export function createWorldTable(worldMap) {
     let myTable = document.createElement("table");
@@ -122,33 +124,37 @@ export function createWorldTable(worldMap) {
 
 //accepts an array input with minx, maxx, miny, maxy
 //returns in form [x,y]
-export function generateRandomCoordinates(arr) {
-    let x;
-    let y;
-    //if there is an array, generate coords within the bounds
-    if (arr) {
-        if (arr[0] < 0 || arr[2] < 0 || arr[1] > worldMap.map.length - 1 || arr[3] > worldMap.map.length - 1) {
-            console.log("These bounds are out of this world!");
-        }
-        if (arr[0] > arr[1] || arr[2] > arr[3]) {
-            console.log("min needs to be smaller than max")
-        }
-        x = Math.floor(Math.random() * (arr[1] - arr[0])) + arr[0];
-        y = Math.floor(Math.random() * (arr[3] - arr[2])) + arr[2];
-    } 
-    //if there isn't an array, then generate within worldMap.map.length
-    else {
-        x = Math.floor(Math.random() * worldMap.map.length);
-        y = Math.floor(Math.random() * worldMap.map.length);
-    }
-    return [x, y];
-}
+// export function generateRandomCoordinates(arr) {
+//     let x;
+//     let y;
+//     //if there is an array, generate coords within the bounds
+//     if (arr) {
+//         if (arr[0] < 0 || arr[2] < 0 || arr[1] > worldMap.map.length - 1 || arr[3] > worldMap.map.length - 1) {
+//             console.log("These bounds are out of this world!");
+//         }
+//         if (arr[0] > arr[1] || arr[2] > arr[3]) {
+//             console.log("min needs to be smaller than max")
+//         }
+//         x = Math.floor(Math.random() * (arr[1] - arr[0])) + arr[0];
+//         y = Math.floor(Math.random() * (arr[3] - arr[2])) + arr[2];
+//     } 
+//     //if there isn't an array, then generate within worldMap.map.length
+//     else {
+//         x = Math.floor(Math.random() * worldMap.map.length);
+//         y = Math.floor(Math.random() * worldMap.map.length);
+//     }
+//     return [x, y];
+// }
 
 //call this to move an actor from its present spot (or non-spot) to another spot
+
+
+
 export function actorPlace(worldMap, actor, x, y) {
     //test out of bounds
     if (x < 0 || x > worldMap.map.length - 1 || y < 0 || y > worldMap.map.length - 1) {
-        console.log("Out of bounds error"+` [${x},${y}]`);
+        console.log(`Failed to place the following actor out of bounds at [${x},${y}]:`);
+        console.log(actor)
         return false;
     }
     //if the actor is somewhere, remove the actor from the listed location
@@ -160,6 +166,7 @@ export function actorPlace(worldMap, actor, x, y) {
     //set the actors listed location properly
     actor.location = worldMap.map[x][y];
     actor.mapParent=worldMap;
+    return true;
 }
 //take given cell and display info in the box AND if the cell contains the selected actor, highlights it
 export function displayCellContents(worldMap, cellX, cellY) {
@@ -171,7 +178,7 @@ export function displayCellContents(worldMap, cellX, cellY) {
     }
     selectedCell.length = 0;
     selectedCell.push(cellX, cellY);
-    
+
     //adds class to selected cell for color
     let td=document.getElementById("tableWrapper").children[0].children[cellY].children[cellX]
     td.classList.add("selectedCell");
@@ -192,7 +199,7 @@ export function displayCellContents(worldMap, cellX, cellY) {
     }
     //add new nodes
     contentList.append(...liList);
-    //change the x,y thing
+    //change the x,y display
     document.getElementById("selectedCellCoordinates").innerHTML = `(${cellX},${cellY})`;
     
 }
