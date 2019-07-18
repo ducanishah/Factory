@@ -103,10 +103,10 @@ export function displaySelectedActor(actor) {
 
 
 
-    //in case of actor being selected in a way other than clicking
-    if (selectedActor[0] && (selectedActor[0] !== actor)) {
-
-        //so spawn display doesn't break
+    //clear stuff if a previous actor exists
+    if (selectedActor[0]) {
+        
+            //just in case things are attempted to be displayed without a table?
         if (table) {
             //clear class from previously selected actor's cell
             let previousActorLocation = selectedActor[0].location;
@@ -121,6 +121,7 @@ export function displaySelectedActor(actor) {
         // displayActions();
 
     }
+    //do selection stuff
     if (actor) {
         selectedActor[0] = actor;
         //add class to newly selected actor's cell

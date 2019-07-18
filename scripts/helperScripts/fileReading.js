@@ -35,6 +35,7 @@ export function handleFileInput(e) {
 
 function fileOutputToMap(fileOutput) {
     let map = [];
+    //split on new row
     let rows = fileOutput.split(/\r?\n/);
     for (let i = 0; i < rows.length; i++) {
         rows[i] = rows[i].split(",")

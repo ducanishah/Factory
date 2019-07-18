@@ -7,6 +7,15 @@ import {breadthFirstPathfindingToFrom,getAllActorsPathableToFrom,getClosestActor
 //modify displayString on inheritees(?) to change what is displayed in display window
 export class Actor {
     constructor(worldMap,xSet, ySet, dispPrior = 0, myName, mySymbol) {
+        //in case of attempted spawn outside range
+        if(!actorPlace(worldMap,this,xSet,ySet)){
+            this.destroy(true);
+            return;
+        }
+        worldMap.actorHolder.aliveActors.push(this);
+        this._id=worldMap.getNextId();
+        this.name = myName+`(${this._id})`;
+        this.displayString=`${this.name} (${this.mapSymbol})`;
         //IMPORTANT: must push self-containing properties to this list or displaying of actor will lead to infinite recursion!
         this.propertiesThatShouldNotBeDisplayed=["location", "mapParent", "propertiesThatShouldNotBeDisplayed", "name", "displayString", "mapSymbol"]
         this.mapSymbol = mySymbol;
@@ -16,15 +25,7 @@ export class Actor {
         this.mapParent=worldMap;
         this.moveSet=new MoveSet(this);
         this.markedForDestruction=false;
-        //in case of attempted spawn outside range
-        if(!actorPlace(worldMap,this,xSet,ySet)){
-            this.destroy(true);
-            return;
-        }
-        worldMap.actorHolder.aliveActors.push(this);
-        this._id=worldMap.getNextId();
-        this.name = myName+`(${this._id})`;
-        this.displayString=`${this.name} (${this.mapSymbol})`
+        
     }
     //should be replaced in inheritees!
     autoQueue(){
@@ -122,6 +123,7 @@ export class Peasant extends Actor {
         }
     }
 }
+Peasant.usesTeam=true;
 
 //runs after nearest of differing team and attacks
 export class Huntsman extends Actor {
@@ -148,19 +150,19 @@ export class Huntsman extends Actor {
             this.moveSet.queue("ShiftOneSpace",{target:firstStepOnPath});
             return;
         } else {
-            this.mapParent.logToRound(`Hunter at ${this.location.x},${this.location.y} has no target and queued no action.`)
+            this.mapParent.logToRound(`Huntsman at ${this.location.x},${this.location.y} has no target and queued no action.`)
         }
     }
     //actually is for this taking damage, it makes sense in use
     dealDamage(damage){
         this.health-=damage;
-        this.mapParent.logToRound(`Hunter(${this._id}) at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
+        this.mapParent.logToRound(`Huntsman(${this._id}) at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
         if(this.health<=0){
             this.destroy();
         }
     }
 }
-
+Huntsman.usesTeam=true;
 
 
 
