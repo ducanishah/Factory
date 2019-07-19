@@ -24,7 +24,6 @@ export var selectedActor = [];
 //the calls made when the page is loaded
 function main() {
     console.log("Hit main")
-    console.log(Peasant)
     addBasicEventListeners();
     //if FileReader is supported, set up the handling. if not, tell me
     if (checkFileReaderSupported()) {

@@ -28,7 +28,7 @@ export function handleFileInput(e) {
         }
         //set the fileReader to reading
         fileReader.readAsText(inputFile);
-        
+
     })
 
 }
@@ -51,24 +51,50 @@ function fileOutputToMap(fileOutput) {
             map[j].push(content);
         }
     }
-    map=createWorldMapFromInputMap(map);
+    map = createWorldMapFromInputMap(map);
     return map;
 }
 
 
-function createWorldMapFromInputMap(map){
-    let worldMap=new WorldMap(map.length);
-    for(let i=0; i<map.length;i++){
-        for(let j=0; j<map[i].length;j++){
-            if(map[i][j]){
-                let myObject=addableActorsList[map[i][j]];
-                if(!myObject){
-                    alert("There is text in this map that is not a valid object!: "+map[i][j])
+function createWorldMapFromInputMap(map) {
+    let worldMap = new WorldMap(map.length);
+    for (let i = 0; i < map.length; i++) {
+        for (let j = 0; j < map[i].length; j++) {
+            //creates object from list based on text
+            //format ObjName:prop1=prop1Value&prop2=prop2Value
+            if (map[i][j]) {
+                let givenContentString = map[i][j]
+                //creates separate vars for actor and properties of actor, if property symbol exists
+                if (givenContentString.includes(":")) {
+                    var givenActorString = givenContentString.split(":")[0];
+                    var givenActorProperties = givenContentString.split(":")[1];
+                    //creates list of properties if multiple properties
+                    if (givenActorProperties.includes("&")) {
+                        givenActorProperties = givenActorProperties.split("&");
+                    }
                 }
-                new myObject(worldMap,i,j);
+                let chosenObj = addableActorsList[givenActorString];
+                if (!chosenObj) {
+                    alert("There is text in this map that is not a valid object!: " + map[i][j] + `(${i},${j})`)
+                } else {
+                    let unfinishedActor = new chosenObj(worldMap, i, j);
+                    //if there are multiple properties
+                    if (Array.isArray(givenActorProperties)) {
+                        console.log("yes")
+                        for (let k = 0; k < givenActorProperties.length;k++) {
+                            //set the properties
+                            unfinishedActor[givenActorProperties[k].split("=")[0]]=givenActorProperties[k].split("=")[1];
+                        }
+                    } else{
+                        //single property
+                        unfinishedActor[givenActorProperties.split("=")[0]]=givenActorProperties.split("=")[1];
+                    }
+
+                }
             }
-            
+
         }
+
     }
     return worldMap;
 }
