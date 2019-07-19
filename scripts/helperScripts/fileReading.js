@@ -63,7 +63,7 @@ function createWorldMapFromInputMap(map) {
             //creates object from list based on text
             //format ObjName:prop1=prop1Value&prop2=prop2Value+Obj2Name...
             if (map[i][j]) {
-                let givenContentString = map[i][j]
+                let givenContentString = map[i][j].replace(/\s/g,"");
                 if(givenContentString.includes("+")){
                     let actorStrings=givenContentString.split("+");
                     for(let l=0;l<actorStrings.length;l++){
@@ -89,7 +89,6 @@ function createWorldMapFromInputMap(map) {
                     let unfinishedActor = new chosenObj(worldMap, i, j);
                     //if there are multiple properties
                     if (Array.isArray(givenActorProperties)) {
-                        console.log("yes")
                         for (let k = 0; k < givenActorProperties.length;k++) {
                             //set the properties
                             unfinishedActor[givenActorProperties[k].split("=")[0]]=givenActorProperties[k].split("=")[1];
