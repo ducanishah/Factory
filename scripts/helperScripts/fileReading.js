@@ -61,10 +61,19 @@ function createWorldMapFromInputMap(map) {
     for (let i = 0; i < map.length; i++) {
         for (let j = 0; j < map[i].length; j++) {
             //creates object from list based on text
-            //format ObjName:prop1=prop1Value&prop2=prop2Value
+            //format ObjName:prop1=prop1Value&prop2=prop2Value+Obj2Name...
             if (map[i][j]) {
                 let givenContentString = map[i][j]
-                //creates separate vars for actor and properties of actor, if property symbol exists
+                if(givenContentString.includes("+")){
+                    let actorStrings=givenContentString.split("+");
+                    for(let l=0;l<actorStrings.length;l++){
+                        createActorFromString(worldMap,actorStrings[l]);
+                    }
+                } else {
+                    createActorFromString(worldMap,givenContentString)
+                }
+                function createActorFromString(worldMap,givenContentString){
+                    //creates separate vars for actor and properties of actor, if property symbol exists
                 if (givenContentString.includes(":")) {
                     var givenActorString = givenContentString.split(":")[0];
                     var givenActorProperties = givenContentString.split(":")[1];
@@ -91,6 +100,8 @@ function createWorldMapFromInputMap(map) {
                     }
 
                 }
+                }
+                
             }
 
         }
