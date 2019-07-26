@@ -62,6 +62,7 @@ function createWorldMapFromInputMap(map) {
         for (let j = 0; j < map[i].length; j++) {
             //creates object from list based on text
             //format ObjName:prop1=prop1Value&prop2=prop2Value+Obj2Name...
+            //Spaces are allowed!
             if (map[i][j]) {
                 let givenContentString = map[i][j].replace(/\s/g,"");
                 if(givenContentString.includes("+")){
