@@ -15,10 +15,10 @@ export class Actor {
         worldMap.actorHolder.aliveActors.push(this);
         this._id=worldMap.getNextId();
         this.name = myName+`(${this._id})`;
-        this.displayString=`${this.name} (${this.mapSymbol})`;
         //IMPORTANT: must push self-containing properties to this list or displaying of actor will lead to infinite recursion!
         this.propertiesThatShouldNotBeDisplayed=["location", "mapParent", "propertiesThatShouldNotBeDisplayed", "name", "displayString", "mapSymbol"]
         this.mapSymbol = mySymbol;
+        this.displayString=`${this.name} (${this.mapSymbol})`;
         this.displayPriority = dispPrior;
         this.location;
         this.alive=true;
