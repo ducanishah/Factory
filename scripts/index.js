@@ -3,6 +3,7 @@ import { updateWorldTable,  WorldMap } from "./worldMap.js"
 import { displaySelectedActor, fileInputHandler } from "./helperScripts/inputsHandlers.js"
 import {checkFileReaderSupported} from "./helperScripts/fileReading.js"
 import {spawnInitialActors,populateAddActorList, addBasicEventListeners} from "./helperScripts/pageSetup.js"
+import {randomGenOn} from "./helperScripts/randomGeneration.js"
 
 export var addableActorsList = { Peasant, Tree, TestObject, Wall, Huntsman }
 
@@ -34,7 +35,8 @@ function main() {
 
 
     myWorldMap = new WorldMap(worldMapLength);
-    spawnInitialActors(myWorldMap);
+    randomGenOn(myWorldMap);
+    //spawnInitialActors(myWorldMap);
     updateWorldTable(myWorldMap);
     populateAddActorList(addableActorsList);
 }

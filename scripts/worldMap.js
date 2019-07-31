@@ -38,6 +38,10 @@ export class WorldMap{
         this.nextId=this.nextId+1;
         return this.nextId;
     }
+    RandomLocation(){
+        let coords=generateRandomCoordinates(this);
+        return this.map[coords[0]][coords[1]];
+    }
 }
 
 //x,y
@@ -51,6 +55,7 @@ export class WorldLocation {
         this.y = setY;
         this.cameFrom;
         this.currentDisplayedActor;
+        this.terrain;
     }
     
 }
@@ -94,6 +99,11 @@ export function createWorldTable(worldMap) {
     worldMap.map.forEach((subArray, subArrayIndex) => {
         subArray.forEach((item, itemIndex) => {
             let newtd = document.createElement("td");
+            //set color of square if terrain exists
+            if(item.terrain){
+                newtd.style.backgroundColor=item.terrain.color;
+            }
+            //get top actor if any are present
             if (item.presentActors.length) {
                 let topActor;
                 for (let i = 0; i < item.presentActors.length; i++) {
@@ -114,7 +124,6 @@ export function createWorldTable(worldMap) {
                 item.currentDisplayedActor=undefined;
             }
             
-            
             myRows[itemIndex].append(newtd);
         });
     });
@@ -122,34 +131,15 @@ export function createWorldTable(worldMap) {
     return myTable;
 }
 
-//accepts an array input with minx, maxx, miny, maxy
 //returns in form [x,y]
-// export function generateRandomCoordinates(arr) {
-//     let x;
-//     let y;
-//     //if there is an array, generate coords within the bounds
-//     if (arr) {
-//         if (arr[0] < 0 || arr[2] < 0 || arr[1] > worldMap.map.length - 1 || arr[3] > worldMap.map.length - 1) {
-//             console.log("These bounds are out of this world!");
-//         }
-//         if (arr[0] > arr[1] || arr[2] > arr[3]) {
-//             console.log("min needs to be smaller than max")
-//         }
-//         x = Math.floor(Math.random() * (arr[1] - arr[0])) + arr[0];
-//         y = Math.floor(Math.random() * (arr[3] - arr[2])) + arr[2];
-//     } 
-//     //if there isn't an array, then generate within worldMap.map.length
-//     else {
-//         x = Math.floor(Math.random() * worldMap.map.length);
-//         y = Math.floor(Math.random() * worldMap.map.length);
-//     }
-//     return [x, y];
-// }
+export function generateRandomCoordinates(worldMap) {
+        let x = Math.floor(Math.random() * worldMap.map.length);
+        let y = Math.floor(Math.random() * worldMap.map.length);
+    
+    return [x, y];
+}
 
 //call this to move an actor from its present spot (or non-spot) to another spot
-
-
-
 export function actorPlace(worldMap, actor, x, y) {
     //test out of bounds
     if (x < 0 || x > worldMap.map.length - 1 || y < 0 || y > worldMap.map.length - 1) {
@@ -170,7 +160,6 @@ export function actorPlace(worldMap, actor, x, y) {
 }
 //take given cell and display info in the box AND if the cell contains the selected actor, highlights it
 export function displayCellContents(worldMap, cellX, cellY) {
-    
     //clear tint from last selected cell (if one exists)
     if (selectedCell.length) {
         let td = document.getElementById("tableWrapper").children[0].children[selectedCell[1]].children[selectedCell[0]];
@@ -199,6 +188,13 @@ export function displayCellContents(worldMap, cellX, cellY) {
     }
     //add new nodes
     contentList.append(...liList);
+    //change the name of the terrain
+    if(worldMap.map[cellX][cellY].terrain){
+        document.getElementById("selectedCellTerrain").innerHTML=`Terrain: ${worldMap.map[cellX][cellY].terrain.name}`;
+    } else {
+        document.getElementById("selectedCellTerrain").innerHTML="";
+    }
+
     //change the x,y display
     document.getElementById("selectedCellCoordinates").innerHTML = `(${cellX},${cellY})`;
     
