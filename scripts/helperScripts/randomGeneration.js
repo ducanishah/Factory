@@ -12,7 +12,7 @@ export function randomGenOn(worldMap) {
     worldMap.RandomLocation().terrain = new Water(worldMap);
 }
 
-
+//RANDOM NUMBER GENERATORRRRRRR
 export function randomNumberBetween(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
