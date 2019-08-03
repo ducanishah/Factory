@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", main);
 
 export var myWorldMap = [];
 //assumed to be square
-var worldMapLength = 16;
+var worldMapLength = 32;
 export var selectedCell = [];
 //use array for actor to get around constancy of exports
 export var selectedActor = [];
