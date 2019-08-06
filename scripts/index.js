@@ -9,7 +9,7 @@ export var addableActorsList = { Peasant, Tree, TestObject, Wall, Huntsman }
 
 
 document.addEventListener("DOMContentLoaded", main);
-
+//test
 
 
 export var myWorldMap = [];
