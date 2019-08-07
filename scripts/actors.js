@@ -1,6 +1,6 @@
 import {selectedActor, myWorldMap} from "./index.js"
 import {actorPlace, updateWorldTable} from "./worldMap.js"
-import {MoveSet, Move,TestMove,ShiftOneSpace, Attack} from "./moves.js"
+import {MoveSet, Move,TestMove, Produce} from "./moves.js"
 import { displaySelectedActor } from "./helperScripts/inputsHandlers.js";
 import {breadthFirstPathfindingToFrom,getAllActorsPathableToFrom,getClosestActorOfFrom, getDistFromTo} from "./pathfinding.js"
 //constructor parameters: worldMap, x value, y value, display priority, name, symbol
@@ -86,113 +86,17 @@ export class Player extends Actor {
         super(setX, setY, dispPrior, "player", "P");
     }
 }
-//runs after nearest of differing team and attacks
-export class Peasant extends Actor {
-    constructor(worldMap, setX, setY, team) {
-        let dispPrior=1;
-        super(worldMap, setX, setY, dispPrior, "peasant", "p");
-        this.moveSet.add(ShiftOneSpace);
-        this.moveSet.add(Attack);
-        this.team=team || 0;
-        this.health=5;
+
+
+
+export class OreProducer extends Actor{
+    constructor(worldMap,setX, setY,dispPrior=1){
+        super(worldMap,setX,setY,dispPrior,"Ore Producer","O+");
+        this.moveSet.add(Produce)
+        this.inventory=[];
     }
     autoQueue(){
-        let target= getClosestActorOfFrom(getAllActorsPathableToFrom(this).filter(
-            (actor)=>{
-                if(actor.team&& actor.team!==this.team){return true;} else return false;
-            }),this)
-        if(target){
-            //if target is in range (in this case one square), queue the attack move
-            if(getDistFromTo(target,this)<=1){
-                this.moveSet.queue("Attack", {target:target});
-                return;
-            }
-            let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,target.location)[0];
-            this.moveSet.queue("ShiftOneSpace",{target:firstStepOnPath});
-            return;
-        } else {
-            this.mapParent.logToRound(`Peasant at ${this.location.x},${this.location.y} has no target and queued no action.`)
-        }
-    }
-    //actually is for this taking damage, it makes sense in use
-    dealDamage(damage){
-        this.health-=damage;
-        this.mapParent.logToRound(`Peasant(${this._id}) at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
-        if(this.health<=0){
-            this.destroy();
-        }
-    }
-}
-Peasant.usesTeam=true;
-
-//runs after nearest of differing team and attacks
-export class Huntsman extends Actor {
-    constructor(worldMap, setX, setY, team) {
-        let dispPrior=1;
-        super(worldMap, setX, setY, dispPrior, "huntsman", "h");
-        this.moveSet.add(ShiftOneSpace);
-        this.moveSet.add(Attack);
-        this.team=team || 0;
-        this.health=3;
-    }
-    autoQueue(){
-        let target= getClosestActorOfFrom(getAllActorsPathableToFrom(this).filter(
-            (actor)=>{
-                if(actor.team&& actor.team!==this.team){return true;} else return false;
-            }),this)
-        if(target){
-            //if target is in range (in this case one square), queue the attack move
-            if(getDistFromTo(target,this)<=3){
-                this.moveSet.queue("Attack", {target:target});
-                return;
-            }
-            let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,target.location)[0];
-            this.moveSet.queue("ShiftOneSpace",{target:firstStepOnPath});
-            return;
-        } else {
-            this.mapParent.logToRound(`Huntsman at ${this.location.x},${this.location.y} has no target and queued no action.`)
-        }
-    }
-    //actually is for this taking damage, it makes sense in use
-    dealDamage(damage){
-        this.health-=damage;
-        this.mapParent.logToRound(`Huntsman(${this._id}) at ${this.location.x},${this.location.y} suffered ${damage} damage, bringing its health to ${this.health}`)
-        if(this.health<=0){
-            this.destroy();
-        }
-    }
-}
-Huntsman.usesTeam=true;
-
-
-
-
-export class Tree extends Actor {
-    constructor(worldMap, setX, setY) {
-        let dispPrior=0
-        super(worldMap, setX, setY, dispPrior, "tree", "T");
+        this.moveSet.queue("Produce",{toProduce:"Iron"})
     }
 }
 
-export class TestObject extends Actor{
-    constructor(worldMap,setX,setY){
-        let dispPrior=2;
-        super(worldMap,setX,setY,dispPrior,"testObject","tO");
-        this.moveSet.add(TestMove);
-    }
-    // autoQueue(){
-    //     console.log(getAllActorsPathableToFrom(this))
-    //     let firstStepOnPath=breadthFirstPathfindingToFrom(this.location,this.mapParent.map[0][0])[0];
-    //     if(firstStepOnPath){
-    //         this.moveSet.queue("ShiftOneSpace",{target:firstStepOnPath});
-    //     }
-    // }
-}
-
-export class Wall extends Actor{
-    constructor(worldMap,setX,setY){
-        let dispPrior=-1;
-        super(worldMap,setX,setY,dispPrior,"wall","W");
-        this.isPassable=false;
-    }
-}

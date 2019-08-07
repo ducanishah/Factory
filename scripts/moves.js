@@ -29,7 +29,7 @@ export class MoveQueue {
         this.queue.length=0;
     }
 }
-
+//MoveSet contains add and queue function
 export class MoveSet {
     constructor(actorForContext) {
         this.propertiesThatShouldNotBeDisplayed = ["propertiesThatShouldNotBeDisplayed", "context"];
@@ -90,28 +90,14 @@ export class TestMove extends Move {
     }
 }
 
-export class ShiftOneSpace extends Move {
-    constructor(actorForContext) {
-        super(actorForContext, "ShiftOneSpace");
-    }
-    execute() {
-        if(this.moveArguments.target){
-            actorPlace(this.context.mapParent,this.context,this.moveArguments.target.x,this.moveArguments.target.y)
-        }
-    }
-}
-
-export class Attack extends Move{
+export class Produce extends Move{
     constructor(actorForContext){
-        super(actorForContext,"Attack");
-        this.damage=1;
+        super(actorForContext,"Produce");
     }
     execute(){
-        if(this.moveArguments.target){
-            this.context.mapParent.logToRound(`${this.context.name} at ${this.context.location.x},${this.context.location.y} is executing an attack against ${this.moveArguments.target.name} at ${this.moveArguments.target.location.x},${this.moveArguments.target.location.y} with ${this.damage} damage`);
-            this.moveArguments.target.dealDamage(this.damage);
-        } else {
-            alert("No target provided!")
+        if(this.moveArguments.toProduce){
+            this.context.inventory.push(this.moveArguments.toProduce);
+            this.context.mapParent.logToRound(`${this.context.name} at (${this.context.location.x},${this.context.location.y}) produced 1 ${this.moveArguments.toProduce}`)
         }
     }
 }

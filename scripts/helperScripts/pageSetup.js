@@ -1,4 +1,4 @@
-import { TestObject, Tree, Peasant, Huntsman } from "../actors.js"
+import { OreProducer } from "../actors.js"
 import { displaySelectedActor, keydownHandler, addActorHandler, 
     selectActorHandler, runRoundHandler } from "./inputsHandlers.js"
 import {myWorldMap} from "../index.js"
@@ -15,12 +15,6 @@ export function addBasicEventListeners() {
 
 export function spawnInitialActors(worldMap) {
     
-    new Peasant(worldMap,0,1,1);
-    new Peasant (worldMap,1,0,1);
-    new Huntsman(worldMap,0,0,1);
-    new Peasant(worldMap,14,14,2);
-    new Peasant(worldMap,14,13,2);
-    new Peasant(worldMap,13,14,2);
     
     
 }

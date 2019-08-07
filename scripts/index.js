@@ -1,16 +1,14 @@
-import { Peasant, Tree, TestObject, Wall, Huntsman } from "./actors.js"
+import {  OreProducer  } from "./actors.js"
 import { updateWorldTable,  WorldMap } from "./worldMap.js"
 import { displaySelectedActor, fileInputHandler } from "./helperScripts/inputsHandlers.js"
 import {checkFileReaderSupported} from "./helperScripts/fileReading.js"
 import {spawnInitialActors,populateAddActorList, addBasicEventListeners} from "./helperScripts/pageSetup.js"
 import {randomGenOn} from "./helperScripts/randomGeneration.js"
 
-export var addableActorsList = { Peasant, Tree, TestObject, Wall, Huntsman }
+export var addableActorsList = { OreProducer }
 
 
 document.addEventListener("DOMContentLoaded", main);
-//test
-
 
 export var myWorldMap = [];
 //assumed to be square
@@ -18,7 +16,6 @@ var worldMapLength = 32;
 export var selectedCell = [];
 //use array for actor to get around constancy of exports
 export var selectedActor = [];
-
 
 
 
